@@ -1,10 +1,9 @@
 <template>
-  <HelloWorld msg="Welcome to Vue.js" />
+  <TestComponent/>
 </template>
 
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-
+import TestComponent from './components/TestComponent.vue';
 </script>
 
 <style>
