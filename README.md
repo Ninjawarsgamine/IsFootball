@@ -48,7 +48,7 @@ mvn clean install
 
 Luego, para iniciar la aplicación:
 ```bash
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
 Esto iniciará el servidor en http://localhost:8080 por defecto.
@@ -61,7 +61,6 @@ Luego inicia el frontend con el comando:
 ```bash
 npm run dev
 ```
-
 
 Accede al frontend en http://localhost:3000 y al backend en http://localhost:8080.
 
