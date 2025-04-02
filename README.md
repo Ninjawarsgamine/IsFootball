@@ -1,62 +1,70 @@
 # IsFootball
 
-Este es un proyecto que incluye una parte frontend desarrollada con **Vue.js** y una parte backend gestionada con **Struts 2**. A continuación, te proporcionamos las instrucciones para configurar y ejecutar ambas partes del proyecto.
+Este proyecto incluye una parte frontend desarrollada con **Vue.js 3** y una parte backend gestionada con **Spring Boot**. A continuación, se proporcionan las instrucciones para configurar y ejecutar ambas partes del proyecto.
 
 ## Configuración del cliente (Frontend)
 
 ### Requisitos previos
-Antes de comenzar, asegúrate de tener **Node.js** y **npm** instalados en tu máquina. Si no los tienes, puedes descargar **Node.js** desde [su sitio oficial](https://nodejs.org/).
+Antes de comenzar, asegúrate de tener **Node.js** y **npm** instalados en tu máquina. Si no los tienes, puedes descargarlos desde [su sitio oficial](https://nodejs.org/).
 
 ### Instalación de dependencias
 
 1. **Clona el repositorio** o **descarga los archivos del proyecto**.
 2. **Navega hasta la carpeta del cliente del proyecto:**
 
-   ```bash
-   cd client
+```bash
+ cd client
+
+```
+**Instala las dependencias de Vue.js**:
+```bash
+npm install
+```
+
+Inicia el servidor de desarrollo:
+```bash
+npm run dev
+```
+
+Esto hará que tu aplicación Vue.js se ejecute en el puerto configurado (por defecto, el puerto 3000).
 
 ## Configuración del servidor (Backend)
+### Requisitos previos
 
-## Requisitos previos
+Para ejecutar el servidor backend en Spring Boot, necesitas tener Java 8 o superior (se recomienda Java 21) y Maven instalados. Si no tienes Java o Maven instalados, puedes obtenerlos desde sus respectivos sitios oficiales:
 
-Para ejecutar el servidor backend en Struts 2, necesitas tener **Apache Tomcat** y **Java** instalados. Asegúrate de tener Java 8 o superior.
+- **Java**: Sitio oficial de Oracle o OpenJDK.
 
-### Iniciar el servidor con Tomcat
+- **Maven**: Sitio oficial de Apache Maven.
 
-1. **Crea el archivo .war del servidor usando Maven**:
+**Iniciar el servidor con Spring Boot**
 
-Navega a la raíz del proyecto y ejecuta el siguiente comando para crear el archivo .war del backend:
-```
+Compila y ejecuta el backend con Maven:
+
+Navega a la carpeta del servidor y ejecuta el siguiente comando para compilar el proyecto y crear el archivo .jar del backend:
+```bash
 mvn clean install
 ```
 
-Esto creará el archivo target/your-project.war, que contiene todo el código del backend.
-
-2. Despliega el archivo .war en Tomcat:
-
-Copia el archivo .war generado y pégalo en la carpeta webapps de tu instalación de Tomcat.
-
-3. Inicia Tomcat:
-
-Puedes iniciar el servidor de Tomcat desde la línea de comandos:
-```
-    cd /ruta/a/tomcat/bin
-    ./startup.sh  # En Linux/macOS
-    startup.bat   # En Windows
+Luego, para iniciar la aplicación:
+```bash
+mvn spring-boot:run
 ```
 
-Accede al backend:
+Esto iniciará el servidor en http://localhost:8080 por defecto.
 
-El servidor debería estar disponible en http://localhost:8080 (o el puerto que hayas configurado en Tomcat).
+## Configuración completa
 
-### Configuración completa
+Arranca primero el backend (Spring Boot), asegurándote de que está corriendo en el puerto 8080 (por defecto).
 
-Arranca primero el backend (Tomcat), asegurándote de que está corriendo en el puerto que has configurado (por defecto en 8080).
+Luego inicia el frontend con el comando:
+```bash
+npm run dev
+```
 
-Después inicia el frontend con el comando npm run dev. Esto hará que tu aplicación Vue.js se ejecute en el puerto que hayas configurado.
 
-Ahora podrás acceder al frontend en http://localhost:3000 y el backend en http://localhost:8080.
+Accede al frontend en http://localhost:3000 y al backend en http://localhost:8080.
 
-### Personalizar configuración
+## Personalizar configuración
 
-Si necesitas personalizar el comportamiento del proyecto (por ejemplo, cambiar el puerto en el que corre el frontend), consulta la referencia de configuración de Vue CLI para más detalles.
+Si necesitas modificar el comportamiento del proyecto (por ejemplo, cambiar el puerto en el que corre el frontend o el backend), consulta la documentación de Spring Boot y Vue CLI para más detalles.
