@@ -1,5 +1,6 @@
 <template>
     <div>
+      <HeaderComponent/>
       <h1>IsFootball</h1>
 
       <p v-if="mensaje">{{ mensaje }}</p>
@@ -8,7 +9,7 @@
   
   <script setup>
   import { onMounted, ref } from "vue";
-  
+  import HeaderComponent from '/home/roberto/Documentos/IsFootball/client/src/components/HeaderComponent.vue';
   const mensaje = ref("");
   
   const getTestMessage = async () => {
