@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import EquiposComponents from '@/components/EquiposComponents.vue';  
-import TestComponent from '@/components/TestComponent.vue';
+import WelcomeComponent from '@/components/WelcomeComponent.vue';
 
 const routes = [
-  { path: '/', component: TestComponent }, 
+  { path: '/', component: WelcomeComponent }, 
   { path: '/equipos', component: EquiposComponents },
 ];
 //Aquí van a estar las rutas de la aplicación. 
@@ -16,5 +16,4 @@ const router = createRouter({
 //Este objeto es el que va a gestionar las rutas.
 
 export default router;
-
 //Archivo de configuración para las rutas.
