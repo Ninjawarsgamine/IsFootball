@@ -1,4 +1,4 @@
-package com.isfootball.server;
+package com.isfootball.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
