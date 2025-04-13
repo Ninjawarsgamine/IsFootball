@@ -1,10 +1,14 @@
 package com.isfootball.model;
 
-/**
- * Esta es una clase que contiene los datos de una competición.
- */
-public class Competition {
+import java.io.Serializable;
 
+/**
+ * Esta es una clase que contiene los datos de una competición. Usamos "Serializable" para
+ * que los objetos de la clase puedan ser almacenados en Redis.
+ */
+public class Competition implements Serializable {
+	
+	
 	private Integer id;
 	private String name;
 	private String type;

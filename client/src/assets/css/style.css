@@ -1,21 +1,23 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+.header-container {
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  background-color: black;
+}
+.header-container__logo {
+  width: 30vh;
+  height: 30vh;
+  border-radius: 90px;
+}
+
 #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 
-
-.header-container{
-    padding:0.5rem;
-    border-radius: 0.3rem;
-    display: flex;
-    background-color:  black;
-}
-
-.header-container__logo{
-    width: 30vh;
-    height: 30vh;
-    border-radius: 90px;
-}
+/*# sourceMappingURL=style.css.map */

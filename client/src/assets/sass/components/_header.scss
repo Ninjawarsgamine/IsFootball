@@ -1,0 +1,13 @@
+.header-container{
+    padding:0.5rem;
+    border-radius: 0.3rem;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    background-color:  black;
+
+    &__logo{
+        width: 30vh;
+        height: 30vh;
+        border-radius: 90px;
+    }
+}

@@ -1,10 +1,15 @@
 package com.isfootball.model;
 
+import java.io.Serializable;
+
 /**
  * Esta clase contiene toda la información sobre un país.
  */
-public class Country {
-    private String name;
+public class Country implements Serializable {
+
+	private static final long serialVersionUID = -3961331635464484795L;
+	
+	private String name;
     private String code;
     private String flag;
     
