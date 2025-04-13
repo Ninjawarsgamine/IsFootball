@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -159,10 +160,12 @@ public class CompetitionService {
 	}
 
 	/**
-	 * Función que devuelve una lista de competiciones cuyos IDs coincidan con los especificados.
+	 * Función que devuelve una lista de competiciones cuyos IDs coincidan con los especificados. El
+	 * resultado se guarda en el caché, para reducir el número de peticiones a la API.
 	 * @param ids Un array de IDs de competiciones a filtrar. 
 	 * @return Una lista de competiciones que coinciden con los IDs proporcionados.
 	 */
+	@Cacheable("competitionsListByIds")
 	public List<Competition> getListCompetitionsByIds(Integer[]ids){
 		List<Competition> competitions=new ArrayList<>();
 		String url="https://"+apiHost+"/leagues?season="+season;
