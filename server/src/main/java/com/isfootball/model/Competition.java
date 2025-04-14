@@ -7,8 +7,8 @@ import java.io.Serializable;
  * que los objetos de la clase puedan ser almacenados en Redis.
  */
 public class Competition implements Serializable {
-	
-	
+
+	private static final long serialVersionUID = -8398489205371161696L;
 	private Integer id;
 	private String name;
 	private String type;

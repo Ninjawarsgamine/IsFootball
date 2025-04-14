@@ -1,11 +1,12 @@
 <template>
     <HeaderComponent/>
-
+    <div class="app-description">
+        
+    </div>
     <div class="main-competitions-container">
         <h3>Estas son las competiciones más populares</h3>
-        <div class="" v-for="competition in mainCompetitions" :key="competition.id">
+        <div class="main-competitions-container" v-for="competition in mainCompetitions" :key="competition.id">
             <img :src="competition.logo">
-            <span>{{ competition.name }}</span>
         </div>
     </div>
 </template>

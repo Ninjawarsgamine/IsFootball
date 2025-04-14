@@ -4,7 +4,7 @@ import WelcomeComponent from '@/components/WelcomeComponent.vue';
 
 const routes = [
   { path: '/', component: WelcomeComponent }, 
-  { path: '/equipos', component: EquiposComponents },
+  { path: '/teams', component: EquiposComponents },
 ];
 //Aquí van a estar las rutas de la aplicación. 
 
