@@ -1,0 +1,28 @@
+.footer-container {
+  position: relative;
+  bottom: 0;
+  background-color: $color-primary;
+  border-radius: 0.2rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  color: $color-whitesmoke;
+  font-size: 90%;
+  a {
+    color:$color-whitesmoke;
+    text-decoration: none;
+    transition: all 0.5s ease;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  h5 {
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  }
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+    fill: white;
+  }
+}

@@ -7,16 +7,16 @@
   background-color: black;
   box-shadow: 2px 2px 10px blue;
   transition: all 0.5s ease;
-  width: 100%;
+  align-items: center;
 }
 @media only screen and (max-width: 800px) {
   .header-container {
     grid-template-columns: 1fr;
-    padding: 1rem;
   }
 }
 @media only screen and (max-width: 800px) {
   .header-container__logo {
+    align-self: center;
     width: 25vh;
     height: 25vh;
   }
@@ -26,14 +26,7 @@
   grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
   list-style: none;
-}
-@media only screen and (max-width: 800px) {
-  .header-container__menu-options {
-    display: flex;
-    justify-content: space-around;
-  }
 }
 .header-container__menu-options a {
   text-decoration: none;
@@ -53,6 +46,33 @@
     padding: 0.5rem;
     border-left: none;
   }
+}
+
+.footer-container {
+  position: relative;
+  bottom: 0;
+  background-color: black;
+  border-radius: 0.2rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  color: whitesmoke;
+  font-size: 90%;
+}
+.footer-container a {
+  color: whitesmoke;
+  text-decoration: none;
+  transition: all 0.5s ease;
+}
+.footer-container a:hover {
+  text-decoration: underline;
+}
+.footer-container h5 {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+.footer-container svg {
+  width: 2rem;
+  height: 2rem;
+  fill: white;
 }
 
 #app {

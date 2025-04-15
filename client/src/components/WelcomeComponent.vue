@@ -1,5 +1,4 @@
 <template>
-    <HeaderComponent/>
     <div class="app-description">
         
     </div>
@@ -13,7 +12,6 @@
 
 <script setup>
     import { ref, onMounted } from 'vue';
-    import HeaderComponent from './HeaderComponent.vue';
     const ids= [39,140,135,78,61, 2, 4];
     //Ids de las principales competiciones.
     const mainCompetitions=ref([]);
