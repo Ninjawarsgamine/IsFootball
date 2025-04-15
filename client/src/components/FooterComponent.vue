@@ -58,7 +58,8 @@
 
       <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 py-2">
         <div class="d-flex">
-          <img :src="require('@/assets/logo.png')" alt="Logo" class="img-fluid align-self-start" style="width:10vh;">
+          <img :src="require('@/assets/logo.png')" class="img-fluid align-self-start vh-10" 
+          alt="Logo de IsFootball">
         </div>
         <p class="mb-0 fs-6">©{{ currentYear }} IsFootball. Todos los derechos reservados.</p>
       </div>

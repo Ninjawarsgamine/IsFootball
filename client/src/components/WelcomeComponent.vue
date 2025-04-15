@@ -1,13 +1,22 @@
 <template>
-    <div class="app-description">
-        
-    </div>
-    <div class="main-competitions-container">
-        <h3>Estas son las competiciones más populares</h3>
-        <div class="main-competitions-container" v-for="competition in mainCompetitions" :key="competition.id">
-            <img :src="competition.logo">
+    <div class="welcome-container">
+        <div class="welcome-container__app-description-container">
+            <span>Bienvenido a IsFootball, el mejor lugar para descubrir estadísticas de equipos, jugadores, competiciones y partidos. </span>
+            <span>Nuestro objetivo es proporcionarte toda la información actualizada para que puedas disfrutar del fútbol de manera más detallada.</span>
         </div>
-    </div>
+        <div class="welcome-container__main-competitions-container">
+            <h3>Estas son las competiciones más populares</h3>
+            <div class="welcome-container__main-competitions-container__competitions" >
+                <div class="welcome-container__main-competitions-container__competitions__competition" 
+                v-for="competition in mainCompetitions" :key="competition.id">
+                <a :href="'/competitions?id='+competition.id">
+                    <img class="img-fluid" :src="competition.logo"/>
+                </a>
+                </div>
+            </div>
+     
+        </div>
+   </div>
 </template>
 
 <script setup>
