@@ -108,10 +108,10 @@
   justify-content: space-around;
   gap: 0.5rem;
 }
-.welcome-container__main-competitions-container__competitions img {
+.welcome-container__main-competitions-container__competitions__competition img {
   transition: all 0.3s ease;
 }
-.welcome-container__main-competitions-container__competitions img:hover {
+.welcome-container__main-competitions-container__competitions__competition img:hover {
   transform: translateY(-0.2rem);
 }
 
