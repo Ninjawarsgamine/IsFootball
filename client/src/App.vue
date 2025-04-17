@@ -1,7 +1,9 @@
 <template>
-  <HeaderComponent/>
-  <router-view />
-  <FooterComponent/>
+  <div class="d-flex flex-column min-vh-100">
+    <HeaderComponent/>
+    <router-view class="flex-fill" />
+    <FooterComponent />
+  </div>
 </template>
 
 <script setup>

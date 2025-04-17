@@ -3,16 +3,16 @@ package com.isfootball.utils;
 public class Utils {
 
 	/**
-	 * Función que adapta un texto para que sea apto en una URL.
+	 * Función que adapta textos de una URL a un texto normal oconvirtiendo "%20" en espacios normales
+	 *  y recortando los espacios laterales.
 	 * 
-	 * @param text El texto que vamos a adaptar
-	 * @return "text" pero con los los espacios laterales eliminados y los 
-	 * espacios entre palabras cambiados por "%20".
+	 * @param text El texto codificado desde una URL que vamos a adaptar
+	 * @return "text" pero con los "%20" cambiados por " " y los espacios laterales recortados.
 	 */
-	public static String encodeSpaces(String text) {
+	public static String decodeSpaces(String text) {
 		if(text==null) {
 			return null;
 		}
-		return text.trim().replace(" ", "%20");
+		return text.trim().replace("%20", " ");
 	}
 }

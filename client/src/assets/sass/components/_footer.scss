@@ -1,12 +1,11 @@
 .footer-container {
-  position: relative;
-  bottom: 0;
   background-color: $color-primary;
   border-radius: 0.2rem;
   padding-top: 2rem;
   padding-bottom: 1rem;
   color: $color-whitesmoke;
   font-size: 90%;
+
   a {
     color:$color-whitesmoke;
     text-decoration: none;
@@ -23,12 +22,13 @@
   svg {
     width: 2rem;
     height: 2rem;
-    fill: white;
+    fill: $color-white;
     transition: all 0.3s ease;
     &:hover{
       transform:scale(1.2);
     }
   }
+
   .vh-10{
     height: 10vh;
   }

@@ -77,6 +77,7 @@ public class CompetitionService {
 	 * @param competitionId Id de la competición.
 	 * @return Los datos de la competición con el ID especificado.
 	 */
+	@Cacheable ("competitionById")
 	public Competition getCompetitionById(Integer competitionId) {
 		if(competitionId==null) {
 			throw new IllegalArgumentException("The competition id is null.");
@@ -103,6 +104,7 @@ public class CompetitionService {
 			country.setName(competitionCountry.path("name").asText());
 			country.setCode(competitionCountry.path("code").asText());
 			country.setFlag(competitionCountry.path("flag").asText());
+			competition.setCountry(country);
 			
 			JsonNode competitionSeason=competitionAllData.path("season");
 			competition.setSeason(competitionSeason.path("year").asInt());
@@ -120,9 +122,9 @@ public class CompetitionService {
 	 * @return Un objeto "Competition" con la información de la competición 
 	 * deseada.
 	 */
+	@Cacheable ("competitionByName")
 	public Competition getCompetitionByName(String competitionName) {
-		
-		competitionName=Utils.encodeSpaces(competitionName);
+		competitionName=Utils.decodeSpaces(competitionName);
 		if(competitionName==null) {
 			throw new IllegalArgumentException("The competition name is null.");
 		}
@@ -148,8 +150,9 @@ public class CompetitionService {
 			country.setName(competitionCountry.path("name").asText());
 			country.setCode(competitionCountry.path("code").asText());
 			country.setFlag(competitionCountry.path("flag").asText());
+			competition.setCountry(country);
 			
-			JsonNode competitionSeason=competitionAllData.path("season");
+			JsonNode competitionSeason=competitionAllData.path("seasons");
 			competition.setSeason(competitionSeason.path("year").asInt());
 			
 	    	return competition;
@@ -158,7 +161,51 @@ public class CompetitionService {
 	    	return null;
 	    }
 	}
+	
+	/**
+	 * Función que devuelve una lista de competiciones que coincidan con un nombre espcificado.
+	 * @param competitionName El nombre de la competición que se va a utilizar  para realizar 
+	 * la búsqueda.
+	 * @return Lista de competiciones coincidentes con el nombre especificado.
+	 */
+	@Cacheable ("competitionsByName")
+	public List<Competition> getCompetitionsByName(String competitionName){
+		List<Competition> competitions=new ArrayList<>();
+		competitionName=Utils.decodeSpaces(competitionName);
+		if(competitionName.length()<3) {
+			return null;
+		}
+		String url="https://"+apiHost+"/leagues?search="+competitionName;
+		JsonNode responseData=doRequest(url);
+		try {
+			for(JsonNode competitionAllData: responseData) {
+				Competition competition=new Competition();
+				
+				JsonNode competitionInfo=competitionAllData.path("league");
+				competition.setId(competitionInfo.get("id").asInt());
+				competition.setName(competitionInfo.get("name").asText());
+				competition.setType(competitionInfo.get("type").asText());
+				competition.setLogo(competitionInfo.get("logo").asText());
 
+				JsonNode competitionCountry=competitionAllData.path("country");
+				Country country=new Country();
+				country.setName(competitionCountry.path("name").asText());
+				country.setCode(competitionCountry.path("code").asText());
+				country.setFlag(competitionCountry.path("flag").asText());
+				competition.setCountry(country);
+				
+				competition.setSeason(Integer.valueOf(season));
+				
+				competitions.add(competition);
+			}
+			
+			return competitions;
+	    }catch(Exception e) {
+			e.printStackTrace();
+	    	return null;
+	    }
+	}
+	
 	/**
 	 * Función que devuelve una lista de competiciones cuyos IDs coincidan con los especificados. El
 	 * resultado se guarda en el caché, para reducir el número de peticiones a la API.
@@ -187,8 +234,9 @@ public class CompetitionService {
 					country.setName(competitionCountry.path("name").asText());
 					country.setCode(competitionCountry.path("code").asText());
 					country.setFlag(competitionCountry.path("flag").asText());
+					competition.setCountry(country);
 					
-					JsonNode competitionSeason=c.path("season");
+					JsonNode competitionSeason=c.path("seasons");
 					competition.setSeason(competitionSeason.path("year").asInt());
 					competitions.add(competition);
 				}

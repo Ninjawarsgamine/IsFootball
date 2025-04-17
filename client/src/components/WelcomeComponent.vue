@@ -21,10 +21,9 @@
 
 <script setup>
     import { ref, onMounted } from 'vue';
-    const ids= [39,140,135,78,61, 2, 4];
+    const ids= [39,140,135,78,61,2];
     //Ids de las principales competiciones.
     const mainCompetitions=ref([]);
-
     const getCompetitions=async()=>{
         try{
             const response=await fetch('/api/competitions/by-ids',{
@@ -41,7 +40,7 @@
                 mainCompetitions.value=data;
             }else{
                 console.log('No se han podido obtener las competiciones.');
-                console.log(response)
+                console.log(response);
             }
         }catch(error){
             console.log(error);

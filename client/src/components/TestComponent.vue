@@ -16,7 +16,7 @@
     try {
       const response = await fetch("http://localhost:8080/test");
       if (!response.ok) throw new Error("Error al obtener el mensaje");
-      mensaje.value = await response.text(); // Como es texto plano, usamos .text()
+      mensaje.value = await response.text();
     } catch (error) {
       console.error("Error al obtener el mensaje:", error);
     }

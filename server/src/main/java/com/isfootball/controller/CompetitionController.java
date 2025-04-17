@@ -34,7 +34,7 @@ public class CompetitionController {
 	 * @return Un objeto "Competition" con los datos de cada competición.
 	 */
 	@GetMapping("/api/competition/{id}")
-	public Competition getCompetitionById(String id) {
+	public Competition getCompetitionById(@PathVariable String id) {
 		return competitionService.getCompetitionById(Integer.valueOf(id));
 	}	
     
@@ -47,6 +47,20 @@ public class CompetitionController {
 	@GetMapping("/api/competition/{name}")
 	public Competition getCompetitionByName(@PathVariable String name) {
 		return competitionService.getCompetitionByName(name);
+	}
+	
+	/**
+	 * Endpoint REST para obtener una lista de competiciones que coincidan con un
+	 * nombre de competición especificado.
+	 * 
+	 * @param name El nombre de la competición que se va a utilizar  para realizar 
+	 * la búsqueda.
+	 * @return Lista de competiciones que coincidan con un nombre de 
+	 * competición especificado.
+	 */
+	@GetMapping("/api/competitions/{name}")
+	public List<Competition> getCompetitionsByName(@PathVariable String name) {
+		return competitionService.getCompetitionsByName(name);
 	}
 	
 	 /**
