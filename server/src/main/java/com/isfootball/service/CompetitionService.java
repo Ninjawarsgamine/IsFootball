@@ -85,7 +85,7 @@ public class CompetitionService {
 		if(!(competitionId instanceof Integer)) {
 			throw new IllegalArgumentException("The competition id is not a Integer.");
 		}
-		String url="https://"+apiHost+"/leagues?id="+competitionId+"+&season="+season;
+		String url="https://"+apiHost+"/leagues?id="+competitionId+"&season="+season;
 	
 	    JsonNode responseData=doRequest(url);
 	    try {
@@ -106,9 +106,8 @@ public class CompetitionService {
 			country.setFlag(competitionCountry.path("flag").asText());
 			competition.setCountry(country);
 			
-			JsonNode competitionSeason=competitionAllData.path("season");
+			JsonNode competitionSeason=competitionAllData.path("seasons");
 			competition.setSeason(competitionSeason.path("year").asInt());
-			
 	    	return competition;
 	    }catch(Exception e) {
 			e.printStackTrace();
@@ -129,7 +128,7 @@ public class CompetitionService {
 			throw new IllegalArgumentException("The competition name is null.");
 		}
 		
-		String url="https://"+apiHost+"/leagues?name="+competitionName+"+&season="+season;
+		String url="https://"+apiHost+"/leagues?name="+competitionName+"&season="+season;
 		JsonNode responseData=doRequest(url);
 	    
 	    try {
@@ -194,9 +193,16 @@ public class CompetitionService {
 				country.setFlag(competitionCountry.path("flag").asText());
 				competition.setCountry(country);
 				
-				competition.setSeason(Integer.valueOf(season));
+				JsonNode competitionSeason=competitionAllData.path("seasons");
 				
-				competitions.add(competition);
+				for(JsonNode s: competitionSeason) {
+					if(s.path("year").asText().equals(season)) {
+						competition.setSeason(competitionSeason.path("year").asInt());
+						competitions.add(competition);
+						break;
+					}
+					//Solo añadimos la competición a la lista si es de la temporada 2023-2024.
+				}
 			}
 			
 			return competitions;

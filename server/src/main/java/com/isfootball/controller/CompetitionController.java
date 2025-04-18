@@ -44,7 +44,7 @@ public class CompetitionController {
 	 * @param name El nombre de la competición.
 	 * @return Un objeto "Competition" con los datos de cada competición.
 	 */
-	@GetMapping("/api/competition/{name}")
+	@GetMapping("/api/competitionByName/{name}")
 	public Competition getCompetitionByName(@PathVariable String name) {
 		return competitionService.getCompetitionByName(name);
 	}

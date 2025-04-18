@@ -28,9 +28,10 @@
                   <router-link v-for="competition in competitions" :to="`/competitions/${competition.id}`"
                   :key="competition.id" custom v-slot="{navigate}">
                      <tr :key="competition.id" @click="navigate">
-                        <td class="text-center">
+                        <td class="text-center" v-if="competition.country.flag!=='null'">
                            <img :src="competition.country.flag" class="img-fluid">
                         </td>
+                        <td v-else>-</td>
                         <td class="text-center">
                            <img :src="competition.logo" class="img-fluid">
                         </td>
@@ -66,11 +67,9 @@
          const response = await fetch( `/api/competitions/${competitionNameEncoded}`, {
             method: "GET",
          });
-         console.log(response);
          if (response.ok) {
             const data = await response.json();
             competitions.value = data;
-            console.log(competitions.value);
          }
          isLoading.value=false;
       } catch (error) {
