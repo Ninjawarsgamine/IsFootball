@@ -17,8 +17,8 @@
 @media only screen and (max-width: 800px) {
   .header-container__logo {
     align-self: center;
-    width: 25vh;
-    height: 25vh;
+    max-width: 25vh;
+    max-height: 25vh;
   }
 }
 .header-container__menu-options {
@@ -166,18 +166,12 @@
   margin-top: 2rem;
   margin-bottom: 10rem;
 }
-.competitions-search__competitions__results ul {
-  list-style: none;
-  width: 100%;
+.competitions-search__competitions__result table tbody {
+  cursor: pointer;
 }
-.competitions-search__competitions__results ul li {
-  display: flex;
-  width: 100%;
-  padding: 1rem;
-}
-.competitions-search__competitions__results ul li img {
-  height: 2rem;
-  width: 2rem;
+.competitions-search__competitions__result table tbody tr td img {
+  max-width: 2.5rem;
+  max-height: 2.5rem;
 }
 
 #app {

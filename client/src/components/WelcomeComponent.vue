@@ -9,12 +9,11 @@
             <div class="welcome-container__main-competitions-container__competitions" >
                 <div class="welcome-container__main-competitions-container__competitions__competition" 
                 v-for="competition in mainCompetitions" :key="competition.id">
-                <a :href="'/competitions?id='+competition.id">
+                <router-link :to="`/competitions/${competition.id}`">
                     <img class="img-fluid" :src="competition.logo"/>
-                </a>
+                </router-link>
                 </div>
             </div>
-     
         </div>
    </div>
 </template>

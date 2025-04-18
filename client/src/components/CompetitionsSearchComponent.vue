@@ -25,18 +25,18 @@
                   </tr>
                </thead>
                <tbody>
-                  <tr v-for="competition in competitions" :key="competition.id">
-                     <a :href="competition.id">
+                  <router-link v-for="competition in competitions" :to="`/competitions/${competition.id}`"
+                  :key="competition.id" custom v-slot="{navigate}">
+                     <tr :key="competition.id" @click="navigate">
                         <td class="text-center">
-                           <img :src="competition.country.flag" alt="bandera" class="img-fluid" style="width:1.5rem;">
+                           <img :src="competition.country.flag" class="img-fluid">
                         </td>
                         <td class="text-center">
-                           <img :src="competition.logo" alt="logo" class="img-fluid" style="width:2rem;">
+                           <img :src="competition.logo" class="img-fluid">
                         </td>
                         <td>{{ competition.name }}</td>
-                     </a>
-                  </tr>
-                 
+                     </tr>
+                  </router-link>
                </tbody>
             </table>
          </div>
@@ -49,7 +49,7 @@
 
 <script setup>
    import { ref } from "vue";
-
+   
    const competitionName = ref("");
    const isLoading=ref(false);
    const hasSearched=ref(false);
