@@ -1,5 +1,6 @@
 <template>
     <div class="competition-info-container">
+        
     </div>
 </template>
 
