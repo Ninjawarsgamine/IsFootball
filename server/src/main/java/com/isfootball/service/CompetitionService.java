@@ -17,6 +17,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
+import com.isfootball.model.Team;
+import com.isfootball.model.TeamCompetitionStatistics;
+import com.isfootball.model.TeamCompetitionStatistics.MatchesStatistics;
 import com.isfootball.utils.Utils;
 @Service
 public class CompetitionService {
@@ -72,45 +75,82 @@ public class CompetitionService {
 	}
 
 	/**
-	 * Función que devuelve todos los datos de una competición en base a su ID.
-	 * 
+	 * Función que obtiene todos los datos de una competición.
 	 * @param competitionId Id de la competición.
 	 * @return Los datos de la competición con el ID especificado.
 	 */
-	@Cacheable ("competitionById")
-	public Competition getCompetitionById(Integer competitionId) {
-		String url="https://"+apiHost+"/leagues?id="+competitionId+"&season="+season;
-	
-	    JsonNode responseData=doRequest(url);
-	    try {
-			JsonNode competitionAllData=responseData.get(0);
-
-			Competition competition=new Competition();
-
-			JsonNode competitionInfo=competitionAllData.path("league");
-			competition.setId(competitionInfo.get("id").asInt());
-			competition.setName(competitionInfo.get("name").asText());
-			competition.setType(competitionInfo.get("type").asText());
-			competition.setLogo(competitionInfo.get("logo").asText());
-
-			JsonNode competitionCountry=competitionAllData.path("country");
+	@Cacheable("competitionAllDataById")
+	public Competition getCompetitionAllDataById(Integer competitionId){
+		Competition competition=new Competition();
+		String url="https://"+apiHost+"/standings?league="+competitionId+"&season="+season;
+		JsonNode competitionData=doRequest(url);
+		
+		if(competitionData!=null){
+			JsonNode competitionAllData=competitionData.get(0).path("league");
+			competition.setId(competitionAllData.path("id").asInt());
+			competition.setName(competitionAllData.path("name").asText());
+			competition.setLogo(competitionAllData.path("logo").asText());
 			Country country=new Country();
-			country.setName(competitionCountry.path("name").asText());
-			country.setCode(competitionCountry.path("code").asText());
-			country.setFlag(competitionCountry.path("flag").asText());
+			country.setName(competitionAllData.path("country").asText());
+			country.setFlag(competitionAllData.path("flag").asText());
 			competition.setCountry(country);
+
+			competition.setSeason(competitionAllData.path("season").asInt());
 			
-			JsonNode competitionSeason=competitionAllData.path("seasons");
-			competition.setSeason(competitionSeason.path("year").asInt());
-	    	return competition;
-	    }catch(Exception e) {
-			e.printStackTrace();
-	    	return null;
-	    }
+			List<TeamCompetitionStatistics> competitionTeamsStatistics=new ArrayList<>();
+			
+			for(JsonNode competitionTeamStatisticsData: competitionAllData.path("standings").get(0)) {
+				TeamCompetitionStatistics competitionTeamStatistics=new TeamCompetitionStatistics();
+				
+				competitionTeamStatistics.setRank(competitionTeamStatisticsData.path("rank").asInt());
+				
+				Team team=new Team();
+				team.setId(competitionTeamStatisticsData.path("team").path("id").asInt());
+				team.setName(competitionTeamStatisticsData.path("team").path("name").asText());
+				team.setLogo(competitionTeamStatisticsData.path("team").path("logo").asText());
+				competitionTeamStatistics.setTeam(team);
+
+				competitionTeamStatistics.setPoints(competitionTeamStatisticsData.path("points").asInt());
+				competitionTeamStatistics.setGoalsDiff(competitionTeamStatisticsData.path("goalsDiff").asInt());
+				competitionTeamStatistics.setForm(competitionTeamStatisticsData.path("form").asText());
+				
+				MatchesStatistics competitionTeamAllMatches=new MatchesStatistics();
+				competitionTeamAllMatches.setMatchesPlayed(competitionTeamStatisticsData.path("all").path("played").asInt());
+				competitionTeamAllMatches.setMatchesWon(competitionTeamStatisticsData.path("all").path("win").asInt());
+				competitionTeamAllMatches.setMatchesDrawn(competitionTeamStatisticsData.path("all").path("draw").asInt());
+				competitionTeamAllMatches.setMatchesLost(competitionTeamStatisticsData.path("all").path("lose").asInt());
+				competitionTeamAllMatches.setGoalsFor(competitionTeamStatisticsData.path("all").path("goals").path("for").asInt());
+				competitionTeamAllMatches.setGoalsAgainst(competitionTeamStatisticsData.path("all").path("goals").path("against").asInt());
+				
+				MatchesStatistics competitionTeamHomeMatches = new MatchesStatistics();
+				competitionTeamHomeMatches.setMatchesPlayed(competitionTeamStatisticsData.path("home").path("played").asInt());
+				competitionTeamHomeMatches.setMatchesWon(competitionTeamStatisticsData.path("home").path("win").asInt());
+				competitionTeamHomeMatches.setMatchesDrawn(competitionTeamStatisticsData.path("home").path("draw").asInt());
+				competitionTeamHomeMatches.setMatchesLost(competitionTeamStatisticsData.path("home").path("lose").asInt());
+				competitionTeamHomeMatches.setGoalsFor(competitionTeamStatisticsData.path("home").path("goals").path("for").asInt());
+				competitionTeamHomeMatches.setGoalsAgainst(competitionTeamStatisticsData.path("home").path("goals").path("against").asInt());
+
+				MatchesStatistics competitionTeamAwayMatches = new MatchesStatistics();
+				competitionTeamAwayMatches.setMatchesPlayed(competitionTeamStatisticsData.path("away").path("played").asInt());
+				competitionTeamAwayMatches.setMatchesWon(competitionTeamStatisticsData.path("away").path("win").asInt());
+				competitionTeamAwayMatches.setMatchesDrawn(competitionTeamStatisticsData.path("away").path("draw").asInt());
+				competitionTeamAwayMatches.setMatchesLost(competitionTeamStatisticsData.path("away").path("lose").asInt());
+				competitionTeamAwayMatches.setGoalsFor(competitionTeamStatisticsData.path("away").path("goals").path("for").asInt());
+				competitionTeamAwayMatches.setGoalsAgainst(competitionTeamStatisticsData.path("away").path("goals").path("against").asInt());
+
+				competitionTeamStatistics.setAll(competitionTeamAllMatches);
+				competitionTeamStatistics.setHome(competitionTeamHomeMatches);
+				competitionTeamStatistics.setAway(competitionTeamAwayMatches);
+
+				competitionTeamsStatistics.add(competitionTeamStatistics);
+			}	
+			competition.setTeamsCompetitionStatistics(competitionTeamsStatistics);
+		}
+		return competition;
 	}
 	
 	/**
-	 * Función que devuelve los datos de una competición por su nombre.
+	 * Función que devuelve los datos básicos de una competición por su nombre.
 	 * 
 	 * @return Un objeto "Competition" con la información de la competición 
 	 * deseada.

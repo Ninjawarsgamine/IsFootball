@@ -14,7 +14,6 @@ public class TeamCompetitionStatistics implements Serializable {
 	private Integer rank;
 	private Integer points;
 	private Integer goalsDiff;
-	private String group;
 	private String form;
 	
 	private MatchesStatistics all;
@@ -51,14 +50,6 @@ public class TeamCompetitionStatistics implements Serializable {
 
 	public void setGoalsDiff(Integer goalsDiff) {
 		this.goalsDiff = goalsDiff;
-	}
-
-	public String getGroup() {
-		return group;
-	}
-
-	public void setGroup(String group) {
-		this.group = group;
 	}
 
 	public String getForm() {

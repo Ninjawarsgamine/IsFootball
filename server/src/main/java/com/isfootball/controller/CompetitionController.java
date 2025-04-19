@@ -28,21 +28,21 @@ public class CompetitionController {
 	 }
 	
     /**
-	 * Endpoint REST para obtener los datos de una competición por su id.
+	 * Endpoint REST para obtener todos los datos de una competición por su id.
 	 * 
 	 * @param id El id de la competición.
 	 * @return Un objeto "Competition" con los datos de cada competición.
 	 */
-	@GetMapping("/api/competition/{id}")
-	public Competition getCompetitionById(@PathVariable String id) {
-		return competitionService.getCompetitionById(Integer.valueOf(id));
+	@GetMapping("/api/competitionAllData/{id}")
+	public Competition getCompetitionAllDataById(@PathVariable String id) {
+		return competitionService.getCompetitionAllDataById(Integer.valueOf(id));
 	}	
     
 	/**
-	 * Endpoint REST para obtener los datos de una competición por su nombre.
+	 * Endpoint REST para obtener los datos básicos de una competición por su nombre.
 	 * 
 	 * @param name El nombre de la competición.
-	 * @return Un objeto "Competition" con los datos de cada competición.
+	 * @return Un objeto "Competition" con los datos básicos de cada competición.
 	 */
 	@GetMapping("/api/competitionByName/{name}")
 	public Competition getCompetitionByName(@PathVariable String name) {

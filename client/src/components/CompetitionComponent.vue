@@ -1,8 +1,5 @@
 <template>
     <div class="competition-info-container">
-        <div class="competition-info-container__header">
-            <img :src="competition.logo"/>
-        </div>
     </div>
 </template>
 
@@ -17,9 +14,10 @@
 
     const getCompetitionInfo= async() =>{
         try{
-            const response=await fetch(`/api/competition/${competitionId}`,{
+            const response=await fetch(`/api/competitionAllData/${competitionId}`,{
                 method:"GET",
             });
+            console.log(response);
             if(response.ok){
                 const data=await response.json();
                 console.log(data);
