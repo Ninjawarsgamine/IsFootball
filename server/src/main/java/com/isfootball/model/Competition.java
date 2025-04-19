@@ -1,6 +1,7 @@
 package com.isfootball.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Esta es una clase que contiene los datos de una competición. Usamos "Serializable" para
@@ -9,39 +10,14 @@ import java.io.Serializable;
 public class Competition implements Serializable {
 
 	private static final long serialVersionUID = -8398489205371161696L;
+	
 	private Integer id;
 	private String name;
 	private String type;
 	private String logo;
 	private Country country;
 	private Integer season;
-
-	/**
-	 * Constructor para crear una instancia de la competición.
-	 *
-	 * @param id      El identificador único de la competición.
-	 * @param name    El nombre de la competición.
-	 * @param type    El tipo de la competición (por ejemplo, liga, copa).
-	 * @param logo    La URL del logo de la competición.
-	 * @param country El país donde se lleva a cabo la competición.
-	 * @param season  El año de la temporada de la competición.
-	 */
-	public Competition(Integer id, String name, String type, String logo, Country country, Integer season) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.type = type;
-		this.logo = logo;
-		this.country = country;
-		this.season = season;
-	}
-
-	/**
-	 * Constructor para crear una instancia de la competición vacía.
-	 */
-	public Competition(){
-	
-	}
+	private List<TeamCompetitionStatistics> teamsCompetitionStatistics;
 
 	/**
 	 * Obtiene el identificador de la competición.
@@ -49,6 +25,7 @@ public class Competition implements Serializable {
 	 * @return El identificador de la competición.
 	 */
 	public Integer getId() {
+
 		return id;
 	}
 
@@ -58,6 +35,12 @@ public class Competition implements Serializable {
 	 * @param id El nuevo identificador de la competición.
 	 */
 	public void setId(Integer id) {
+		if(id==null) {
+			throw new IllegalArgumentException("The competition id is null.");
+		}
+		if(!(id instanceof Integer)) {
+			throw new IllegalArgumentException("The competition id is not a Integer.");
+		}
 		this.id = id;
 	}
 
@@ -76,6 +59,12 @@ public class Competition implements Serializable {
 	 * @param name El nuevo nombre de la competición.
 	 */
 	public void setName(String name) {
+		if(name==null) {
+			throw new IllegalArgumentException("The competition name is null.");
+		}
+		if(name.length()<3) {
+			throw new IllegalArgumentException("The competition name must have at least 3 characters.");
+		}
 		this.name = name;
 	}
 
@@ -149,5 +138,23 @@ public class Competition implements Serializable {
 	 */
 	public void setSeason(Integer season) {
 		this.season = season;
+	}
+	
+	/**
+	 * Obtiene la lista de estadísticas de los equipos en la competición.
+	 * 
+	 * @return La lista de estadísticas de los equipos en la competición.
+	 */
+	public List<TeamCompetitionStatistics> getTeamsCompetitionStatistics() {
+		return teamsCompetitionStatistics;
+	}
+	
+	/**
+	 * Establece la lista de estadísticas de los equipos en la competición.
+	 * 
+	 * @param teamsCompetitionStatistics La lista de estadísticas de los equipos en la competición.
+	 */
+	public void setTeamsCompetitionStatistics(List<TeamCompetitionStatistics> teamsCompetitionStatistics) {
+		this.teamsCompetitionStatistics = teamsCompetitionStatistics;
 	}
 }

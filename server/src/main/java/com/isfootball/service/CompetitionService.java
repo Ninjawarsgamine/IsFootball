@@ -79,12 +79,6 @@ public class CompetitionService {
 	 */
 	@Cacheable ("competitionById")
 	public Competition getCompetitionById(Integer competitionId) {
-		if(competitionId==null) {
-			throw new IllegalArgumentException("The competition id is null.");
-		}
-		if(!(competitionId instanceof Integer)) {
-			throw new IllegalArgumentException("The competition id is not a Integer.");
-		}
 		String url="https://"+apiHost+"/leagues?id="+competitionId+"&season="+season;
 	
 	    JsonNode responseData=doRequest(url);
@@ -124,10 +118,7 @@ public class CompetitionService {
 	@Cacheable ("competitionByName")
 	public Competition getCompetitionByName(String competitionName) {
 		competitionName=Utils.decodeSpaces(competitionName);
-		if(competitionName==null) {
-			throw new IllegalArgumentException("The competition name is null.");
-		}
-		
+
 		String url="https://"+apiHost+"/leagues?name="+competitionName+"&season="+season;
 		JsonNode responseData=doRequest(url);
 	    
