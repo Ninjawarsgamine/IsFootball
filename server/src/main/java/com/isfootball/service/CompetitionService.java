@@ -83,20 +83,28 @@ public class CompetitionService {
 	public Competition getCompetitionAllDataById(Integer competitionId){
 		Competition competition=new Competition();
 		String urlCompetitionBasicData="https://"+apiHost+"/leagues?id="+competitionId+"&season="+season;
-		JsonNode competitionBasicDataRequest=doRequest(urlCompetitionBasicData);
+		JsonNode responseData=doRequest(urlCompetitionBasicData);
 		//El "type" ("League" o "Cup") solo está disponible en "/leagues", así que necesitamos
 		//esta petición.
 
-		if(competitionBasicDataRequest!=null){
-			JsonNode competitionBasicData=competitionBasicDataRequest.get(0).path("league");
-			competition.setId(competitionBasicData.path("id").asInt());
-			competition.setName(competitionBasicData.path("name").asText());
-			competition.setLogo(competitionBasicData.path("logo").asText());
-			competition.setType(competitionBasicData.path("type").asText());
+		if(responseData!=null){
+			JsonNode competitionBasicData=responseData.get(0);
+			
+			JsonNode competitionBasicInfo=competitionBasicData.path("league");
+			competition.setId(competitionBasicInfo.path("id").asInt());
+			competition.setName(competitionBasicInfo.path("name").asText());
+			competition.setLogo(competitionBasicInfo.path("logo").asText());
+			competition.setType(competitionBasicInfo.path("type").asText());
+			
+			JsonNode competitionCountry=competitionBasicData.path("country");
 			Country country=new Country();
-			country.setName(competitionBasicData.path("country").asText());
-			country.setFlag(competitionBasicData.path("flag").asText());
+			country.setName(competitionCountry.path("name").asText());
+			country.setCode(competitionCountry.path("code").asText());
+			country.setFlag(competitionCountry.path("flag").asText());
 			competition.setCountry(country);
+
+			JsonNode competitionSeason=competitionBasicData.path("seasons");
+			competition.setSeason(competitionSeason.get(0).path("year").asInt());
 
 			String url="https://"+apiHost+"/standings?league="+competitionId+"&season="+season;
 			JsonNode competitionAllData=doRequest(url);
@@ -176,26 +184,26 @@ public class CompetitionService {
 		JsonNode responseData=doRequest(url);
 	    
 	    try {
-			JsonNode competitionAllData=responseData.get(0);
+			JsonNode competitionData=responseData.get(0);
 			//Sacamos el primer resultado.
 
 			Competition competition=new Competition();
 			//Objeto "Competition" que vamos a devolver.
 
-			JsonNode competitionInfo=competitionAllData.path("league");
+			JsonNode competitionInfo=competitionData.path("league");
 			competition.setId(competitionInfo.get("id").asInt());
 			competition.setName(competitionInfo.get("name").asText());
 			competition.setType(competitionInfo.get("type").asText());
 			competition.setLogo(competitionInfo.get("logo").asText());
 
-			JsonNode competitionCountry=competitionAllData.path("country");
+			JsonNode competitionCountry=competitionData.path("country");
 			Country country=new Country();
 			country.setName(competitionCountry.path("name").asText());
 			country.setCode(competitionCountry.path("code").asText());
 			country.setFlag(competitionCountry.path("flag").asText());
 			competition.setCountry(country);
 			
-			JsonNode competitionSeason=competitionAllData.path("seasons");
+			JsonNode competitionSeason=competitionData.path("seasons");
 			competition.setSeason(competitionSeason.path("year").asInt());
 			
 	    	return competition;

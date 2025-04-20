@@ -1,6 +1,8 @@
 <template>
     <div class="competition-info-container">
-        
+        <div class="competition-info-container__competition-intro">
+            
+        </div>
     </div>
 </template>
 
@@ -30,6 +32,7 @@
             console.log(error);
         }
     }
+
     onMounted(async()=>{
         getCompetitionInfo();
     })
