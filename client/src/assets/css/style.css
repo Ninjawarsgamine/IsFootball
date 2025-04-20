@@ -116,6 +116,43 @@
   transform: translateY(-0.2rem);
 }
 
+.route-error-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.route-error-container h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #dc3545;
+  font-family: "Special Gothic Condensed One", sans-serif;
+  text-transform: uppercase;
+}
+.route-error-container img {
+  max-width: 20rem;
+  width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+}
+.route-error-container span {
+  font-size: 1.2rem;
+  max-width: 500px;
+}
+.route-error-container a {
+  background-color: transparent;
+  border: 1px black solid;
+  color: black;
+  transition: all 0.3s ease;
+}
+.route-error-container a:hover {
+  background-color: black;
+  color: white;
+  border: 1px black solid;
+}
+
 .competitions-search {
   padding: 2rem;
   width: 100%;

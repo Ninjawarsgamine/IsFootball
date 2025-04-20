@@ -2,11 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import WelcomeComponent from '@/components/WelcomeComponent.vue';
 import CompetitionsSearchComponent from '@/components/CompetitionsSearchComponent.vue';  
 import CompetitionComponent from '@/components/CompetitionComponent.vue';
+import RouteErrorComponent from '@/components/RouteErrorComponent.vue';
 
 const routes = [
   { path: '/', component: WelcomeComponent }, 
   { path:'/competitions',component: CompetitionsSearchComponent },
-  { path: '/competitions/:id',component: CompetitionComponent }
+  { path: '/competitions/:id',component: CompetitionComponent },
+  { path:'/:pathMatch(.*)*',component: RouteErrorComponent }
 ];
 //Aquí van a estar las rutas de la aplicación. 
 

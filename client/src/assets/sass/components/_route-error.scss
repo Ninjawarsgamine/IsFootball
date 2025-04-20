@@ -1,0 +1,40 @@
+.route-error-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+  
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: $color-error;
+      font-family: 'Special Gothic Condensed One', sans-serif;
+      text-transform: uppercase;
+    }
+  
+    img {
+      max-width: 20rem;
+      width: 100%;
+      height: auto;
+      margin: 1.5rem 0;
+    }
+
+    span {
+      font-size: 1.2rem;
+      max-width: 500px;
+    }
+    a{
+        background-color: transparent;
+        border: 1px $color-primary solid;
+        color:$color-primary;
+        transition: all 0.3s ease;
+        &:hover{
+            background-color: $color-primary;
+            color:$color-white;
+            border: 1px $color-primary solid;
+        }
+    }
+  }
