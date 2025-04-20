@@ -1,12 +1,12 @@
-.competitions-search {
+.competitions-search{
     padding: 2rem;
     width: 100%;
   
-    &__form {
+    &__form{
       margin: 0 auto;
       max-width: 50rem;
   
-      form {
+      form{
         display: flex;
         align-items: center;
         background-color: $color-white;
@@ -16,7 +16,7 @@
         gap: 0.5rem;
         transition: all 0.3s ease;
         
-        input[type^="text"] {
+        input[type^="text"]{
           flex: 1;
           height: 2.8125rem;
           padding: 0 1.25rem;
@@ -30,7 +30,7 @@
           }
         }
   
-        button {
+        button{
           background-color: transparent;
           border: none;
           border-radius: 0.3rem;
@@ -39,7 +39,7 @@
           align-items: center;
           justify-content: center;
 
-          svg {
+          svg{
             width: 2rem;
             height: 2rem;
             stroke: $color-primary;
@@ -52,11 +52,13 @@
       }
     }
   
-    &__competitions {
+    &__competitions{
       margin-top: 2rem;
       margin-bottom: 10rem;
+
       &__result table tbody{
         cursor:pointer;
+
         tr td img{
           max-width:2.5rem;
           max-height: 2.5rem;

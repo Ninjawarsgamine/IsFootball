@@ -87,85 +87,90 @@ public class CompetitionService {
 		//El "type" ("League" o "Cup") solo está disponible en "/leagues", así que necesitamos
 		//esta petición.
 
-		if(responseData!=null){
-			JsonNode competitionBasicData=responseData.get(0);
-			
-			JsonNode competitionBasicInfo=competitionBasicData.path("league");
-			competition.setId(competitionBasicInfo.path("id").asInt());
-			competition.setName(competitionBasicInfo.path("name").asText());
-			competition.setLogo(competitionBasicInfo.path("logo").asText());
-			competition.setType(competitionBasicInfo.path("type").asText());
-			
-			JsonNode competitionCountry=competitionBasicData.path("country");
-			Country country=new Country();
-			country.setName(competitionCountry.path("name").asText());
-			country.setCode(competitionCountry.path("code").asText());
-			country.setFlag(competitionCountry.path("flag").asText());
-			competition.setCountry(country);
-
-			JsonNode competitionSeason=competitionBasicData.path("seasons");
-			competition.setSeason(competitionSeason.get(0).path("year").asInt());
-
-			String url="https://"+apiHost+"/standings?league="+competitionId+"&season="+season;
-			JsonNode competitionAllData=doRequest(url);
-			
-			if(competitionAllData!=null){
-				JsonNode competitionData=competitionAllData.get(0).path("league");
+		try{
+			if(responseData!=null){
+				JsonNode competitionBasicData=responseData.get(0);
 				
-				List<TeamCompetitionStatistics> competitionTeamsStatistics=new ArrayList<>();
+				JsonNode competitionBasicInfo=competitionBasicData.path("league");
+				competition.setId(competitionBasicInfo.path("id").asInt());
+				competition.setName(competitionBasicInfo.path("name").asText());
+				competition.setLogo(competitionBasicInfo.path("logo").asText());
+				competition.setType(competitionBasicInfo.path("type").asText());
 				
-				for(JsonNode group: competitionData.path("standings")) {
-					for(JsonNode competitionTeamStatisticsData: group){
-						TeamCompetitionStatistics competitionTeamStatistics=new TeamCompetitionStatistics();
-					
-						competitionTeamStatistics.setRank(competitionTeamStatisticsData.path("rank").asInt());
-						
-						Team team=new Team();
-						team.setId(competitionTeamStatisticsData.path("team").path("id").asInt());
-						team.setName(competitionTeamStatisticsData.path("team").path("name").asText());
-						team.setLogo(competitionTeamStatisticsData.path("team").path("logo").asText());
-						competitionTeamStatistics.setTeam(team);
-		
-						competitionTeamStatistics.setPoints(competitionTeamStatisticsData.path("points").asInt());
-						competitionTeamStatistics.setGoalsDiff(competitionTeamStatisticsData.path("goalsDiff").asInt());
-						competitionTeamStatistics.setGroup(competitionTeamStatisticsData.path("group").asText());
-						competitionTeamStatistics.setForm(competitionTeamStatisticsData.path("form").asText());
-		
-						MatchesStatistics competitionTeamAllMatches=new MatchesStatistics();
-						competitionTeamAllMatches.setMatchesPlayed(competitionTeamStatisticsData.path("all").path("played").asInt());
-						competitionTeamAllMatches.setMatchesWon(competitionTeamStatisticsData.path("all").path("win").asInt());
-						competitionTeamAllMatches.setMatchesDrawn(competitionTeamStatisticsData.path("all").path("draw").asInt());
-						competitionTeamAllMatches.setMatchesLost(competitionTeamStatisticsData.path("all").path("lose").asInt());
-						competitionTeamAllMatches.setGoalsFor(competitionTeamStatisticsData.path("all").path("goals").path("for").asInt());
-						competitionTeamAllMatches.setGoalsAgainst(competitionTeamStatisticsData.path("all").path("goals").path("against").asInt());
-						
-						MatchesStatistics competitionTeamHomeMatches = new MatchesStatistics();
-						competitionTeamHomeMatches.setMatchesPlayed(competitionTeamStatisticsData.path("home").path("played").asInt());
-						competitionTeamHomeMatches.setMatchesWon(competitionTeamStatisticsData.path("home").path("win").asInt());
-						competitionTeamHomeMatches.setMatchesDrawn(competitionTeamStatisticsData.path("home").path("draw").asInt());
-						competitionTeamHomeMatches.setMatchesLost(competitionTeamStatisticsData.path("home").path("lose").asInt());
-						competitionTeamHomeMatches.setGoalsFor(competitionTeamStatisticsData.path("home").path("goals").path("for").asInt());
-						competitionTeamHomeMatches.setGoalsAgainst(competitionTeamStatisticsData.path("home").path("goals").path("against").asInt());
-		
-						MatchesStatistics competitionTeamAwayMatches = new MatchesStatistics();
-						competitionTeamAwayMatches.setMatchesPlayed(competitionTeamStatisticsData.path("away").path("played").asInt());
-						competitionTeamAwayMatches.setMatchesWon(competitionTeamStatisticsData.path("away").path("win").asInt());
-						competitionTeamAwayMatches.setMatchesDrawn(competitionTeamStatisticsData.path("away").path("draw").asInt());
-						competitionTeamAwayMatches.setMatchesLost(competitionTeamStatisticsData.path("away").path("lose").asInt());
-						competitionTeamAwayMatches.setGoalsFor(competitionTeamStatisticsData.path("away").path("goals").path("for").asInt());
-						competitionTeamAwayMatches.setGoalsAgainst(competitionTeamStatisticsData.path("away").path("goals").path("against").asInt());
-		
-						competitionTeamStatistics.setAll(competitionTeamAllMatches);
-						competitionTeamStatistics.setHome(competitionTeamHomeMatches);
-						competitionTeamStatistics.setAway(competitionTeamAwayMatches);
-		
-						competitionTeamsStatistics.add(competitionTeamStatistics);
-						
-					}
-					competition.setTeamsCompetitionStatistics(competitionTeamsStatistics);
+				JsonNode competitionCountry=competitionBasicData.path("country");
+				Country country=new Country();
+				country.setName(competitionCountry.path("name").asText());
+				country.setCode(competitionCountry.path("code").asText());
+				country.setFlag(competitionCountry.path("flag").asText());
+				competition.setCountry(country);
 	
-				}	
+				JsonNode competitionSeason=competitionBasicData.path("seasons");
+				competition.setSeason(competitionSeason.get(0).path("year").asInt());
+	
+				String url="https://"+apiHost+"/standings?league="+competitionId+"&season="+season;
+				JsonNode competitionAllData=doRequest(url);
+				
+				if(competitionAllData!=null){
+					JsonNode competitionData=competitionAllData.get(0).path("league");
+					
+					List<TeamCompetitionStatistics> competitionTeamsStatistics=new ArrayList<>();
+					
+					for(JsonNode group: competitionData.path("standings")) {
+						for(JsonNode competitionTeamStatisticsData: group){
+							TeamCompetitionStatistics competitionTeamStatistics=new TeamCompetitionStatistics();
+						
+							competitionTeamStatistics.setRank(competitionTeamStatisticsData.path("rank").asInt());
+							
+							Team team=new Team();
+							team.setId(competitionTeamStatisticsData.path("team").path("id").asInt());
+							team.setName(competitionTeamStatisticsData.path("team").path("name").asText());
+							team.setLogo(competitionTeamStatisticsData.path("team").path("logo").asText());
+							competitionTeamStatistics.setTeam(team);
+			
+							competitionTeamStatistics.setPoints(competitionTeamStatisticsData.path("points").asInt());
+							competitionTeamStatistics.setGoalsDiff(competitionTeamStatisticsData.path("goalsDiff").asInt());
+							competitionTeamStatistics.setGroup(competitionTeamStatisticsData.path("group").asText());
+							competitionTeamStatistics.setForm(competitionTeamStatisticsData.path("form").asText());
+			
+							MatchesStatistics competitionTeamAllMatches=new MatchesStatistics();
+							competitionTeamAllMatches.setMatchesPlayed(competitionTeamStatisticsData.path("all").path("played").asInt());
+							competitionTeamAllMatches.setMatchesWon(competitionTeamStatisticsData.path("all").path("win").asInt());
+							competitionTeamAllMatches.setMatchesDrawn(competitionTeamStatisticsData.path("all").path("draw").asInt());
+							competitionTeamAllMatches.setMatchesLost(competitionTeamStatisticsData.path("all").path("lose").asInt());
+							competitionTeamAllMatches.setGoalsFor(competitionTeamStatisticsData.path("all").path("goals").path("for").asInt());
+							competitionTeamAllMatches.setGoalsAgainst(competitionTeamStatisticsData.path("all").path("goals").path("against").asInt());
+							
+							MatchesStatistics competitionTeamHomeMatches = new MatchesStatistics();
+							competitionTeamHomeMatches.setMatchesPlayed(competitionTeamStatisticsData.path("home").path("played").asInt());
+							competitionTeamHomeMatches.setMatchesWon(competitionTeamStatisticsData.path("home").path("win").asInt());
+							competitionTeamHomeMatches.setMatchesDrawn(competitionTeamStatisticsData.path("home").path("draw").asInt());
+							competitionTeamHomeMatches.setMatchesLost(competitionTeamStatisticsData.path("home").path("lose").asInt());
+							competitionTeamHomeMatches.setGoalsFor(competitionTeamStatisticsData.path("home").path("goals").path("for").asInt());
+							competitionTeamHomeMatches.setGoalsAgainst(competitionTeamStatisticsData.path("home").path("goals").path("against").asInt());
+			
+							MatchesStatistics competitionTeamAwayMatches = new MatchesStatistics();
+							competitionTeamAwayMatches.setMatchesPlayed(competitionTeamStatisticsData.path("away").path("played").asInt());
+							competitionTeamAwayMatches.setMatchesWon(competitionTeamStatisticsData.path("away").path("win").asInt());
+							competitionTeamAwayMatches.setMatchesDrawn(competitionTeamStatisticsData.path("away").path("draw").asInt());
+							competitionTeamAwayMatches.setMatchesLost(competitionTeamStatisticsData.path("away").path("lose").asInt());
+							competitionTeamAwayMatches.setGoalsFor(competitionTeamStatisticsData.path("away").path("goals").path("for").asInt());
+							competitionTeamAwayMatches.setGoalsAgainst(competitionTeamStatisticsData.path("away").path("goals").path("against").asInt());
+			
+							competitionTeamStatistics.setAll(competitionTeamAllMatches);
+							competitionTeamStatistics.setHome(competitionTeamHomeMatches);
+							competitionTeamStatistics.setAway(competitionTeamAwayMatches);
+			
+							competitionTeamsStatistics.add(competitionTeamStatistics);
+							
+						}
+						competition.setTeamsCompetitionStatistics(competitionTeamsStatistics);
+		
+					}	
+				}
 			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
 		}
 		return competition;
 	}

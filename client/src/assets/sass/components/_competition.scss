@@ -1,6 +1,38 @@
 .competition-info-container{
-    width:100%;
-    &__competition-intro{
-        width:100%;
+
+    &__competition-header{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap:5rem;
+        padding: 2rem;
+        border-radius: 10px;
+        background-image: url('../background-waves.svg');
+        background-attachment: fixed;
+        background-size: cover;
+        @media only screen and (max-width: $max-width-lower){
+            gap:2rem;
+            justify-content: center;
+        }
+
+        img{
+            margin-left:1rem;
+            @media only screen and (max-width: $max-width-lower){
+                width:8rem;
+            }
+        }
+
+        h1{
+            text-transform: uppercase;
+            font-size:6vw;
+            @media only screen and (max-width: $max-width-lower){
+               font-size: 10vw;
+            }
+            font-family: "Special Gothic Condensed One", sans-serif;
+        }
+
+        &__competition-country{
+            
+        }
     }
 }

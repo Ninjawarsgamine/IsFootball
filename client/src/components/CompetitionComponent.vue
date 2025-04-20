@@ -1,7 +1,15 @@
 <template>
-    <div class="competition-info-container">
-        <div class="competition-info-container__competition-intro">
-            
+    <div class="competition-info-container" v-if="competition.country">
+        <div class="competition-info-container__competition-header">
+            <img class="img-fluid" :src="competition.logo" alt="Logo de la competición">
+            <h1>{{ competition.name }}</h1>
+            <div class="competition-info-container__competition-header__competition-country">
+      
+                <span>{{ competition.country.name }}</span>
+            </div>
+        </div>
+        <div class="competition">
+
         </div>
     </div>
 </template>
@@ -23,7 +31,6 @@
             console.log(response);
             if(response.ok){
                 const data=await response.json();
-                console.log(data);
                 competition.value=data;
             }else{
                 console.log("No se ha encontrado ninguna competición con ID "+competitionId);

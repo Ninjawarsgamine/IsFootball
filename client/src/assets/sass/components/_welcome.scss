@@ -1,5 +1,6 @@
 .welcome-container{
     margin: 0.5rem;
+
     &__app-description-container{
         display: flex;
         flex-direction: column;
@@ -9,18 +10,22 @@
         font-size: 1.2rem;
         font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
+
     &__main-competitions-container{
         padding:1rem;
         margin-top: 1rem;
         margin-bottom: 3rem;
+
         h3{
             text-transform: uppercase;
             margin-bottom: 0.3rem;
         }
+
         &__competitions{
             display: flex;
             justify-content: space-around;
             gap:0.5rem;
+
           &__competition{
             img{
                 transition: all 0.3s ease;
