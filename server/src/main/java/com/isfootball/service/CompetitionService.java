@@ -19,7 +19,6 @@ import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
 import com.isfootball.model.Team;
 import com.isfootball.model.TeamCompetitionStatistics;
-import com.isfootball.model.TeamCompetitionStatistics.MatchesStatistics;
 import com.isfootball.utils.Utils;
 @Service
 public class CompetitionService {
@@ -109,8 +108,7 @@ public class CompetitionService {
 	
 				String url="https://"+apiHost+"/standings?league="+competitionId+"&season="+season;
 				JsonNode competitionAllData=doRequest(url);
-				
-				if(competitionAllData!=null){
+				if(competitionAllData!=null && !competitionAllData.isEmpty()){
 					JsonNode competitionData=competitionAllData.get(0).path("league");
 					
 					List<TeamCompetitionStatistics> competitionTeamsStatistics=new ArrayList<>();
@@ -131,35 +129,14 @@ public class CompetitionService {
 							competitionTeamStatistics.setGoalsDiff(competitionTeamStatisticsData.path("goalsDiff").asInt());
 							competitionTeamStatistics.setGroup(competitionTeamStatisticsData.path("group").asText());
 							competitionTeamStatistics.setForm(competitionTeamStatisticsData.path("form").asText());
-			
-							MatchesStatistics competitionTeamAllMatches=new MatchesStatistics();
-							competitionTeamAllMatches.setMatchesPlayed(competitionTeamStatisticsData.path("all").path("played").asInt());
-							competitionTeamAllMatches.setMatchesWon(competitionTeamStatisticsData.path("all").path("win").asInt());
-							competitionTeamAllMatches.setMatchesDrawn(competitionTeamStatisticsData.path("all").path("draw").asInt());
-							competitionTeamAllMatches.setMatchesLost(competitionTeamStatisticsData.path("all").path("lose").asInt());
-							competitionTeamAllMatches.setGoalsFor(competitionTeamStatisticsData.path("all").path("goals").path("for").asInt());
-							competitionTeamAllMatches.setGoalsAgainst(competitionTeamStatisticsData.path("all").path("goals").path("against").asInt());
 							
-							MatchesStatistics competitionTeamHomeMatches = new MatchesStatistics();
-							competitionTeamHomeMatches.setMatchesPlayed(competitionTeamStatisticsData.path("home").path("played").asInt());
-							competitionTeamHomeMatches.setMatchesWon(competitionTeamStatisticsData.path("home").path("win").asInt());
-							competitionTeamHomeMatches.setMatchesDrawn(competitionTeamStatisticsData.path("home").path("draw").asInt());
-							competitionTeamHomeMatches.setMatchesLost(competitionTeamStatisticsData.path("home").path("lose").asInt());
-							competitionTeamHomeMatches.setGoalsFor(competitionTeamStatisticsData.path("home").path("goals").path("for").asInt());
-							competitionTeamHomeMatches.setGoalsAgainst(competitionTeamStatisticsData.path("home").path("goals").path("against").asInt());
-			
-							MatchesStatistics competitionTeamAwayMatches = new MatchesStatistics();
-							competitionTeamAwayMatches.setMatchesPlayed(competitionTeamStatisticsData.path("away").path("played").asInt());
-							competitionTeamAwayMatches.setMatchesWon(competitionTeamStatisticsData.path("away").path("win").asInt());
-							competitionTeamAwayMatches.setMatchesDrawn(competitionTeamStatisticsData.path("away").path("draw").asInt());
-							competitionTeamAwayMatches.setMatchesLost(competitionTeamStatisticsData.path("away").path("lose").asInt());
-							competitionTeamAwayMatches.setGoalsFor(competitionTeamStatisticsData.path("away").path("goals").path("for").asInt());
-							competitionTeamAwayMatches.setGoalsAgainst(competitionTeamStatisticsData.path("away").path("goals").path("against").asInt());
-			
-							competitionTeamStatistics.setAll(competitionTeamAllMatches);
-							competitionTeamStatistics.setHome(competitionTeamHomeMatches);
-							competitionTeamStatistics.setAway(competitionTeamAwayMatches);
-			
+							JsonNode competitionTeamMatchesInfo=competitionTeamStatisticsData.path("all");
+							competitionTeamStatistics.setMatchesPlayed(competitionTeamMatchesInfo.path("played").asInt());
+							competitionTeamStatistics.setMatchesWon(competitionTeamMatchesInfo.path("win").asInt());
+							competitionTeamStatistics.setMatchesDrawn(competitionTeamMatchesInfo.path("draw").asInt());
+							competitionTeamStatistics.setMatchesLost(competitionTeamMatchesInfo.path("lose").asInt());
+							competitionTeamStatistics.setGoalsFor(competitionTeamMatchesInfo.path("goals").path("for").asInt());
+							competitionTeamStatistics.setGoalsAgainst(competitionTeamMatchesInfo.path("goals").path("against").asInt());
 							competitionTeamsStatistics.add(competitionTeamStatistics);
 							
 						}

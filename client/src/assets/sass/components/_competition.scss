@@ -1,6 +1,7 @@
 .competition-info-container{
 
     &__competition-header{
+        position: relative;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -15,9 +16,10 @@
             justify-content: center;
         }
 
-        img{
-            margin-left:1rem;
+        img:first-of-type{
+            margin-left:2.5rem;
             @media only screen and (max-width: $max-width-lower){
+                margin-left:0;
                 width:8rem;
             }
         }
@@ -32,7 +34,36 @@
         }
 
         &__competition-country{
-            
+            position: absolute; 
+            top: 0.5rem;          
+            left: 0.5rem;     
+            max-width: 2rem;     
+            max-height: 2rem;    
         }
+       
+    }
+
+    h2{
+        text-align: left;
+    }
+    
+    table{
+        a{
+            text-decoration: none;  
+            color: inherit; 
+            width:100%;
+            display: flex;
+            column-gap: 0.25rem;
+            align-items: center;
+        }
+    }
+
+    &__team-logo{
+        max-height: 2rem;
+        max-width:  2rem;
+    }
+
+    &__team-points{
+        font-weight: bold;
     }
 }

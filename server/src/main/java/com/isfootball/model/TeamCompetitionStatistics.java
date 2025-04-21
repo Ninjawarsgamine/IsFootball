@@ -16,10 +16,13 @@ public class TeamCompetitionStatistics implements Serializable {
 	private Integer goalsDiff;
 	private String group;
 	private String form;
-	
-	private MatchesStatistics all;
-	private MatchesStatistics home;
-	private MatchesStatistics away;
+	private Integer matchesPlayed;
+	private Integer matchesWon;
+	private Integer matchesDrawn;
+	private Integer matchesLost;
+	private Integer goalsFor;
+	private Integer goalsAgainst;
+
 
 	public Team getTeam() {
 		return team;
@@ -69,91 +72,52 @@ public class TeamCompetitionStatistics implements Serializable {
 		this.form = form;
 	}
 
-	public MatchesStatistics getAll() {
-		return all;
+	public Integer getMatchesPlayed() {
+		return matchesPlayed;
 	}
 
-	public void setAll(MatchesStatistics all) {
-		this.all = all;
+	public void setMatchesPlayed(Integer matchesPlayed) {
+		this.matchesPlayed = matchesPlayed;
 	}
 
-	public MatchesStatistics getHome() {
-		return home;
+	public Integer getMatchesWon() {
+		return matchesWon;
 	}
 
-	public void setHome(MatchesStatistics home) {
-		this.home = home;
+	public void setMatchesWon(Integer matchesWon) {
+		this.matchesWon = matchesWon;
 	}
 
-	public MatchesStatistics getAway() {
-		return away;
+	public Integer getMatchesDrawn() {
+		return matchesDrawn;
 	}
 
-	public void setAway(MatchesStatistics away) {
-		this.away = away;
+	public void setMatchesDrawn(Integer matchesDrawn) {
+		this.matchesDrawn = matchesDrawn;
 	}
 
-	/**
-	 * Clase interna que representa la información básica de los partidos.
-	 */
-	public static class MatchesStatistics implements Serializable {
-		
-		private static final long serialVersionUID = -944765279883568006L;
-		
-		private Integer matchesPlayed;
-		private Integer matchesWon;
-		private Integer matchesDrawn;
-		private Integer matchesLost;
-		private Integer goalsFor;
-		private Integer goalsAgainst;
+	public Integer getMatchesLost() {
+		return matchesLost;
+	}
 
-		public Integer getMatchesPlayed() {
-			return matchesPlayed;
-		}
+	public void setMatchesLost(Integer matchesLost) {
+		this.matchesLost = matchesLost;
+	}
 
-		public void setMatchesPlayed(Integer matchesPlayed) {
-			this.matchesPlayed = matchesPlayed;
-		}
+	public Integer getGoalsFor() {
+		return goalsFor;
+	}
 
-		public Integer getMatchesWon() {
-			return matchesWon;
-		}
+	public void setGoalsFor(Integer goalsFor) {
+		this.goalsFor = goalsFor;
+	}
 
-		public void setMatchesWon(Integer matchesWon) {
-			this.matchesWon = matchesWon;
-		}
+	public Integer getGoalsAgainst() {
+		return goalsAgainst;
+	}
 
-		public Integer getMatchesDrawn() {
-			return matchesDrawn;
-		}
-
-		public void setMatchesDrawn(Integer matchesDrawn) {
-			this.matchesDrawn = matchesDrawn;
-		}
-
-		public Integer getMatchesLost() {
-			return matchesLost;
-		}
-
-		public void setMatchesLost(Integer matchesLost) {
-			this.matchesLost = matchesLost;
-		}
-
-		public Integer getGoalsFor() {
-			return goalsFor;
-		}
-
-		public void setGoalsFor(Integer goalsFor) {
-			this.goalsFor = goalsFor;
-		}
-
-		public Integer getGoalsAgainst() {
-			return goalsAgainst;
-		}
-
-		public void setGoalsAgainst(Integer goalsAgainst) {
-			this.goalsAgainst = goalsAgainst;
-		}
+	public void setGoalsAgainst(Integer goalsAgainst) {
+		this.goalsAgainst = goalsAgainst;
 	}
 }
 

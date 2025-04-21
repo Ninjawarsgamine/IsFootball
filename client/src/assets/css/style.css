@@ -1,5 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap");
 @import 'bootstrap/dist/css/bootstrap.min.css';
+.nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 0.5rem;
+}
+
+.nav-link {
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  color: black !important;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
 .header-container {
   display: grid;
   grid-template-columns: 15% 85%;
@@ -215,6 +233,7 @@
 }
 
 .competition-info-container__competition-header {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -231,11 +250,12 @@
     justify-content: center;
   }
 }
-.competition-info-container__competition-header img {
-  margin-left: 1rem;
+.competition-info-container__competition-header img:first-of-type {
+  margin-left: 2.5rem;
 }
 @media only screen and (max-width: 600px) {
-  .competition-info-container__competition-header img {
+  .competition-info-container__competition-header img:first-of-type {
+    margin-left: 0;
     width: 8rem;
   }
 }
@@ -249,6 +269,32 @@
     font-size: 10vw;
   }
 }
+.competition-info-container__competition-header__competition-country {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  max-width: 2rem;
+  max-height: 2rem;
+}
+.competition-info-container h2 {
+  text-align: left;
+}
+.competition-info-container table a {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  display: flex;
+  column-gap: 0.25rem;
+  align-items: center;
+}
+.competition-info-container__team-logo {
+  max-height: 2rem;
+  max-width: 2rem;
+}
+.competition-info-container__team-points {
+  font-weight: bold;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
