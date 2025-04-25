@@ -63,6 +63,29 @@
                 </div>
             </div>
         </div>
+        
+        <div class="tab-content" id="competitionTabsContent">
+            <div class="tab-pane fade show" id="teams" role="tabpanel" aria-labelledby="table-tab">
+                <h1>Equipos</h1>
+                <div class="competition-info-container__teams-list-container table-responsive">
+                        <table class="table table-hover align-middle text-center">
+                            <tr v-for="team in teamsOrdered" :key="team.id">
+                                <td class="d-flex align-items-center gap-3 pd-4">
+                                    <router-link :to="`/teams/${team.id}`">
+                                        <img :src="team.logo" class="img-fluid" />
+                                        <span>{{ team.name }}</span>
+                                    </router-link>
+                                </td>
+                            </tr>
+                     </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="competitionTabsContent">
+            <div class="tab-pane fade show" id="statistics" role="tabpanel" aria-labelledby="table-tab">
+                <p>Aquí van a ir las estadísticas de la liga</p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -105,8 +128,29 @@
     })
     //Esta función nos saca un array de grupos que dentro contiene los equipos de cada uno de
     //esos grupos.
+    
+    const teamsOrdered=ref([]);
+    const getTeamsOrdered= async() =>{
+        try{
+            const response=await fetch(`/api/competitionTeams/${competitionId}`,{
+                method:"GET",
+            });
+            if(response.ok){
+                const data=await response.json();
+    
+                teamsOrdered.value=data;
+                teamsOrdered.value.sort((a,b)=>(a.name.localeCompare(b.name)));
+            }else{
+                console.log("No se han encontrado equipos para la competición con ID "+competitionId);
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+    //Esta función saca todos los equipos de una liga y los ordena alfabéticamente según su nombre.
 
     onMounted(async()=>{
         getCompetitionInfo();
+        getTeamsOrdered();
     })
 </script>

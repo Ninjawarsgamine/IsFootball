@@ -18,7 +18,7 @@ public class Competition implements Serializable {
 	private Country country;
 	private Integer season;
 	private List<TeamCompetitionStatistics> teamsCompetitionStatistics;
-
+	
 	/**
 	 * Obtiene el identificador de la competición.
 	 *

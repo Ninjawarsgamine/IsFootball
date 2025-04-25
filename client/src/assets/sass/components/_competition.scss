@@ -47,15 +47,14 @@
         text-align: left;
     }
     
-    table{
-        a{
-            text-decoration: none;  
-            color: inherit; 
-            width:100%;
-            display: flex;
-            column-gap: 0.25rem;
-            align-items: center;
-        }
+    table a{
+        
+        text-decoration: none;  
+        color: inherit; 
+        width:100%;
+        display: flex;
+        column-gap: 0.25rem;
+        align-items: center;   
     }
 
     &__team-logo{
@@ -65,5 +64,26 @@
 
     &__team-points{
         font-weight: bold;
+    }
+
+    &__teams-list-container{
+        width:100%;
+
+        table tr{
+            border:1px black solid;
+
+            td{
+                cursor:pointer;
+
+                img{
+                    max-width: 3rem;
+                    margin-left: 1.5rem;
+                }
+    
+                span{
+                    font-size: 1.2rem;
+                }
+            }    
+        }
     }
 }

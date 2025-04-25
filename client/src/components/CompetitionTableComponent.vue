@@ -19,7 +19,7 @@
             <tbody>
                 <tr v-for="team in competitionTeams" :key="team.id">
                     <td>{{ team.rank }}</td>
-                    <td class="competition-info-container__team ">
+                    <td class="competition-info-container__team">
                         <router-link :to="`/teams/${team.team.id}`">
                             <img class="competition-info-container__team-logo img-fluid" 
                             :src="team.team.logo" >

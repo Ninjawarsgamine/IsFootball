@@ -294,6 +294,22 @@
 .competition-info-container__team-points {
   font-weight: bold;
 }
+.competition-info-container__teams-list-container {
+  width: 100%;
+}
+.competition-info-container__teams-list-container table tr {
+  border: 1px black solid;
+}
+.competition-info-container__teams-list-container table tr td {
+  cursor: pointer;
+}
+.competition-info-container__teams-list-container table tr td img {
+  max-width: 3rem;
+  margin-left: 1.5rem;
+}
+.competition-info-container__teams-list-container table tr td span {
+  font-size: 1.2rem;
+}
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
