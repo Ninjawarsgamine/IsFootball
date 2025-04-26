@@ -1,6 +1,7 @@
 package com.isfootball.model;
 
 import java.io.Serializable;
+
 /**
  * Clase que almacena los datos básicos de un equipo.
  */
@@ -14,7 +15,7 @@ public class Team implements Serializable  {
 	private String code;
 	private Country country;
 	private Integer founded;
-	
+
 	public Integer getId() {
 		return id;
 	}
