@@ -64,7 +64,7 @@
             </div>
         </div>
         
-        <div class="tab-content" id="competitionTabsContent">
+        <div class="tab-content" id="competitionTeams">
             <div class="tab-pane fade show" id="teams" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Equipos</h1>
                 <div class="competition-info-container__teams-list-container table-responsive">
@@ -81,9 +81,14 @@
                 </div>
             </div>
         </div>
-        <div class="tab-content" id="competitionTabsContent">
+        <div class="tab-content" id="competitionStatistics">
             <div class="tab-pane fade show" id="statistics" role="tabpanel" aria-labelledby="table-tab">
-                <p>Aquí van a ir las estadísticas de la liga</p>
+                <h1>Estadísticas</h1>
+                <CompetitionStatisticTableComponent title="Máximos goleadores"
+                 :players="competitionTopScorers"/>
+                <CompetitionStatisticTableComponent title="Máximos asistidores"
+                :players="competitionTopAssistsProviders"/>
+
             </div>
         </div>
     </div>
@@ -93,6 +98,7 @@
     import { useRoute } from 'vue-router';
     import { computed, onMounted, ref } from "vue";
     import CompetitionTableComponent from '@/components/CompetitionTableComponent.vue';
+    import CompetitionStatisticTableComponent from '@/components/CompetitionStatisticTableComponent.vue';
     
     const route=useRoute();
     const competitionId=route.params.id;
@@ -149,8 +155,47 @@
     }
     //Esta función saca todos los equipos de una liga y los ordena alfabéticamente según su nombre.
 
+    const competitionTopScorers=ref([]);
+    const getCompetitionTopScorers=async()=>{
+        try{
+            const response=await fetch(`/api/competitions/${competitionId}/top-scorers`,{
+                method:'GET'
+            });
+            if(response.ok){
+                const data=await response.json();
+                console.log("Máximos goleadores:", data);
+                competitionTopScorers.value=data;
+            }else{
+                console.log("No se han encontrado los máximos goleadores de la competición con ID "+
+                competitionId);
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    const competitionTopAssistsProviders=ref([]);
+    const getCompetitionTopAssistsProviders=async()=>{
+        try{
+            const response=await fetch(`/api/competitions/${competitionId}/top-assists-providers`,{
+                method:'GET'
+            });
+            if(response.ok){
+                const data=await response.json();
+                console.log("Máximos asistentes:", data);
+                competitionTopAssistsProviders.value=data;
+            }else{
+                console.log("No se han encontrado los máximos asistentes de la competición con ID "+
+                competitionId);
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
     onMounted(async()=>{
-        getCompetitionInfo();
-        getTeamsOrdered();
-    })
+       await getCompetitionInfo();
+       await getTeamsOrdered();
+       await getCompetitionTopScorers();
+       await getCompetitionTopAssistsProviders();
+    });
 </script>

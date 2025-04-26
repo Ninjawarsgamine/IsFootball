@@ -15,7 +15,12 @@
 }
 
 .table-responsive {
+  top: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
   overflow-x: auto;
+  width: 98%;
 }
 
 .header-container {
@@ -278,6 +283,7 @@
 }
 .competition-info-container h2 {
   text-align: left;
+  margin-left: 2rem;
 }
 .competition-info-container table a {
   text-decoration: none;
@@ -300,6 +306,9 @@
 .competition-info-container__teams-list-container table tr {
   border: 1px black solid;
 }
+.competition-info-container__teams-list-container table tr th:nth-of-type(2n+1) {
+  text-align: center;
+}
 .competition-info-container__teams-list-container table tr td {
   cursor: pointer;
 }
@@ -309,6 +318,31 @@
 }
 .competition-info-container__teams-list-container table tr td span {
   font-size: 1.2rem;
+}
+.competition-info-container__statistic-table {
+  width: 95%;
+  text-align: left;
+  font-size: 1.1rem;
+}
+.competition-info-container__statistic-table th {
+  text-align: center;
+}
+.competition-info-container__statistic-table td a {
+  display: flex;
+  align-items: center;
+}
+.competition-info-container__statistic-table td a img {
+  max-width: 2.3rem;
+}
+.competition-info-container__statistic-table td span {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  justify-content: center;
+  justify-items: center;
+}
+.competition-info-container__statistic-table__player-photo {
+  border-radius: 3rem;
 }
 
 #app {

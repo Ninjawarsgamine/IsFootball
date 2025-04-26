@@ -45,10 +45,10 @@
 
     h2{
         text-align: left;
+        margin-left: 2rem;
     }
-    
+
     table a{
-        
         text-decoration: none;  
         color: inherit; 
         width:100%;
@@ -71,7 +71,9 @@
 
         table tr{
             border:1px black solid;
-
+            th:nth-of-type(2n+1){
+                text-align: center;
+            }
             td{
                 cursor:pointer;
 
@@ -84,6 +86,39 @@
                     font-size: 1.2rem;
                 }
             }    
+        }
+    }
+    &__statistic-table{
+        width:95%;
+        text-align: left;
+        font-size: 1.1rem;
+
+        th{
+            text-align: center;
+        }
+        
+        td{
+            a{
+                display: flex;
+                align-items: center;
+            
+               
+                img{
+                    max-width: 2.3rem;
+                }
+            }
+
+            span{
+                display: flex;
+                align-items: center;
+                margin-top:0.5rem;
+                justify-content: center;
+                justify-items: center;
+            }
+        }
+
+        &__player-photo{
+            border-radius: 3rem;
         }
     }
 }

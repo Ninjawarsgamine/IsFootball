@@ -11,7 +11,11 @@
     font-size:1.1rem;
     color:black !important;
 }
-
 .table-responsive {
+    top:0;
+    left:0;
+    margin-left: auto;
+    margin-right: auto;
     overflow-x: auto;
+    width:98%;
 }
