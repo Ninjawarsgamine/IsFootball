@@ -100,4 +100,32 @@ public class CompetitionController {
 	public List<PlayerCompetitionStatistics> getCompetitionTopAssistsProviders(@PathVariable Integer competitionId){
 		return competitionService.getCompetitionTopAssistsProviders(Integer.valueOf(competitionId));
 	}
+
+	/**
+	 * Endpoint REST para obtener una lista de jugadores que más tarjetas amarillas hayan recibido
+	 * en una competición especificada junto a sus estadísticas.
+	 * 
+	 * @param id Es el ID de la comeptición de la que se van a sacar los jugadores que jugadores que 
+	 * más tarjetas amarillas hayan recibido.
+	 * @return Lista de jugadores los jugadores que jugadores que más tarjetas amarillas hayan 
+	 * recibido en la competición especificada junto a sus estadísticas.
+	 */
+	@GetMapping("/api/competitions/{competitionId}/top-yellow-cards")
+	public List<PlayerCompetitionStatistics> getCompetitionTopYellowCards(@PathVariable Integer competitionId){
+		return competitionService.getCompetitionTopYellowCards(Integer.valueOf(competitionId));
+	}
+	
+	/**
+	 * Endpoint REST para obtener una lista de jugadores que más tarjetas rojas hayan recibido
+	 * en una competición especificada junto a sus estadísticas.
+	 * 
+	 * @param id Es el ID de la comeptición de la que se van a sacar los jugadores que jugadores que 
+	 * más tarjetas rojas hayan recibido.
+	 * @return Lista de jugadores los jugadores que jugadores que más tarjetas rojas hayan 
+	 * recibido en la competición especificada junto a sus estadísticas.
+	 */
+	@GetMapping("/api/competitions/{competitionId}/top-red-cards")
+	public List<PlayerCompetitionStatistics> getCompetitionTopRedCards(@PathVariable Integer competitionId){
+		return competitionService.getCompetitionTopRedCards(Integer.valueOf(competitionId));
+	}
 }

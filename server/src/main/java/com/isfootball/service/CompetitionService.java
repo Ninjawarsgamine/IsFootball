@@ -372,5 +372,86 @@ public class CompetitionService {
 		}
 		return null;
 	}
+
+	/**
+	 * Devuelve los jugadores que más tarjetas rojas hayan recibido en una competición
+	 * con un ID especificado.
+	 * @param competitionId Es el ID de la competición de la que vamos a sacar los datos.
+	 * @return Una lista de jugadores con sus estadísticas en una competición especificada.
+	 */
+	@Cacheable("playerCompetitionTopYellowCards")
+	public List<PlayerCompetitionStatistics> getCompetitionTopYellowCards(Integer competitionId){
+		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
+		String url="https://"+apiHost+"/players/topyellowcards?league="+competitionId+"&season="+season;
+		JsonNode responseData=doRequest(url);
+		if(responseData!=null && responseData.isArray()) {
+			for(JsonNode playersTotalInfo: responseData){
+				PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
 	
+				JsonNode playerBasicInfo=playersTotalInfo.path("player");
+				Player player=new Player();
+				player.setId(playerBasicInfo.path("id").asInt());
+				player.setName(playerBasicInfo.path("name").asText());
+				player.setNacionality(playerBasicInfo.path("nationality").asText());
+				player.setPhoto(playerBasicInfo.path("photo").asText());
+				playerCompetitionStatistics.setPlayer(player);
+				
+				JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
+				
+				JsonNode playerTeamData=playerAllStatistics.path("team");
+				Team playerTeam=new Team();
+				playerTeam.setId(playerTeamData.path("id").asInt());
+				playerTeam.setName(playerTeamData.path("name").asText());
+				playerTeam.setLogo(playerTeamData.path("logo").asText());;
+				playerCompetitionStatistics.setTeam(playerTeam);
+
+				playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+				playerCompetitionStatistics.setYellowCards(playerAllStatistics.path("cards").path("yellow").asInt());
+				competitionPlayersStatistics.add(playerCompetitionStatistics);
+			}
+			return competitionPlayersStatistics;
+		}
+		return null;
+	}
+	
+	/**
+	 * Devuelve los jugadores que más tarjetas rojas hayan recibido en una competición
+	 * con un ID especificado.
+	 * @param competitionId Es el ID de la competición de la que vamos a sacar los datos.
+	 * @return Una lista de jugadores con sus estadísticas en una competición especificada.
+	 */
+	@Cacheable("playerCompetitionTopRedCards")
+	public List<PlayerCompetitionStatistics> getCompetitionTopRedCards(Integer competitionId){
+		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
+		String url="https://"+apiHost+"/players/topredcards?league="+competitionId+"&season="+season;
+		JsonNode responseData=doRequest(url);
+		if(responseData!=null && responseData.isArray()) {
+			for(JsonNode playersTotalInfo: responseData){
+				PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+	
+				JsonNode playerBasicInfo=playersTotalInfo.path("player");
+				Player player=new Player();
+				player.setId(playerBasicInfo.path("id").asInt());
+				player.setName(playerBasicInfo.path("name").asText());
+				player.setNacionality(playerBasicInfo.path("nationality").asText());
+				player.setPhoto(playerBasicInfo.path("photo").asText());
+				playerCompetitionStatistics.setPlayer(player);
+				
+				JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
+				
+				JsonNode playerTeamData=playerAllStatistics.path("team");
+				Team playerTeam=new Team();
+				playerTeam.setId(playerTeamData.path("id").asInt());
+				playerTeam.setName(playerTeamData.path("name").asText());
+				playerTeam.setLogo(playerTeamData.path("logo").asText());;
+				playerCompetitionStatistics.setTeam(playerTeam);
+
+				playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+				playerCompetitionStatistics.setRedCards(playerAllStatistics.path("cards").path("red").asInt());
+				competitionPlayersStatistics.add(playerCompetitionStatistics);
+			}
+			return competitionPlayersStatistics;
+		}
+		return null;
+	}
 }

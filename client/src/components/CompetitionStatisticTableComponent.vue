@@ -10,6 +10,9 @@
                     <th scope="col">Equipo</th>
                     <th scope="col" v-if="players[0].totalGoals">Goles</th>
                     <th scope="col" v-if="players[0].assists">Asistencias</th>
+                    <th scope="col" v-if="players[0].yellowCards || players[0].redCards">
+                        Número de tarjetas
+                    </th>
                 </tr>
             </thead>
             <tbody class="text-center">
@@ -31,6 +34,8 @@
                     </td>
                     <td v-if="player.totalGoals"><span>{{ player.totalGoals }}</span></td>
                     <td v-else-if="player.assists"><span>{{ player.assists }}</span></td>
+                    <td v-else-if="player.yellowCards">{{ player.yellowCards }}</td>
+                    <td v-else-if="player.redCards">{{ player.redCards }}</td>
                 </tr>
 
             </tbody>

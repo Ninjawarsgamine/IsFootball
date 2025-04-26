@@ -88,7 +88,10 @@
                  :players="competitionTopScorers"/>
                 <CompetitionStatisticTableComponent title="Máximos asistidores"
                 :players="competitionTopAssistsProviders"/>
-
+                <CompetitionStatisticTableComponent title="Más tarjetas amarillas"
+                :players="competitionTopYellowCards"/>
+                <CompetitionStatisticTableComponent title="Más tarjetas rojas"
+                :players="competitionTopRedCards"/>
             </div>
         </div>
     </div>
@@ -173,6 +176,7 @@
             console.log(error);
         }
     }
+    //Esta función saca los máximos goleadores de una competición.
 
     const competitionTopAssistsProviders=ref([]);
     const getCompetitionTopAssistsProviders=async()=>{
@@ -182,20 +186,52 @@
             });
             if(response.ok){
                 const data=await response.json();
-                console.log("Máximos asistentes:", data);
                 competitionTopAssistsProviders.value=data;
-            }else{
-                console.log("No se han encontrado los máximos asistentes de la competición con ID "+
-                competitionId);
             }
         }catch(error){
             console.log(error);
         }
     }
+    //Esta función saca los máximos asistentes de una competición.
+
+    const competitionTopYellowCards=ref([]);
+    const getCompetitionTopYellowCards=async()=>{
+        try{
+            const response=await fetch(`/api/competitions/${competitionId}/top-yellow-cards`,{
+                method:'GET'
+            });
+            if(response.ok){
+                const data=await response.json();
+                competitionTopYellowCards.value=data;
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+    //Esta función los jugadores que más tarjetas amarillas han recibido en una competición.
+
+    const competitionTopRedCards=ref([]);
+    const getCompetitionTopRedCards=async()=>{
+        try{
+            const response=await fetch(`/api/competitions/${competitionId}/top-red-cards`,{
+                method:'GET'
+            });
+            if(response.ok){
+                const data=await response.json();
+                competitionTopRedCards.value=data;
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+    //Esta función los jugadores que más tarjetas amarillas han recibido en una competición.
+
     onMounted(async()=>{
-       await getCompetitionInfo();
-       await getTeamsOrdered();
-       await getCompetitionTopScorers();
-       await getCompetitionTopAssistsProviders();
+        getCompetitionInfo();
+        getTeamsOrdered();
+        getCompetitionTopScorers();
+        getCompetitionTopAssistsProviders();
+        getCompetitionTopYellowCards();
+        getCompetitionTopRedCards();
     });
 </script>
