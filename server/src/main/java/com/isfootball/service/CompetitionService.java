@@ -141,15 +141,14 @@ public class CompetitionService {
 							
 						}
 						competition.setTeamsCompetitionStatistics(competitionTeamsStatistics);
-		
 					}	
 				}
 			}
+			return competition;
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
 		}
-		return competition;
 	}
 	
 	/**
@@ -289,4 +288,6 @@ public class CompetitionService {
 		}
 		return competitions;
 	}
+
+	
 }

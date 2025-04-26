@@ -29,10 +29,9 @@ public class TeamService {
 	
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
-	// Sirve para convertir objetos JSON en objetos Java.
 
 	/**
-	 * Es el constructor de "CompetitionService".
+	 * Es el constructor de "TeamService".
 	 */
 	public TeamService() {
 		this.restTemplate = new RestTemplate();
