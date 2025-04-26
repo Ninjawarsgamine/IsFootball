@@ -13,6 +13,8 @@ public class PlayerCompetitionStatistics implements Serializable {
 	//Es necesario para poder usarla en "Competition".
 
 	private Competition competition;
+
+	private Team team;
 	
 	private Integer gamesAppearances;
 	private Integer gamesLineups;
@@ -75,7 +77,15 @@ public class PlayerCompetitionStatistics implements Serializable {
 	public void setCompetition(Competition competition) {
 		this.competition = competition;
 	}
-	
+
+	public Team getTeam(){
+		return this.team;
+	}
+
+	public void setTeam(Team team){
+		this.team=team;
+	}
+
 	public Integer getGamesAppearances() {
 		return gamesAppearances;
 	}

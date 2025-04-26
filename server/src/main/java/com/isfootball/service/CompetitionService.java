@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
+import com.isfootball.model.Player;
+import com.isfootball.model.PlayerCompetitionStatistics;
 import com.isfootball.model.Team;
 import com.isfootball.model.TeamCompetitionStatistics;
 import com.isfootball.utils.Utils;
@@ -289,5 +291,86 @@ public class CompetitionService {
 		return competitions;
 	}
 
+	/**
+	 * Devuelve los jugadores que sean los máximos goleadores de una competición
+	 * con un ID especificado.
+	 * @param competitionId Es el ID de la competición de la que vamos a sacar los datos.
+	 * @return Una lista de jugadores con sus estadísticas en una competición especificada.
+	 */
+	@Cacheable("playerCompetitionTopScorers")
+	public List<PlayerCompetitionStatistics> getCompetitionTopScorers(Integer competitionId){
+		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
+		String url="https://"+apiHost+"/players/topscorers?league="+competitionId+"&season="+season;
+		JsonNode responseData=doRequest(url);
+		if(responseData!=null && responseData.isArray()) {
+			for(JsonNode playersTotalInfo: responseData){
+				PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+	
+				JsonNode playerBasicInfo=playersTotalInfo.path("player");
+				Player player=new Player();
+				player.setId(playerBasicInfo.path("id").asInt());
+				player.setName(playerBasicInfo.path("name").asText());
+				player.setNacionality(playerBasicInfo.path("nationality").asText());
+				player.setPhoto(playerBasicInfo.path("photo").asText());
+				playerCompetitionStatistics.setPlayer(player);
+				
+				JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
+				
+				JsonNode playerTeamData=playerAllStatistics.path("team");
+				Team playerTeam=new Team();
+				playerTeam.setId(playerTeamData.path("id").asInt());
+				playerTeam.setName(playerTeamData.path("name").asText());
+				playerTeam.setLogo(playerTeamData.path("logo").asText());;
+				playerCompetitionStatistics.setTeam(playerTeam);
+
+				playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+				playerCompetitionStatistics.setTotalGoals(playerAllStatistics.path("goals").path("total").asInt());
+				competitionPlayersStatistics.add(playerCompetitionStatistics);
+			}
+			return competitionPlayersStatistics;
+		}
+		return null;
+	}
+
+	/**
+	 * Devuelve los jugadores que sean los máximos asistentes de una competición
+	 * con un ID especificado.
+	 * @param competitionId Es el ID de la competición de la que vamos a sacar los datos.
+	 * @return Una lista de jugadores con sus estadísticas en una competición especificada.
+	 */
+	@Cacheable("playerCompetitionTopAssistsProviders")
+	public List<PlayerCompetitionStatistics> getCompetitionTopAssistsProviders(Integer competitionId){
+		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
+		String url="https://"+apiHost+"/players/topassists?league="+competitionId+"&season="+season;
+		JsonNode responseData=doRequest(url);
+		if(responseData!=null && responseData.isArray()) {
+			for(JsonNode playersTotalInfo: responseData){
+				PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+	
+				JsonNode playerBasicInfo=playersTotalInfo.path("player");
+				Player player=new Player();
+				player.setId(playerBasicInfo.path("id").asInt());
+				player.setName(playerBasicInfo.path("name").asText());
+				player.setNacionality(playerBasicInfo.path("nationality").asText());
+				player.setPhoto(playerBasicInfo.path("photo").asText());
+				playerCompetitionStatistics.setPlayer(player);
+				
+				JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
+				
+				JsonNode playerTeamData=playerAllStatistics.path("team");
+				Team playerTeam=new Team();
+				playerTeam.setId(playerTeamData.path("id").asInt());
+				playerTeam.setName(playerTeamData.path("name").asText());
+				playerTeam.setLogo(playerTeamData.path("logo").asText());;
+				playerCompetitionStatistics.setTeam(playerTeam);
+
+				playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+				playerCompetitionStatistics.setAssists(playerAllStatistics.path("goals").path("assists").asInt());
+				competitionPlayersStatistics.add(playerCompetitionStatistics);
+			}
+			return competitionPlayersStatistics;
+		}
+		return null;
+	}
 	
 }

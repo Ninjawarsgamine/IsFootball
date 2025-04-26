@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isfootball.model.Competition;
+import com.isfootball.model.PlayerCompetitionStatistics;
 import com.isfootball.service.CompetitionService;
 
 @RestController
@@ -72,5 +73,31 @@ public class CompetitionController {
 	@PostMapping("/api/competitions/by-ids")
 	public List<Competition> getListCompetitionsByIds(@RequestBody Integer[]ids){
 		return competitionService.getListCompetitionsByIds(ids);
+	}
+
+	/**
+	 * Endpoint REST para obtener una lista de jugadores que sean los máximos goleadores de una
+	 * competición especificada junto a sus estadísticas.
+	 * 
+	 * @param id Es el ID de la comeptición de la que se van a sacar los máximos goleadores.
+	 * @return Lista de jugadores que sean los máximos goleadores de la competición especificada 
+	 * junto a sus estadísticas.
+	 */
+	@GetMapping("/api/competitions/{competitionId}/top-scorers")
+	public List<PlayerCompetitionStatistics> getCompetitionTopScorers(@PathVariable String competitionId){
+		return competitionService.getCompetitionTopScorers(Integer.valueOf(competitionId));
+	}
+	
+	/**
+	 * Endpoint REST para obtener una lista de jugadores que sean los máximos asistentes de una
+	 * competición especificada junto a sus estadísticas.
+	 * 
+	 * @param id Es el ID de la comeptición de la que se van a sacar los máximos asistentes
+	 * @return Lista de jugadores que sean los máximos asistentes de la competición especificada 
+	 * junto a sus estadísticas.
+	 */
+	@GetMapping("/api/competitions/{competitionId}/top-assists-providers")
+	public List<PlayerCompetitionStatistics> getCompetitionTopAssistsProviders(@PathVariable Integer competitionId){
+		return competitionService.getCompetitionTopAssistsProviders(Integer.valueOf(competitionId));
 	}
 }

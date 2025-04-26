@@ -85,7 +85,6 @@ public class TeamService {
 		}
 		String url="https://"+apiHost+"/teams?league="+competitionId+"&season="+season;
         JsonNode responseData=doRequest(url);
-		System.out.println(responseData);
         for(JsonNode teamData:responseData){
             Team team=new Team();
             team.setId(teamData.path("team").path("id").asInt());
