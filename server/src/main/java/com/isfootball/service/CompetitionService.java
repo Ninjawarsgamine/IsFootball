@@ -513,7 +513,7 @@ public class CompetitionService {
 		return null;
 	}
 
-	//@Cacheable("competitionRoundMatchesSummary")
+	@Cacheable("competitionRoundMatchesSummary")
 	public List<Match>getCompetitionRoundMatchesSummary(Integer competitionId, String round){
 		System.out.println(round);
 		List<Match> competitionRoundMatches=new ArrayList<>();

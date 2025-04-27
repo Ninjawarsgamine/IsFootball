@@ -1,6 +1,7 @@
 <template>
     <div class="competition-info-container" 
     v-if="competition.country">
+
         <div class="competition-info-container__competition-header">
             <img :src="competition.logo" alt="Logo de la competición">
             <h1>{{ competition.name }}</h1>
@@ -8,6 +9,7 @@
             :src="competition.country.flag" v-if="competition.country.flag!=='null'" 
             alt="Bandera del país de la competición">
         </div>
+
         <ul class="nav nav-underline mb-3" role="tablist">
             <li class="nav-item" role="presentation" v-if="competition.type=='League' || competition.teamsCompetitionStatistics">
                 <button class="nav-link active" id="table-tab" data-bs-toggle="tab" 
@@ -33,14 +35,16 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="statistics-tab" data-bs-toggle="tab" 
                 data-bs-target="#statistics" type="button" role="tab"
-                aria-selected="true">
+                aria-selected="true" 
+                @click="getCompetitionTopScorers(); getCompetitionTopAssistsProviders();
+                getCompetitionTopYellowCards(); getCompetitionTopRedCards();">
                     Estadísticas
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="teams-tab" data-bs-toggle="tab" 
                 data-bs-target="#teams" type="button" role="tab"
-                aria-selected="true">
+                aria-selected="true" @click="getTeamsOrdered();">
                     Equipos
                 </button>
             </li>
@@ -63,7 +67,20 @@
                 </div>
             </div>
         </div>
-        
+
+        <div class="tab-content" id="competitionStatistics">
+            <div class="tab-pane fade show" id="statistics" role="tabpanel" aria-labelledby="table-tab">
+                <h1>Estadísticas</h1>
+                <CompetitionStatisticTableComponent title="Máximos goleadores"
+                 :players="competitionTopScorers"/>
+                <CompetitionStatisticTableComponent title="Máximos asistidores"
+                :players="competitionTopAssistsProviders"/>
+                <CompetitionStatisticTableComponent title="Más tarjetas amarillas"
+                :players="competitionTopYellowCards"/>
+                <CompetitionStatisticTableComponent title="Más tarjetas rojas"
+                :players="competitionTopRedCards"/>
+            </div>
+        </div>
         <div class="tab-content" id="competitionTeams">
             <div class="tab-pane fade show" id="teams" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Equipos</h1>
@@ -79,19 +96,6 @@
                             </tr>
                      </table>
                 </div>
-            </div>
-        </div>
-        <div class="tab-content" id="competitionStatistics">
-            <div class="tab-pane fade show" id="statistics" role="tabpanel" aria-labelledby="table-tab">
-                <h1>Estadísticas</h1>
-                <CompetitionStatisticTableComponent title="Máximos goleadores"
-                 :players="competitionTopScorers"/>
-                <CompetitionStatisticTableComponent title="Máximos asistidores"
-                :players="competitionTopAssistsProviders"/>
-                <CompetitionStatisticTableComponent title="Más tarjetas amarillas"
-                :players="competitionTopYellowCards"/>
-                <CompetitionStatisticTableComponent title="Más tarjetas rojas"
-                :players="competitionTopRedCards"/>
             </div>
         </div>
     </div>
@@ -228,10 +232,5 @@
     
     onMounted(async()=>{
         getCompetitionInfo();
-        getTeamsOrdered();
-        getCompetitionTopScorers();
-        getCompetitionTopAssistsProviders();
-        getCompetitionTopYellowCards();
-        getCompetitionTopRedCards();
     });
 </script>
