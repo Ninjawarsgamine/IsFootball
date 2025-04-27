@@ -58,7 +58,7 @@ public class TeamService {
 	    String jsonResponse=response.getBody();
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
-	    	//Convertimos  la respuesta en un objeto de Java.	
+	    	//Convertimos la respuesta en un objeto de Java.	
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
 	    	

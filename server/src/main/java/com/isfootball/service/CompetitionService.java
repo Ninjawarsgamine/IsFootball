@@ -1,8 +1,12 @@
 package com.isfootball.service;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
+import com.isfootball.model.Match;
 import com.isfootball.model.Player;
 import com.isfootball.model.PlayerCompetitionStatistics;
 import com.isfootball.model.Team;
@@ -65,6 +70,7 @@ public class CompetitionService {
 	    String jsonResponse=response.getBody();
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
+			System.out.println(responseBody);
 	    	//Convertimos  la respuesta en un objeto de Java.	
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
@@ -260,33 +266,38 @@ public class CompetitionService {
 		JsonNode allCompetitions= doRequest(url);
 		if(allCompetitions!=null && allCompetitions.isArray()) {
 			List <Integer>idsList=Arrays.asList(ids);
-			for(JsonNode c: allCompetitions) {
-				if(idsList.contains(c.path("league").get("id").asInt())) {
-					Competition competition=new Competition();
-
-					JsonNode competitionInfo=c.path("league");
-					competition.setId(competitionInfo.get("id").asInt());
-					competition.setName(competitionInfo.get("name").asText());
-					competition.setType(competitionInfo.get("type").asText());
-					competition.setLogo(competitionInfo.get("logo").asText());
-
-					JsonNode competitionCountry=c.path("country");
-					Country country=new Country();
-					country.setName(competitionCountry.path("name").asText());
-					country.setCode(competitionCountry.path("code").asText());
-					country.setFlag(competitionCountry.path("flag").asText());
-					competition.setCountry(country);
-					
-					JsonNode competitionSeason=c.path("seasons");
-					competition.setSeason(competitionSeason.path("year").asInt());
-					competitions.add(competition);
+			try {
+				for(JsonNode c: allCompetitions) {
+					if(idsList.contains(c.path("league").get("id").asInt())) {
+						Competition competition=new Competition();
+	
+						JsonNode competitionInfo=c.path("league");
+						competition.setId(competitionInfo.get("id").asInt());
+						competition.setName(competitionInfo.get("name").asText());
+						competition.setType(competitionInfo.get("type").asText());
+						competition.setLogo(competitionInfo.get("logo").asText());
+	
+						JsonNode competitionCountry=c.path("country");
+						Country country=new Country();
+						country.setName(competitionCountry.path("name").asText());
+						country.setCode(competitionCountry.path("code").asText());
+						country.setFlag(competitionCountry.path("flag").asText());
+						competition.setCountry(country);
+						
+						JsonNode competitionSeason=c.path("seasons");
+						competition.setSeason(competitionSeason.path("year").asInt());
+						competitions.add(competition);
+					}
+	
+					if(competitions.size()==idsList.size()){
+						break;
+					}
+					//Si ya se han encontrado todas las ligas, se frena el bucle.
 				}
-
-				if(competitions.size()==idsList.size()){
-					break;
-				}
-				//Si ya se han encontrado todas las ligas, se frena el bucle.
-			}
+			}catch(Exception e) {
+				e.printStackTrace();
+	    		return null;
+	    	}
 		}
 		return competitions;
 	}
@@ -303,31 +314,36 @@ public class CompetitionService {
 		String url="https://"+apiHost+"/players/topscorers?league="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(url);
 		if(responseData!=null && responseData.isArray()) {
-			for(JsonNode playersTotalInfo: responseData){
-				PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+			try {
+				for(JsonNode playersTotalInfo: responseData){
+					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+		
+					JsonNode playerBasicInfo=playersTotalInfo.path("player");
+					Player player=new Player();
+					player.setId(playerBasicInfo.path("id").asInt());
+					player.setName(playerBasicInfo.path("name").asText());
+					player.setNacionality(playerBasicInfo.path("nationality").asText());
+					player.setPhoto(playerBasicInfo.path("photo").asText());
+					playerCompetitionStatistics.setPlayer(player);
+					
+					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
+					
+					JsonNode playerTeamData=playerAllStatistics.path("team");
+					Team playerTeam=new Team();
+					playerTeam.setId(playerTeamData.path("id").asInt());
+					playerTeam.setName(playerTeamData.path("name").asText());
+					playerTeam.setLogo(playerTeamData.path("logo").asText());;
+					playerCompetitionStatistics.setTeam(playerTeam);
 	
-				JsonNode playerBasicInfo=playersTotalInfo.path("player");
-				Player player=new Player();
-				player.setId(playerBasicInfo.path("id").asInt());
-				player.setName(playerBasicInfo.path("name").asText());
-				player.setNacionality(playerBasicInfo.path("nationality").asText());
-				player.setPhoto(playerBasicInfo.path("photo").asText());
-				playerCompetitionStatistics.setPlayer(player);
-				
-				JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
-				
-				JsonNode playerTeamData=playerAllStatistics.path("team");
-				Team playerTeam=new Team();
-				playerTeam.setId(playerTeamData.path("id").asInt());
-				playerTeam.setName(playerTeamData.path("name").asText());
-				playerTeam.setLogo(playerTeamData.path("logo").asText());;
-				playerCompetitionStatistics.setTeam(playerTeam);
-
-				playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
-				playerCompetitionStatistics.setTotalGoals(playerAllStatistics.path("goals").path("total").asInt());
-				competitionPlayersStatistics.add(playerCompetitionStatistics);
+					playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+					playerCompetitionStatistics.setTotalGoals(playerAllStatistics.path("goals").path("total").asInt());
+					competitionPlayersStatistics.add(playerCompetitionStatistics);
+				}
+				return competitionPlayersStatistics;
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
 			}
-			return competitionPlayersStatistics;
 		}
 		return null;
 	}
@@ -344,31 +360,36 @@ public class CompetitionService {
 		String url="https://"+apiHost+"/players/topassists?league="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(url);
 		if(responseData!=null && responseData.isArray()) {
-			for(JsonNode playersTotalInfo: responseData){
-				PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+			try{
+				for(JsonNode playersTotalInfo: responseData){
+					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+		
+					JsonNode playerBasicInfo=playersTotalInfo.path("player");
+					Player player=new Player();
+					player.setId(playerBasicInfo.path("id").asInt());
+					player.setName(playerBasicInfo.path("name").asText());
+					player.setNacionality(playerBasicInfo.path("nationality").asText());
+					player.setPhoto(playerBasicInfo.path("photo").asText());
+					playerCompetitionStatistics.setPlayer(player);
+					
+					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
+					
+					JsonNode playerTeamData=playerAllStatistics.path("team");
+					Team playerTeam=new Team();
+					playerTeam.setId(playerTeamData.path("id").asInt());
+					playerTeam.setName(playerTeamData.path("name").asText());
+					playerTeam.setLogo(playerTeamData.path("logo").asText());;
+					playerCompetitionStatistics.setTeam(playerTeam);
 	
-				JsonNode playerBasicInfo=playersTotalInfo.path("player");
-				Player player=new Player();
-				player.setId(playerBasicInfo.path("id").asInt());
-				player.setName(playerBasicInfo.path("name").asText());
-				player.setNacionality(playerBasicInfo.path("nationality").asText());
-				player.setPhoto(playerBasicInfo.path("photo").asText());
-				playerCompetitionStatistics.setPlayer(player);
-				
-				JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
-				
-				JsonNode playerTeamData=playerAllStatistics.path("team");
-				Team playerTeam=new Team();
-				playerTeam.setId(playerTeamData.path("id").asInt());
-				playerTeam.setName(playerTeamData.path("name").asText());
-				playerTeam.setLogo(playerTeamData.path("logo").asText());;
-				playerCompetitionStatistics.setTeam(playerTeam);
-
-				playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
-				playerCompetitionStatistics.setAssists(playerAllStatistics.path("goals").path("assists").asInt());
-				competitionPlayersStatistics.add(playerCompetitionStatistics);
+					playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+					playerCompetitionStatistics.setAssists(playerAllStatistics.path("goals").path("assists").asInt());
+					competitionPlayersStatistics.add(playerCompetitionStatistics);
+				}
+				return competitionPlayersStatistics;
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
 			}
-			return competitionPlayersStatistics;
 		}
 		return null;
 	}
@@ -385,31 +406,36 @@ public class CompetitionService {
 		String url="https://"+apiHost+"/players/topyellowcards?league="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(url);
 		if(responseData!=null && responseData.isArray()) {
-			for(JsonNode playersTotalInfo: responseData){
-				PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+			try{
+				for(JsonNode playersTotalInfo: responseData){
+					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+		
+					JsonNode playerBasicInfo=playersTotalInfo.path("player");
+					Player player=new Player();
+					player.setId(playerBasicInfo.path("id").asInt());
+					player.setName(playerBasicInfo.path("name").asText());
+					player.setNacionality(playerBasicInfo.path("nationality").asText());
+					player.setPhoto(playerBasicInfo.path("photo").asText());
+					playerCompetitionStatistics.setPlayer(player);
+					
+					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
+					
+					JsonNode playerTeamData=playerAllStatistics.path("team");
+					Team playerTeam=new Team();
+					playerTeam.setId(playerTeamData.path("id").asInt());
+					playerTeam.setName(playerTeamData.path("name").asText());
+					playerTeam.setLogo(playerTeamData.path("logo").asText());;
+					playerCompetitionStatistics.setTeam(playerTeam);
 	
-				JsonNode playerBasicInfo=playersTotalInfo.path("player");
-				Player player=new Player();
-				player.setId(playerBasicInfo.path("id").asInt());
-				player.setName(playerBasicInfo.path("name").asText());
-				player.setNacionality(playerBasicInfo.path("nationality").asText());
-				player.setPhoto(playerBasicInfo.path("photo").asText());
-				playerCompetitionStatistics.setPlayer(player);
-				
-				JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
-				
-				JsonNode playerTeamData=playerAllStatistics.path("team");
-				Team playerTeam=new Team();
-				playerTeam.setId(playerTeamData.path("id").asInt());
-				playerTeam.setName(playerTeamData.path("name").asText());
-				playerTeam.setLogo(playerTeamData.path("logo").asText());;
-				playerCompetitionStatistics.setTeam(playerTeam);
-
-				playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
-				playerCompetitionStatistics.setYellowCards(playerAllStatistics.path("cards").path("yellow").asInt());
-				competitionPlayersStatistics.add(playerCompetitionStatistics);
+					playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+					playerCompetitionStatistics.setYellowCards(playerAllStatistics.path("cards").path("yellow").asInt());
+					competitionPlayersStatistics.add(playerCompetitionStatistics);
+				}
+				return competitionPlayersStatistics;
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
 			}
-			return competitionPlayersStatistics;
 		}
 		return null;
 	}
@@ -426,31 +452,126 @@ public class CompetitionService {
 		String url="https://"+apiHost+"/players/topredcards?league="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(url);
 		if(responseData!=null && responseData.isArray()) {
-			for(JsonNode playersTotalInfo: responseData){
-				PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+			try{
+				for(JsonNode playersTotalInfo: responseData){
+					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+		
+					JsonNode playerBasicInfo=playersTotalInfo.path("player");
+					Player player=new Player();
+					player.setId(playerBasicInfo.path("id").asInt());
+					player.setName(playerBasicInfo.path("name").asText());
+					player.setNacionality(playerBasicInfo.path("nationality").asText());
+					player.setPhoto(playerBasicInfo.path("photo").asText());
+					playerCompetitionStatistics.setPlayer(player);
+					
+					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
+					
+					JsonNode playerTeamData=playerAllStatistics.path("team");
+					Team playerTeam=new Team();
+					playerTeam.setId(playerTeamData.path("id").asInt());
+					playerTeam.setName(playerTeamData.path("name").asText());
+					playerTeam.setLogo(playerTeamData.path("logo").asText());;
+					playerCompetitionStatistics.setTeam(playerTeam);
 	
-				JsonNode playerBasicInfo=playersTotalInfo.path("player");
-				Player player=new Player();
-				player.setId(playerBasicInfo.path("id").asInt());
-				player.setName(playerBasicInfo.path("name").asText());
-				player.setNacionality(playerBasicInfo.path("nationality").asText());
-				player.setPhoto(playerBasicInfo.path("photo").asText());
-				playerCompetitionStatistics.setPlayer(player);
-				
-				JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
-				
-				JsonNode playerTeamData=playerAllStatistics.path("team");
-				Team playerTeam=new Team();
-				playerTeam.setId(playerTeamData.path("id").asInt());
-				playerTeam.setName(playerTeamData.path("name").asText());
-				playerTeam.setLogo(playerTeamData.path("logo").asText());;
-				playerCompetitionStatistics.setTeam(playerTeam);
-
-				playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
-				playerCompetitionStatistics.setRedCards(playerAllStatistics.path("cards").path("red").asInt());
-				competitionPlayersStatistics.add(playerCompetitionStatistics);
+					playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+					playerCompetitionStatistics.setRedCards(playerAllStatistics.path("cards").path("red").asInt());
+					competitionPlayersStatistics.add(playerCompetitionStatistics);
+				}
+				return competitionPlayersStatistics;
+			
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
 			}
-			return competitionPlayersStatistics;
+		}
+		return null;
+	}
+
+	/**
+	 * Función que obtiene todas las rondas de una competición (tanto jornadas como 
+	 * fases eliminatorias).
+	 * @param competitionId EL ID de la competición de la que se quiere sacar la información.
+	 * @return Una lista de todas las rondas/jornadas de una competición.
+	 */
+	@Cacheable("competitionAllRounds")
+	public List<String>getCompetitionAllRounds(Integer competitionId){
+		List<String>competitionRounds=new ArrayList<>();
+		String url="https://"+apiHost+"/fixtures/rounds?league="+competitionId+"&season="+season;
+		JsonNode responseData=doRequest(url);
+		System.out.println(responseData);
+		if(responseData!=null && responseData.isArray()){
+			try{
+				for(JsonNode competitionRound:responseData){
+					competitionRounds.add(competitionRound.asText());
+				}
+				return competitionRounds;
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return null;
+	}
+
+	//@Cacheable("competitionRoundMatchesSummary")
+	public List<Match>getCompetitionRoundMatchesSummary(Integer competitionId, String round){
+		System.out.println(round);
+		List<Match> competitionRoundMatches=new ArrayList<>();
+		TimeZone timeZone=TimeZone.getDefault(); 
+		String timeZoneId=timeZone.getID();
+		
+		String url="https://"+apiHost+"/fixtures?league="+competitionId+"&season="+season+"&round="+round+"&timezone="+timeZoneId;
+		System.out.println(url);
+		JsonNode responseData=doRequest(url);
+		System.out.println(responseData);
+		if(responseData!=null && responseData.isArray()){
+			try{
+				for(JsonNode matchData: responseData){
+					Match match=new Match();
+					JsonNode matchInfo=matchData.path("fixture");
+					match.setId(matchInfo.path("id").asInt());
+	
+					String matchDate=matchInfo.path("date").asText();
+					ZonedDateTime dateTime = ZonedDateTime.parse(matchDate);
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy · HH:mm", Locale.getDefault());
+					//La fecha se transforma en un formato adaptado según el idioma del equipo.
+					String matchDateWithFormat = dateTime.format(formatter);
+					match.setDate(matchDateWithFormat);
+	
+					JsonNode competitionInfo=matchData.path("league");
+					Competition competition=new Competition();
+					competition.setId(competitionInfo.path("id").asInt());
+					competition.setName(competitionInfo.path("name").asText());
+					competition.setLogo(competitionInfo.path("logo").asText());
+					match.setCompetition(competition);
+					
+					match.setCompetitionRound(competitionInfo.path("round").asText());
+
+					JsonNode teamHomeInfo=matchData.path("teams").path("home");
+					Team teamHome=new Team();
+					teamHome.setId(teamHomeInfo.path("id").asInt());
+					teamHome.setName(teamHomeInfo.path("name").asText());
+					teamHome.setLogo(teamHomeInfo.path("logo").asText());
+					match.setTeamHome(teamHome);
+	
+					JsonNode teamAwayInfo=matchData.path("teams").path("away");
+					Team teamAway=new Team();
+					teamAway.setId(teamAwayInfo.path("id").asInt());
+					teamAway.setName(teamAwayInfo.path("name").asText());
+					teamAway.setLogo(teamAwayInfo.path("logo").asText());
+					match.setTeamAway(teamAway);
+	
+					JsonNode goalsInfo=matchData.path("goals");
+					match.setGoalsHome(goalsInfo.path("home").asInt());
+					match.setGoalsAway(goalsInfo.path("away").asInt());
+	
+					competitionRoundMatches.add(match);
+				}
+				return competitionRoundMatches;
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 		return null;
 	}

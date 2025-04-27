@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isfootball.model.Competition;
+import com.isfootball.model.Match;
 import com.isfootball.model.PlayerCompetitionStatistics;
 import com.isfootball.service.CompetitionService;
 
@@ -119,7 +121,7 @@ public class CompetitionController {
 	 * Endpoint REST para obtener una lista de jugadores que más tarjetas rojas hayan recibido
 	 * en una competición especificada junto a sus estadísticas.
 	 * 
-	 * @param id Es el ID de la comeptición de la que se van a sacar los jugadores que jugadores que 
+	 * @param competitionId Es el ID de la comeptición de la que se van a sacar los jugadores que 
 	 * más tarjetas rojas hayan recibido.
 	 * @return Lista de jugadores los jugadores que jugadores que más tarjetas rojas hayan 
 	 * recibido en la competición especificada junto a sus estadísticas.
@@ -127,5 +129,29 @@ public class CompetitionController {
 	@GetMapping("/api/competitions/{competitionId}/top-red-cards")
 	public List<PlayerCompetitionStatistics> getCompetitionTopRedCards(@PathVariable Integer competitionId){
 		return competitionService.getCompetitionTopRedCards(Integer.valueOf(competitionId));
+	}
+
+	/**
+	 * Endpoint REST para obtener una lista con las rondas de cada competición.
+	 * 
+	 * @param competitionId Es el ID de la competición de la que se van a sacar lss rondas.
+	 * @return Lista de rondas de las que se compone una competición.
+	 */
+	@GetMapping("/api/competitions/{competitionId}/rounds")
+	public List<String>getCompetitionAllRounds(@PathVariable Integer competitionId){
+		return competitionService.getCompetitionAllRounds(Integer.valueOf(competitionId));
+	}
+
+	/**
+	 * Endpoint REST para obtener una lista de los partidos de una ronda de una competición 
+	 * especificada junto a los datos del sumario de los partidos.
+	 * @param competitionId El ID de la competición de la que se van a sacar los partidos.
+	 * @param round El ID de la ronda de la que se van a sacar los partidos.
+	 * @return Una lista de los partidos de una ronda de una competición  especificada junto a los
+	 * datos del sumario de los partidos.
+	 */
+	@GetMapping("/api/competitions/{competitionId}/round-matches-summary")
+	public List<Match>ggetCompetitionRoundMatchesSummary( @PathVariable Integer competitionId, @RequestParam String round){
+		return competitionService.getCompetitionRoundMatchesSummary(competitionId, round);
 	}
 }

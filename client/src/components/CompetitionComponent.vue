@@ -225,7 +225,7 @@
         }
     }
     //Esta función los jugadores que más tarjetas amarillas han recibido en una competición.
-
+    
     onMounted(async()=>{
         getCompetitionInfo();
         getTeamsOrdered();
