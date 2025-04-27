@@ -13,29 +13,25 @@
         <ul class="nav nav-underline mb-3" role="tablist">
             <li class="nav-item" role="presentation" v-if="competition.type=='League' || competition.teamsCompetitionStatistics">
                 <button class="nav-link active" id="table-tab" data-bs-toggle="tab" 
-                data-bs-target="#classification" type="button" role="tab"
-                aria-selected="true">
+                data-bs-target="#classification" type="button" role="tab" aria-selected="true">
                     Clasificación
                 </button>
             </li>
             <li class="nav-item" role="presentation" v-if="competition.type=='Cup' && !competition.teamsCompetitionStatistics">
                 <button class="nav-link active" id="matches-tab" data-bs-toggle="tab" 
-                data-bs-target="#matches" type="button" role="tab"
-                aria-selected="true">
+                data-bs-target="#matches" type="button" role="tab" aria-selected="true">
                     Todos los partidos
                 </button>
             </li>
             <li class="nav-item" role="presentation" v-else>
                 <button class="nav-link" id="matches-tab" data-bs-toggle="tab" 
-                data-bs-target="#matches" type="button" role="tab"
-                aria-selected="true">
+                data-bs-target="#matches" type="button" role="tab" aria-selected="true">
                     Todos los partidos
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="statistics-tab" data-bs-toggle="tab" 
-                data-bs-target="#statistics" type="button" role="tab"
-                aria-selected="true" 
+                data-bs-target="#statistics" type="button" role="tab" aria-selected="true" 
                 @click="getCompetitionTopScorers(); getCompetitionTopAssistsProviders();
                 getCompetitionTopYellowCards(); getCompetitionTopRedCards();">
                     Estadísticas
@@ -49,6 +45,7 @@
                 </button>
             </li>
         </ul>
+
         <div class="tab-content" id="competitionTabsContent">
             <div class="tab-pane fade show active" id="classification" role="tabpanel" aria-labelledby="table-tab"
             v-if="competition.teamsCompetitionStatistics">
@@ -67,6 +64,15 @@
                 </div>
             </div>
         </div>
+        <div class="tab-content" id="competitionMatches">
+            <div class="tab-pane fade show" id="matches" role="tabpanel" aria-labelledby="table-tab">
+                <h1>Partidos</h1>
+                <div class="competition-info-container__competition-matches-container">
+                    <MatchCardComponent :match="match" v-for="match in competitionRoundMatches" 
+                    :key="match.id"/>
+                </div>
+            </div>
+        </div>
 
         <div class="tab-content" id="competitionStatistics">
             <div class="tab-pane fade show" id="statistics" role="tabpanel" aria-labelledby="table-tab">
@@ -81,6 +87,7 @@
                 :players="competitionTopRedCards"/>
             </div>
         </div>
+        
         <div class="tab-content" id="competitionTeams">
             <div class="tab-pane fade show" id="teams" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Equipos</h1>
@@ -106,7 +113,8 @@
     import { computed, onMounted, ref } from "vue";
     import CompetitionTableComponent from '@/components/CompetitionTableComponent.vue';
     import CompetitionStatisticTableComponent from '@/components/CompetitionStatisticTableComponent.vue';
-    
+    import MatchCardComponent from '@/components/MatchCardComponent.vue';
+
     const route=useRoute();
     const competitionId=route.params.id;
 
@@ -229,8 +237,53 @@
         }
     }
     //Esta función los jugadores que más tarjetas amarillas han recibido en una competición.
-    
+
+    const competitionRounds=ref([]);
+    const getCompetitionRounds=async()=>{
+        try{
+            const response=await fetch(`/api/competitions/${competitionId}/rounds`,{
+                method:'GET'
+            });
+            if(response.ok){
+                const data=await response.json();
+                competitionRounds.value=data;
+                console.log("Rondas: ", data);
+            }else{
+                console.log("No se han encontrado las rondas.")
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+    //Esta función obtiene todas las rondas de una competición.
+
+    const competitionRoundMatches=ref([]);
+    const getcompetitionRoundMatches=async(round)=>{
+        try{
+            const url=`/api/competitions/${competitionId}/round-matches-summary?round=${round}`;
+            console.log(url);
+            const response=await fetch(
+            `/api/competitions/${competitionId}/round-matches-summary?round=${round}`,{
+                method:'GET'
+            });
+            if(response.ok){
+                const data=await response.json();
+                competitionRoundMatches.value=data;
+                console.log("Partidos de la ronda : "+round+": ", data);
+            }else{
+                console.log("No se han encontrado partidos para la ronda: "+round);
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+    //Esta función obtiene una lista de partidos de una competición especificada en una ronda 
+    //especificada.
     onMounted(async()=>{
         getCompetitionInfo();
+        await getCompetitionRounds();
+        
+        await getcompetitionRoundMatches(competitionRounds.value[0]);
+        
     });
 </script>

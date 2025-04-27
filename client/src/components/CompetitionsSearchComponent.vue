@@ -25,7 +25,8 @@
                   </tr>
                </thead>
                <tbody>
-                  <router-link v-for="competition in competitions" :to="`/competitions/${competition.id}`"
+                  <router-link v-for="competition in competitions"
+                  :to="`/competitions/${competition.id}`"
                   :key="competition.id" custom v-slot="{navigate}">
                      <tr :key="competition.id" @click="navigate">
                         <td class="text-center" v-if="competition.country.flag!=='null'">

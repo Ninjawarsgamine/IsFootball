@@ -70,7 +70,6 @@ public class CompetitionService {
 	    String jsonResponse=response.getBody();
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
-			System.out.println(responseBody);
 	    	//Convertimos  la respuesta en un objeto de Java.	
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
@@ -498,7 +497,6 @@ public class CompetitionService {
 		List<String>competitionRounds=new ArrayList<>();
 		String url="https://"+apiHost+"/fixtures/rounds?league="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(url);
-		System.out.println(responseData);
 		if(responseData!=null && responseData.isArray()){
 			try{
 				for(JsonNode competitionRound:responseData){
@@ -515,15 +513,12 @@ public class CompetitionService {
 
 	@Cacheable("competitionRoundMatchesSummary")
 	public List<Match>getCompetitionRoundMatchesSummary(Integer competitionId, String round){
-		System.out.println(round);
 		List<Match> competitionRoundMatches=new ArrayList<>();
 		TimeZone timeZone=TimeZone.getDefault(); 
 		String timeZoneId=timeZone.getID();
 		
 		String url="https://"+apiHost+"/fixtures?league="+competitionId+"&season="+season+"&round="+round+"&timezone="+timeZoneId;
-		System.out.println(url);
 		JsonNode responseData=doRequest(url);
-		System.out.println(responseData);
 		if(responseData!=null && responseData.isArray()){
 			try{
 				for(JsonNode matchData: responseData){

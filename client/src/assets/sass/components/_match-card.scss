@@ -1,0 +1,115 @@
+.match-card-container {
+    width: 35rem;
+    margin: 1rem auto;
+    padding: 1rem;
+    border: 1px solid $color-grey-light;
+    border-radius: 12px;
+    background-color: $color-white;
+    font-weight: 700;
+  
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+    }
+  
+    &__competition {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
+        &__logo {
+            width: 2rem;
+            height: 2rem;
+            object-fit: contain;
+
+            @media only screen and (max-width: $max-width) {
+                align-self: center;
+                max-width: 25vh;
+                max-height: 25vh;
+            }
+
+            @media only screen and (max-width: $max-width-lower) {
+                align-self: center;
+                max-width: 20vh;
+                max-height: 20vh;
+            }
+
+            @media only screen and (max-width: $max-width-mobile) {
+                align-self: center;
+                max-width: 15vh;  // Ajuste para pantallas muy pequeñas
+                max-height: 15vh; // Ajuste para pantallas muy pequeñas
+            }
+        }
+  
+        &__name {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    }
+  
+    &__meta {
+        text-align: end;
+  
+        &__round {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+  
+        &__datetime {
+            font-size: 0.875rem;
+            color: $color-grey;
+        }
+    }
+  
+    &__teams {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &__team {
+            display: flex;
+            align-items: center;
+        
+            &__logo {
+                max-width: 5rem;
+            }
+
+            &__name {
+                font-size: 1.2rem;
+                font-weight: 700;
+                text-decoration: none;
+                color: $color-primary;
+            }
+
+            &:first-child {
+                margin-right: 2rem;
+             }
+      
+            &:last-child {
+                margin-left: 2rem;
+            }
+        }
+  
+        &__score {
+            font-size: 1.5rem;
+            font-weight: 700;
+  
+            &__value {
+                font-size: 2rem;
+                font-weight: 700;
+                line-height: 1;
+            }
+  
+            &__sep {
+            font-size: 1.5rem;
+            line-height: 1;
+            color: $color-grey;
+            }
+        }
+    }
+    a {
+        text-decoration: none;
+    }
+}

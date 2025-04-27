@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap");
-@import 'bootstrap/dist/css/bootstrap.min.css';
 .nav {
   width: 100%;
   display: flex;
@@ -343,6 +342,113 @@
 }
 .competition-info-container__statistic-table__player-photo {
   border-radius: 3rem;
+}
+.competition-info-container__competition-matches-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.match-card-container {
+  width: 35rem;
+  margin: 1rem auto;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: white;
+  font-weight: 700;
+}
+.match-card-container__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+.match-card-container__competition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.match-card-container__competition__logo {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__competition__logo {
+    align-self: center;
+    max-width: 25vh;
+    max-height: 25vh;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .match-card-container__competition__logo {
+    align-self: center;
+    max-width: 20vh;
+    max-height: 20vh;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .match-card-container__competition__logo {
+    align-self: center;
+    max-width: 15vh;
+    max-height: 15vh;
+  }
+}
+.match-card-container__competition__name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.match-card-container__meta {
+  text-align: end;
+}
+.match-card-container__meta__round {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.match-card-container__meta__datetime {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+.match-card-container__teams {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.match-card-container__teams__team {
+  display: flex;
+  align-items: center;
+}
+.match-card-container__teams__team__logo {
+  max-width: 5rem;
+}
+.match-card-container__teams__team__name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: black;
+}
+.match-card-container__teams__team:first-child {
+  margin-right: 2rem;
+}
+.match-card-container__teams__team:last-child {
+  margin-left: 2rem;
+}
+.match-card-container__teams__score {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.match-card-container__teams__score__value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.match-card-container__teams__score__sep {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #6c757d;
+}
+.match-card-container a {
+  text-decoration: none;
 }
 
 #app {
