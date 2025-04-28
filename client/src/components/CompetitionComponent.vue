@@ -17,15 +17,11 @@
                     Clasificación
                 </button>
             </li>
-            <li class="nav-item" role="presentation" v-if="competition.type=='Cup' && !competition.teamsCompetitionStatistics">
-                <button class="nav-link active" id="matches-tab" data-bs-toggle="tab" 
-                data-bs-target="#matches" type="button" role="tab" aria-selected="true">
-                    Todos los partidos
-                </button>
-            </li>
-            <li class="nav-item" role="presentation" v-else>
+
+            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="matches-tab" data-bs-toggle="tab" 
-                data-bs-target="#matches" type="button" role="tab" aria-selected="true">
+                data-bs-target="#matches" type="button" role="tab" aria-selected="true"
+                @click="getcompetitionRoundMatches(competitionRounds[0]);">
                     Todos los partidos
                 </button>
             </li>
@@ -67,13 +63,19 @@
         <div class="tab-content" id="competitionMatches">
             <div class="tab-pane fade show" id="matches" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Partidos</h1>
+                <select v-model="roundSelected" name="matches-round" 
+                class="competition-info-container__match-round-select form-select"
+                @change="getcompetitionRoundMatches(roundSelected)">
+                    <option :value="round" v-for="round in competitionRounds" :key="round">
+                        {{ round }}
+                    </option>
+                </select>
                 <div class="competition-info-container__competition-matches-container">
                     <MatchCardComponent :match="match" v-for="match in competitionRoundMatches" 
                     :key="match.id"/>
                 </div>
             </div>
         </div>
-
         <div class="tab-content" id="competitionStatistics">
             <div class="tab-pane fade show" id="statistics" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Estadísticas</h1>
@@ -110,7 +112,7 @@
 
 <script setup>
     import { useRoute } from 'vue-router';
-    import { computed, onMounted, ref } from "vue";
+    import { computed, onMounted, ref, watch } from "vue";
     import CompetitionTableComponent from '@/components/CompetitionTableComponent.vue';
     import CompetitionStatisticTableComponent from '@/components/CompetitionStatisticTableComponent.vue';
     import MatchCardComponent from '@/components/MatchCardComponent.vue';
@@ -178,11 +180,7 @@
             });
             if(response.ok){
                 const data=await response.json();
-                console.log("Máximos goleadores:", data);
                 competitionTopScorers.value=data;
-            }else{
-                console.log("No se han encontrado los máximos goleadores de la competición con ID "+
-                competitionId);
             }
         }catch(error){
             console.log(error);
@@ -247,9 +245,6 @@
             if(response.ok){
                 const data=await response.json();
                 competitionRounds.value=data;
-                console.log("Rondas: ", data);
-            }else{
-                console.log("No se han encontrado las rondas.")
             }
         }catch(error){
             console.log(error);
@@ -260,8 +255,6 @@
     const competitionRoundMatches=ref([]);
     const getcompetitionRoundMatches=async(round)=>{
         try{
-            const url=`/api/competitions/${competitionId}/round-matches-summary?round=${round}`;
-            console.log(url);
             const response=await fetch(
             `/api/competitions/${competitionId}/round-matches-summary?round=${round}`,{
                 method:'GET'
@@ -269,7 +262,6 @@
             if(response.ok){
                 const data=await response.json();
                 competitionRoundMatches.value=data;
-                console.log("Partidos de la ronda : "+round+": ", data);
             }else{
                 console.log("No se han encontrado partidos para la ronda: "+round);
             }
@@ -279,11 +271,18 @@
     }
     //Esta función obtiene una lista de partidos de una competición especificada en una ronda 
     //especificada.
+
+    const roundSelected=ref("");
+    watch(competitionRounds, (newRounds)=>{
+        if(newRounds.length>0 && !roundSelected.value){
+            roundSelected.value=newRounds[0];
+        }
+    });
+    //Usamos un "watch" para que cuando cambie el valor de las rondas, si "roundSelected" no tiene
+    //valor, va a ser el primero del array de las rondas actualizadas.
+
     onMounted(async()=>{
         getCompetitionInfo();
         await getCompetitionRounds();
-        
-        await getcompetitionRoundMatches(competitionRounds.value[0]);
-        
     });
 </script>

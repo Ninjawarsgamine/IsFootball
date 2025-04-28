@@ -19,9 +19,9 @@
       </div>
     </div>
 
-    <div class="match-card-container__teams d-flex align-items-center justify-content-center">
+    <div class="match-card-container__teams">
       <router-link :to="`/teams/${match.teamHome.id}`" 
-      class="match-card-container__teams__team d-flex align-items-center me-4">
+      class="match-card-container__teams__team me-4">
         <img :src="match.teamHome.logo"
         class="match-card-container__teams__team__logo me-2">
         <span class="match-card-container__teams__team__name me-2">
@@ -42,7 +42,8 @@
       </div>
 
       <router-link :to="`/teams/${match.teamAway.id}`" 
-        class="match-card-container__teams__team d-flex align-items-center ms-4">
+        class="match-card-container__teams__team match-card-container__teams__team__away d-flex
+         align-items-center ms-4">
         <span class="match-card-container__teams__team__name me-2">
           {{ match.teamAway.name }}
         </span>

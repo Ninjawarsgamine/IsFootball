@@ -280,6 +280,46 @@
   max-width: 2rem;
   max-height: 2rem;
 }
+.competition-info-container select {
+  margin-left: 2.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  width: 30%;
+  box-shadow: none;
+  border-color: black;
+}
+.competition-info-container select:focus {
+  border-color: black;
+  box-shadow: black;
+}
+@media only screen and (max-width: 1100px) {
+  .competition-info-container select {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .competition-info-container select {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .competition-info-container select {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .competition-info-container select {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+  }
+}
 .competition-info-container h2 {
   text-align: left;
   margin-left: 2rem;
@@ -356,6 +396,7 @@
   border-radius: 12px;
   background-color: white;
   font-weight: 700;
+  font-size: 80%;
 }
 .match-card-container__header {
   display: flex;
@@ -375,28 +416,24 @@
 }
 @media only screen and (max-width: 800px) {
   .match-card-container__competition__logo {
-    align-self: center;
-    max-width: 25vh;
-    max-height: 25vh;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 }
 @media only screen and (max-width: 600px) {
   .match-card-container__competition__logo {
-    align-self: center;
-    max-width: 20vh;
-    max-height: 20vh;
-  }
-}
-@media only screen and (max-width: 400px) {
-  .match-card-container__competition__logo {
-    align-self: center;
-    max-width: 15vh;
-    max-height: 15vh;
+    width: 1rem;
+    height: 1rem;
   }
 }
 .match-card-container__competition__name {
   font-size: 1rem;
   font-weight: 600;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__competition__name {
+    font-size: 0.8rem;
+  }
 }
 .match-card-container__meta {
   text-align: end;
@@ -405,9 +442,19 @@
   font-size: 1rem;
   font-weight: 600;
 }
+@media only screen and (max-width: 800px) {
+  .match-card-container__meta__round {
+    font-size: 0.8rem;
+  }
+}
 .match-card-container__meta__datetime {
   font-size: 0.875rem;
   color: #6c757d;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__meta__datetime {
+    font-size: 0.8rem;
+  }
 }
 .match-card-container__teams {
   display: flex;
@@ -417,15 +464,40 @@
 .match-card-container__teams__team {
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__team {
+    justify-content: center;
+    flex-direction: column;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__team__away {
+    flex-direction: column-reverse;
+  }
 }
 .match-card-container__teams__team__logo {
+  max-height: 5rem;
   max-width: 5rem;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__team__logo {
+    align-self: center;
+    max-width: 4rem;
+    max-height: 4rem;
+  }
 }
 .match-card-container__teams__team__name {
   font-size: 1.2rem;
   font-weight: 700;
   text-decoration: none;
   color: black;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__team__name {
+    font-size: 0.8rem;
+  }
 }
 .match-card-container__teams__team:first-child {
   margin-right: 2rem;
@@ -437,15 +509,35 @@
   font-size: 1.5rem;
   font-weight: 700;
 }
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__score {
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .match-card-container__teams__score {
+    font-size: 0.8rem;
+  }
+}
 .match-card-container__teams__score__value {
   font-size: 2rem;
   font-weight: 700;
   line-height: 1;
 }
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__score__value {
+    font-size: 1.5rem;
+  }
+}
 .match-card-container__teams__score__sep {
   font-size: 1.5rem;
   line-height: 1;
   color: #6c757d;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__score__sep {
+    font-size: 1.5rem;
+  }
 }
 .match-card-container a {
   text-decoration: none;

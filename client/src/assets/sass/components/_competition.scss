@@ -40,7 +40,42 @@
             max-width: 2rem;     
             max-height: 2rem;    
         }
-       
+    }
+
+    select {
+        margin-left: 2.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+        width:30%;
+        box-shadow: none;
+        border-color: $color-primary;
+        &:focus{
+            border-color: $color-primary;
+            box-shadow: $color-primary;
+        }
+
+        @media only screen and (max-width: 1100px) {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+      
+        }
+
+        @media only screen and (max-width: $max-width) {
+            margin-left: auto;
+            margin-right: auto;
+            width:80%;
+        }
+        @media only screen and (max-width: $max-width) {
+            margin-left: auto;
+            margin-right: auto;
+            width:70%;
+        }
+        @media only screen and (max-width: $max-width) {
+            margin-left: auto;
+            margin-right: auto;
+            width:60%;
+        }
     }
 
     h2{

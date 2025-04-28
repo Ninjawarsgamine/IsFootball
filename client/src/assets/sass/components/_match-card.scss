@@ -6,14 +6,15 @@
     border-radius: 12px;
     background-color: $color-white;
     font-weight: 700;
-  
+    font-size:80%;
+    
     &__header {
         display: flex;
         justify-content: space-between;
         align-items: start;
         margin-bottom: 1rem;
     }
-  
+
     &__competition {
         display: flex;
         align-items: center;
@@ -25,41 +26,42 @@
             object-fit: contain;
 
             @media only screen and (max-width: $max-width) {
-                align-self: center;
-                max-width: 25vh;
-                max-height: 25vh;
+        
+                width: 1.5rem;
+                height:1.5rem;
             }
-
             @media only screen and (max-width: $max-width-lower) {
-                align-self: center;
-                max-width: 20vh;
-                max-height: 20vh;
-            }
-
-            @media only screen and (max-width: $max-width-mobile) {
-                align-self: center;
-                max-width: 15vh;  // Ajuste para pantallas muy pequeñas
-                max-height: 15vh; // Ajuste para pantallas muy pequeñas
+                width: 1rem;
+                height:1rem;
             }
         }
   
         &__name {
             font-size: 1rem;
             font-weight: 600;
+            @media only screen and (max-width: $max-width) {
+                font-size: 0.8rem;
+            }
         }
     }
   
     &__meta {
         text-align: end;
-  
+
         &__round {
             font-size: 1rem;
             font-weight: 600;
+            @media only screen and (max-width: $max-width) {
+                font-size: 0.8rem;
+            }
         }
   
         &__datetime {
             font-size: 0.875rem;
             color: $color-grey;
+            @media only screen and (max-width: $max-width) {
+                font-size: 0.8rem;
+            }
         }
     }
   
@@ -67,13 +69,30 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        
+
         &__team {
             display: flex;
             align-items: center;
-        
+            justify-content: center;
+            @media only screen and (max-width: $max-width) {
+                justify-content: center;
+                flex-direction: column;
+            }
+
+            &__away{
+                @media only screen and (max-width: $max-width) {
+                    flex-direction: column-reverse;
+                }
+            }
+            
             &__logo {
+                max-height: 5rem;
                 max-width: 5rem;
+                @media only screen and (max-width: $max-width) {
+                    align-self: center;
+                    max-width: 4rem;
+                    max-height: 4rem;
+                }
             }
 
             &__name {
@@ -81,6 +100,9 @@
                 font-weight: 700;
                 text-decoration: none;
                 color: $color-primary;
+                @media only screen and (max-width: $max-width) {
+                    font-size: 0.8rem;
+                }
             }
 
             &:first-child {
@@ -95,20 +117,32 @@
         &__score {
             font-size: 1.5rem;
             font-weight: 700;
-  
+            @media only screen and (max-width: $max-width) {
+                font-size: 1rem;
+            }
+            @media only screen and (max-width: $max-width-lower) {
+                font-size: 0.8rem;
+            }
+
             &__value {
                 font-size: 2rem;
                 font-weight: 700;
                 line-height: 1;
+                @media only screen and (max-width: $max-width) {
+                    font-size: 1.5rem;
+                }
             }
-  
             &__sep {
-            font-size: 1.5rem;
-            line-height: 1;
-            color: $color-grey;
+                font-size: 1.5rem;
+                line-height: 1;
+                color: $color-grey;
+                @media only screen and (max-width: $max-width) {
+                    font-size: 1.5rem;
+                }
             }
         }
     }
+
     a {
         text-decoration: none;
     }
