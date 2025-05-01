@@ -42,7 +42,7 @@
                </tbody>
             </table>
          </div>
-         <div class="competitions-search__competitions__empty" v-else-if="hasSearched && !isLoading">
+         <div class="competitions-search__competitions__empty" v-else-if="hasSearched && !loading.isLoading">
            <p>No se han encontrado resultados</p>
          </div>
       </div>
@@ -50,30 +50,34 @@
 </template>
 
 <script setup>
+   import { useFetch } from "@/composables/useFetch";
+   import { useLoadingStore } from "@/stores/useLoadingStore";
    import { ref } from "vue";
    
    const competitionName = ref("");
-   const isLoading=ref(false);
+   const loading=useLoadingStore();
+
    const hasSearched=ref(false);
    const competitions = ref([]);
+
    const getCompetitions = async () => {
       try {
+         loading.setLoading(true);
          if (!competitionName.value.trim()) {
+            loading.setLoading(false);
             return;
          }
          //Si no hay ningún nombre no se hace nada.
-         isLoading.value=true;
+
          hasSearched.value=true;
          const competitionNameEncoded=encodeURI(competitionName.value.trim());
-         const response = await fetch( `/api/competitions/${competitionNameEncoded}`, {
-            method: "GET",
-         });
-         if (response.ok) {
-            const data = await response.json();
-            competitions.value = data;
+         const {data,error}=await useFetch(`/api/competitions/${competitionNameEncoded}`);
+         if(error){
+            console.log("Error al obtener competiciones con la cadena: '"+competitionName.value+"'.")
+            return;
          }
-         isLoading.value=false;
-      } catch (error) {
+         competitions.value=data.value;
+      }catch (error){
          console.log("Se ha producido un error: ", error);
       }
    };

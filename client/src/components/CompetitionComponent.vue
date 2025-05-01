@@ -82,7 +82,7 @@
                 <CompetitionStatisticTableComponent title="Máximos goleadores"
                  :players="competitionTopScorers"/>
                 <CompetitionStatisticTableComponent title="Máximos asistidores"
-                :players="competitionTopAssistsProviders"/>
+                :players="competitionTopAssistsProviders" />
                 <CompetitionStatisticTableComponent title="Más tarjetas amarillas"
                 :players="competitionTopYellowCards"/>
                 <CompetitionStatisticTableComponent title="Más tarjetas rojas"
@@ -116,27 +116,19 @@
     import CompetitionTableComponent from '@/components/CompetitionTableComponent.vue';
     import CompetitionStatisticTableComponent from '@/components/CompetitionStatisticTableComponent.vue';
     import MatchCardComponent from '@/components/MatchCardComponent.vue';
+    import { useFetch } from '@/composables/useFetch';
 
     const route=useRoute();
     const competitionId=route.params.id;
 
     const competition=ref([]);
-
     const getCompetitionInfo= async() =>{
-        try{
-            const response=await fetch(`/api/competitionAllData/${competitionId}`,{
-                method:"GET",
-            });
-            if(response.ok){
-                const data=await response.json();
-                competition.value=data;
-                console.log(data);
-            }else{
-                console.log("No se ha encontrado ninguna competición con ID "+competitionId);
-            }
-        }catch(error){
-            console.log(error);
+        const {data, error}=await useFetch(`/api/competitionAllData/${competitionId}`);
+        if(error){
+            console.log("No se ha encontrado ninguna competición con ID "+competitionId);
+            return;
         }
+        competition.value=data.value;
     }
 
     const groupedTeams=computed(()=>{
@@ -154,120 +146,84 @@
     
     const teamsOrdered=ref([]);
     const getTeamsOrdered= async() =>{
-        try{
-            const response=await fetch(`/api/competitionTeams/${competitionId}`,{
-                method:"GET",
-            });
-            if(response.ok){
-                const data=await response.json();
-    
-                teamsOrdered.value=data;
-                teamsOrdered.value.sort((a,b)=>(a.name.localeCompare(b.name)));
-            }else{
-                console.log("No se han encontrado equipos para la competición con ID "+competitionId);
-            }
-        }catch(error){
-            console.log(error);
+        const {data, error}=await useFetch(`/api/competitionTeams/${competitionId}`);
+        if(error){
+            console.log("No se han encontrado equipos para la competición con ID "+competitionId);
+            return;
         }
+        teamsOrdered.value=data.value;
+        teamsOrdered.value.sort((a,b)=>(a.name.localeCompare(b.name)));
+
     }
     //Esta función saca todos los equipos de una liga y los ordena alfabéticamente según su nombre.
 
     const competitionTopScorers=ref([]);
     const getCompetitionTopScorers=async()=>{
-        try{
-            const response=await fetch(`/api/competitions/${competitionId}/top-scorers`,{
-                method:'GET'
-            });
-            if(response.ok){
-                const data=await response.json();
-                competitionTopScorers.value=data;
+        
+        const {data, error}=await useFetch(`/api/competitions/${competitionId}/top-scorers`);
+            if(error){
+                console.log("No se han encontrado los máximos goleadores de la competición con ID: "+competitionId);
+                return;
             }
-        }catch(error){
-            console.log(error);
-        }
+            competitionTopScorers.value=data.value;
+            console.log(competitionTopScorers.value)
     }
     //Esta función saca los máximos goleadores de una competición.
 
     const competitionTopAssistsProviders=ref([]);
     const getCompetitionTopAssistsProviders=async()=>{
-        try{
-            const response=await fetch(`/api/competitions/${competitionId}/top-assists-providers`,{
-                method:'GET'
-            });
-            if(response.ok){
-                const data=await response.json();
-                competitionTopAssistsProviders.value=data;
-            }
-        }catch(error){
-            console.log(error);
+        const {data,error}=await useFetch(`/api/competitions/${competitionId}/top-assists-providers`);
+        console.log(data.value);
+        if(error){
+            console.log("No se han encontrado los máximos asistentes de la competición con ID: "+competitionId);
+            return;
         }
+        competitionTopAssistsProviders.value=data.value;
     }
     //Esta función saca los máximos asistentes de una competición.
 
     const competitionTopYellowCards=ref([]);
     const getCompetitionTopYellowCards=async()=>{
-        try{
-            const response=await fetch(`/api/competitions/${competitionId}/top-yellow-cards`,{
-                method:'GET'
-            });
-            if(response.ok){
-                const data=await response.json();
-                competitionTopYellowCards.value=data;
-            }
-        }catch(error){
-            console.log(error);
+        const {data,error}=await useFetch(`/api/competitions/${competitionId}/top-yellow-cards`);
+        if(error){
+            console.log("No se han encontrado los jugadores con más tarjetas amarillas de la competición con ID: "+competitionId);
+            return;
         }
+        competitionTopYellowCards.value=data.value;
     }
     //Esta función los jugadores que más tarjetas amarillas han recibido en una competición.
 
     const competitionTopRedCards=ref([]);
     const getCompetitionTopRedCards=async()=>{
-        try{
-            const response=await fetch(`/api/competitions/${competitionId}/top-red-cards`,{
-                method:'GET'
-            });
-            if(response.ok){
-                const data=await response.json();
-                competitionTopRedCards.value=data;
-            }
-        }catch(error){
-            console.log(error);
+        const {data,error}=await useFetch(`/api/competitions/${competitionId}/top-red-cards`);
+        console.log(data.value);
+        if(error){
+            console.log("No se han encontrado los jugadores con más tarjetas rojas de la competición con ID: "+competitionId);
+            return;
         }
+        competitionTopRedCards.value=data.value;
     }
     //Esta función los jugadores que más tarjetas amarillas han recibido en una competición.
-
+    
     const competitionRounds=ref([]);
     const getCompetitionRounds=async()=>{
-        try{
-            const response=await fetch(`/api/competitions/${competitionId}/rounds`,{
-                method:'GET'
-            });
-            if(response.ok){
-                const data=await response.json();
-                competitionRounds.value=data;
-            }
-        }catch(error){
-            console.log(error);
+        const {data, error}=await useFetch(`/api/competitions/${competitionId}/rounds`);
+        if(error){
+            console.log("No se han encontrado las rondas de la competición con ID: "+competitionId);
+            return;
         }
+        competitionRounds.value=data.value;
     }
     //Esta función obtiene todas las rondas de una competición.
 
     const competitionRoundMatches=ref([]);
     const getcompetitionRoundMatches=async(round)=>{
-        try{
-            const response=await fetch(
-            `/api/competitions/${competitionId}/round-matches-summary?round=${round}`,{
-                method:'GET'
-            });
-            if(response.ok){
-                const data=await response.json();
-                competitionRoundMatches.value=data;
-            }else{
-                console.log("No se han encontrado partidos para la ronda: "+round);
-            }
-        }catch(error){
-            console.log(error);
+        const {data,error}=await useFetch(`/api/competitions/${competitionId}/round-matches-summary?round=${round}`);
+        if(error){
+            console.log("No se han encontrado partidos para la ronda: "+round);
+            return;
         }
+        competitionRoundMatches.value=data.value;
     }
     //Esta función obtiene una lista de partidos de una competición especificada en una ronda 
     //especificada.

@@ -141,7 +141,7 @@ public class CompetitionController {
 	public List<String>getCompetitionAllRounds(@PathVariable Integer competitionId){
 		return competitionService.getCompetitionAllRounds(Integer.valueOf(competitionId));
 	}
-
+	
 	/**
 	 * Endpoint REST para obtener una lista de los partidos de una ronda de una competición 
 	 * especificada junto a los datos del sumario de los partidos.

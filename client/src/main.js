@@ -4,6 +4,11 @@ import router from './router';
 import './assets/css/style.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { createPinia } from 'pinia';
+
+const pinia = createPinia();
+
 createApp(App)
-  .use(router)
-  .mount('#app');
+.use(pinia)
+.use(router)
+.mount('#app');
