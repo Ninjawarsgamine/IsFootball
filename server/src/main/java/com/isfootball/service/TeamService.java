@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isfootball.model.Country;
 import com.isfootball.model.Team;
 
 @Service
@@ -67,6 +68,41 @@ public class TeamService {
 	    	return null;
 	    }
 	}
+
+	/**
+	 * Función que devuelve una lista de equipos que coincidan con un nombre espcificado.
+	 * @param teamName El nombre del que se va a utilizar para realizar 
+	 * la búsqueda.
+	 * @return Lista de equipos coincidentes con el nombre especificado.
+	 */
+	@Cacheable("teamsByName")
+	public List<Team>getTeamsByName(String teamName){
+		List<Team> teams=new ArrayList<>();
+		if(teamName.length()<3){
+			return null;
+		}
+		String url="https://"+apiHost+"/teams?search="+teamName;
+		JsonNode responseData=doRequest(url);
+		try{
+			for(JsonNode teamData: responseData){
+				JsonNode teamInfo=teamData.path("team");
+				Team team=new Team();
+				team.setId(teamInfo.path("id").asInt());
+				team.setName(teamInfo.path("name").asText());
+				team.setLogo(teamInfo.path("logo").asText());
+				Country country=new Country();
+				country.setName(teamInfo.path("country").asText());
+				team.setCountry(country);
+
+				teams.add(team);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+		return teams;
+	}
+
 
     /**
      * Función que devuelve una lista de todos los equipos de una competición con un ID especificado.

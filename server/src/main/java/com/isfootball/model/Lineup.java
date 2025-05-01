@@ -10,5 +10,22 @@ public class Lineup implements Serializable{
 
     private String formation;
     private Integer matchesPlayed;
+    
+    public String getFormation() {
+        return formation;
+    }
+    
+    public void setFormation(String formation) {
+        this.formation = formation;
+    }
+    
+    public Integer getMatchesPlayed() {
+        return matchesPlayed;
+    }
+    
+    public void setMatchesPlayed(Integer matchesPlayed) {
+        this.matchesPlayed = matchesPlayed;
+    }
+    
 
 }

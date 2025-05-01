@@ -1,6 +1,6 @@
 <template>
-   <div class="competitions-search">
-      <div class="competitions-search__form">
+   <div class="search-widget">
+      <div class="search-widget__form">
          <form method="GET" id="competition-search-form" @submit.prevent="getCompetitions">
             <input type="text" name="name"  id="competitionName" v-model="competitionName"
             placeholder="Busca tu competición aquí" autocomplete="off"/>
@@ -13,8 +13,8 @@
             </button>
          </form>
       </div>
-      <div class="competitions-search__competitions">
-         <div class="competitions-search__competitions__result table-responsive" 
+      <div class="search-widget__results">
+         <div class="search-widget__results__result table-responsive" 
          v-if="competitions.length > 0">
              <table class="table table-striped table-hover table-sm align-middle mb-0">
                <thead class="table-dark">
@@ -42,7 +42,7 @@
                </tbody>
             </table>
          </div>
-         <div class="competitions-search__competitions__empty" v-else-if="hasSearched && !loading.isLoading">
+         <div class="search-widget__results__empty" v-else-if="hasSearched && !loading.isLoading">
            <p>No se han encontrado resultados</p>
          </div>
       </div>

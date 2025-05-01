@@ -117,7 +117,6 @@ public class CompetitionService {
 	
 				String url="https://"+apiHost+"/standings?league="+competitionId+"&season="+season;
 				JsonNode competitionAllData=doRequest(url);
-				System.out.println(competitionAllData);
 				if(competitionAllData!=null && !competitionAllData.isEmpty()){
 					JsonNode competitionData=competitionAllData.get(0).path("league");
 					
@@ -225,7 +224,7 @@ public class CompetitionService {
 	
 	/**
 	 * Función que devuelve una lista de competiciones que coincidan con un nombre espcificado.
-	 * @param competitionName El nombre de la competición que se va a utilizar  para realizar 
+	 * @param competitionName El nombre de la competición que se va a utilizar para realizar 
 	 * la búsqueda.
 	 * @return Lista de competiciones coincidentes con el nombre especificado.
 	 */

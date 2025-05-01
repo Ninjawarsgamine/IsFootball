@@ -175,15 +175,15 @@
   border: 1px black solid;
 }
 
-.competitions-search {
+.search-widget {
   padding: 2rem;
   width: 100%;
 }
-.competitions-search__form {
+.search-widget__form {
   margin: 0 auto;
   max-width: 50rem;
 }
-.competitions-search__form form {
+.search-widget__form form {
   display: flex;
   align-items: center;
   background-color: white;
@@ -193,7 +193,7 @@
   gap: 0.5rem;
   transition: all 0.3s ease;
 }
-.competitions-search__form form input[type^=text] {
+.search-widget__form form input[type^=text] {
   flex: 1;
   height: 2.8125rem;
   padding: 0 1.25rem;
@@ -203,10 +203,10 @@
   outline: none;
   color: black;
 }
-.competitions-search__form form input[type^=text]::placeholder {
+.search-widget__form form input[type^=text]::placeholder {
   text-transform: uppercase;
 }
-.competitions-search__form form button {
+.search-widget__form form button {
   background-color: transparent;
   border: none;
   border-radius: 0.3rem;
@@ -215,23 +215,23 @@
   align-items: center;
   justify-content: center;
 }
-.competitions-search__form form button svg {
+.search-widget__form form button svg {
   width: 2rem;
   height: 2rem;
   stroke: black;
   transition: all 0.3s ease;
 }
-.competitions-search__form form button svg:hover {
+.search-widget__form form button svg:hover {
   transform: translateY(-0.2rem);
 }
-.competitions-search__competitions {
+.search-widget__results {
   margin-top: 2rem;
   margin-bottom: 10rem;
 }
-.competitions-search__competitions__result table tbody {
+.search-widget__results__result table tbody {
   cursor: pointer;
 }
-.competitions-search__competitions__result table tbody tr td img {
+.search-widget__results__result table tbody tr td img {
   max-width: 2.5rem;
   max-height: 2.5rem;
 }
