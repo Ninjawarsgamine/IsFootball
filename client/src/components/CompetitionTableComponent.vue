@@ -26,12 +26,12 @@
                             <span>{{ team.team.name }}</span>
                         </router-link>  
                     </td>
-                    <td>{{ team.matchesPlayed }}</td>
-                    <td>{{ team.matchesWon }}</td>
-                    <td>{{ team.matchesDrawn }}</td>
-                    <td>{{ team.matchesLost }}</td>
-                    <td>{{ team.goalsFor }}</td>
-                    <td>{{ team.goalsAgainst }}</td>
+                    <td>{{ team.matchesPlayed.total }}</td>
+                    <td>{{ team.matchesWon.total }}</td>
+                    <td>{{ team.matchesDrawn.total }}</td>
+                    <td>{{ team.matchesLost.total }}</td>
+                    <td>{{ team.goalsFor.total }}</td>
+                    <td>{{ team.goalsAgainst.total }}</td>
                     <td>{{ team.goalsDiff }}</td>
                     <td class="competition-info-container__team-points">{{ team.points }}</td>
                     <td>

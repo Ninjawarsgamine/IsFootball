@@ -124,6 +124,7 @@
     const competition=ref([]);
     const getCompetitionInfo= async() =>{
         const {data, error}=await useFetch(`/api/competitionAllData/${competitionId}`);
+        console.log(data);
         if(error){
             console.log("No se ha encontrado ninguna competición con ID "+competitionId);
             return;

@@ -2,6 +2,9 @@ package com.isfootball.model;
 
 import java.io.Serializable;
 
+/**
+ * Clase que representa la información sobre un estadio de fútbol.
+ */
 public class Venue implements Serializable {
     
     private static final long serialVersionUID = -5261183434233293290L;
@@ -43,15 +46,19 @@ public class Venue implements Serializable {
 	public void setCity(String city) {
 		this.city = city;
 	}
+
 	public Integer getCapacity() {
 		return capacity;
 	}
+
 	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
