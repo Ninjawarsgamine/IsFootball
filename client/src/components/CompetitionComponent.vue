@@ -2,10 +2,10 @@
     <div class="competition-info-container" 
     v-if="competition.country">
 
-        <div class="competition-info-container__competition-header">
+        <div class="component-header">
             <img :src="competition.logo" alt="Logo de la competición">
             <h1>{{ competition.name }}</h1>
-            <img class="competition-info-container__competition-header__competition-country img-fluid"
+            <img class="component-header__component-country img-fluid"
             :src="competition.country.flag" v-if="competition.country.flag!=='null'" 
             alt="Bandera del país de la competición">
         </div>
