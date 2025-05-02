@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isfootball.model.Country;
 import com.isfootball.model.Team;
+import com.isfootball.model.Venue;
+import com.isfootball.utils.Utils;
 
 @Service
 public class TeamService {
@@ -60,6 +62,7 @@ public class TeamService {
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	//Convertimos la respuesta en un objeto de Java.	
+			System.out.println(responseBody);
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
 	    	
@@ -67,6 +70,56 @@ public class TeamService {
 	    	e.printStackTrace();
 	    	return null;
 	    }
+	}
+
+	/**
+	 * Función que obtiene los datos básicos de un equipo según un ID especificado.
+	 * @param teamId El ID del equipo que se va a buscar.
+	 * @return Un objeto Team con la información básica de un equipo que coincida con 
+	 * el ID especificado.
+	 */
+	@Cacheable("teamByNameAndById")
+	public Team getTeamByNameAndId(String teamName, Integer teamId){
+		teamName=Utils.decodeSpaces(teamName);
+		//Quitamos la codificación del nombre para que sea entendible por la API.
+		
+		List<Team>teamsByName=getTeamsByName(teamName);
+		Team team=new Team();
+
+		try{
+			for(Team teamInfo: teamsByName){
+				System.out.println("Comparando ID: " + teamInfo.getId() + " con " + teamId);
+				
+				if(teamInfo.getId().equals(teamId)){
+					team.setId(teamInfo.getId());
+					team.setName(teamInfo.getName());
+					team.setLogo(teamInfo.getLogo());
+					team.setFounded(teamInfo.getFounded());
+					System.out.println("Estamos bien hasta aquí");
+					String urlCountry="https://"+apiHost+"/countries?name="+teamInfo.getCountry().getName();
+					System.out.println("Country URL: "+urlCountry);
+					JsonNode countryData=doRequest(urlCountry).get(0);
+					Country country=new Country();
+					country.setFlag(countryData.path("flag").asText());
+					team.setCountry(country);
+	
+					Venue venueInfo=teamInfo.getVenue();
+					Venue venue=new Venue();
+					venue.setId(venueInfo.getId());
+					venue.setName(venueInfo.getName());
+					venue.setImage(venueInfo.getImage());
+					venue.setAddress(venueInfo.getAddress());
+					venue.setCity(venueInfo.getCity());
+					venue.setCapacity(venueInfo.getCapacity());
+					team.setVenue(venue);
+					return team;
+				}
+			}
+			return null;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
@@ -82,6 +135,7 @@ public class TeamService {
 			return null;
 		}
 		String url="https://"+apiHost+"/teams?search="+teamName;
+		System.out.println(url);
 		JsonNode responseData=doRequest(url);
 		try{
 			for(JsonNode teamData: responseData){
@@ -90,9 +144,21 @@ public class TeamService {
 				team.setId(teamInfo.path("id").asInt());
 				team.setName(teamInfo.path("name").asText());
 				team.setLogo(teamInfo.path("logo").asText());
+				team.setFounded(teamInfo.path("ifounded").asInt());
+
 				Country country=new Country();
 				country.setName(teamInfo.path("country").asText());
 				team.setCountry(country);
+
+				JsonNode venueData=teamData.path("venue");
+				Venue venue=new Venue();
+				venue.setId(venueData.path("id").asInt());
+				venue.setName(venueData.path("name").asText());
+				venue.setAddress(venueData.path("address").asText());
+				venue.setImage(venueData.path("image").asText());
+				venue.setCity(venueData.path("city").asText());
+				venue.setCapacity(venueData.path("capacity").asInt());
+				team.setVenue(venue);
 
 				teams.add(team);
 			}
@@ -102,7 +168,6 @@ public class TeamService {
 		}
 		return teams;
 	}
-
 
     /**
      * Función que devuelve una lista de todos los equipos de una competición con un ID especificado.

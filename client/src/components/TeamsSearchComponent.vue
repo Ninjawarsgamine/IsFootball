@@ -26,7 +26,7 @@
                 </thead>
                 <tbody>
                    <router-link v-for="team in teams"
-                   :to="`/teams/${team.id}`"
+                   :to="`/teams/${removeAccents(team.name)}/${team.id}`"
                    :key="team.id" custom v-slot="{navigate}">
                       <tr :key="team.id" @click="navigate">
                          <td class="text-center" v-if="team.country.name!=='null'">
@@ -50,34 +50,35 @@
  </template>
  
  <script setup>
-    import { useFetch } from "@/composables/useFetch";
-    import { useLoadingStore } from "@/stores/useLoadingStore";
-    import { ref } from "vue";
+   import { useFetch } from "@/composables/useFetch";
+   import { useLoadingStore } from "@/stores/useLoadingStore";
+   import { removeAccents } from "@/utils/utils";
+   import { ref } from "vue";
     
-    const teamName = ref("");
-    const loading=useLoadingStore();
+   const teamName = ref("");
+   const loading=useLoadingStore();
  
-    const hasSearched=ref(false);
-    const teams = ref([]);
+   const hasSearched=ref(false);
+   
+   const teams = ref([]);
+   const getTeams= async () => {
+      try {
+         loading.setLoading(true);
+         if (!teamName.value.trim()) {
+            loading.setLoading(false);
+            return;
+         }
  
-    const getTeams= async () => {
-       try {
-          loading.setLoading(true);
-          if (!teamName.value.trim()) {
-             loading.setLoading(false);
-             return;
-          }
- 
-          hasSearched.value=true;
-          const teamNameEncoded=encodeURI(teamName.value.trim());
-          const {data,error}=await useFetch(`/api/teams/${teamNameEncoded}`);
-          if(error){
-             console.log("Error al obtener competiciones con la cadena: '"+teamName.value+"'.")
-             return;
-          }
-          teams.value=data.value;
-       }catch (error){
-          console.log("Se ha producido un error: ", error);
-       }
-    };
+         hasSearched.value=true;
+         const teamNameEncoded=encodeURI(teamName.value.trim());
+         const {data,error}=await useFetch(`/api/teams/${teamNameEncoded}`);
+         if(error){
+            console.log("Error al obtener competiciones con la cadena: '"+teamName.value+"'.")
+            return;
+         }
+         teams.value=data.value;
+      }catch (error){
+         console.log("Se ha producido un error: ", error);
+      }
+   };
  </script>

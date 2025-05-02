@@ -27,7 +27,7 @@
                         </router-link>
                     </td>
                     <td>
-                        <router-link :to="`/teams/${player.team.id}`">
+                        <router-link :to="`/teams/${player.team.name}/${player.team.id}`">
                             <img class="img-fluid" :src="player.team.logo"/>
                             {{ player.team.name }}
                         </router-link>

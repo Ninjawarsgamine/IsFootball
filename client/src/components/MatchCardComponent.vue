@@ -20,7 +20,7 @@
     </div>
 
     <div class="match-card-container__teams">
-      <router-link :to="`/teams/${match.teamHome.id}`" 
+      <router-link :to="`/teams/${match.teamHome.name}/${match.teamHome.id}`" 
       class="match-card-container__teams__team me-4">
         <img :src="match.teamHome.logo"
         class="match-card-container__teams__team__logo me-2">
@@ -41,7 +41,7 @@
         </span>
       </div>
 
-      <router-link :to="`/teams/${match.teamAway.id}`" 
+      <router-link :to="`/teams/${match.teamHome.name}/${match.teamAway.id}`" 
         class="match-card-container__teams__team match-card-container__teams__team__away d-flex
          align-items-center ms-4">
         <span class="match-card-container__teams__team__name me-2">
