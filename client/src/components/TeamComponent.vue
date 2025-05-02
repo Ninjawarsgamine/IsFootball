@@ -67,6 +67,15 @@
                 </div>
             </div>
         </div>
+        <div class="tab-content" id="competitionMatches">
+            <div class="tab-pane fade show" id="matches" role="tabpanel" aria-labelledby="table-tab">
+                <h1>Partidos</h1>
+                <div class="competition-info-container__competition-matches-container">
+                    <MatchCardComponent :match="match" v-for="match in teamMatches" 
+                    :key="match.id"/>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -75,7 +84,8 @@
     import { onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router';
     import ComponentHeader from '@/components/ComponentHeader.vue';
-
+    import MatchCardComponent from '@/components/MatchCardComponent.vue';
+    
     const route=useRoute();
     const teamId=route.params.id;
     const teamName=route.params.name;
@@ -88,7 +98,16 @@
         }
         team.value=data.value;
     }
-    
+
+    const teamMatches=ref([]);
+    const getTeamMatches=async()=>{
+        const {data, error}=await useFetch(`/api/teamMatches/${teamId}`);
+        if(error){
+            console.log("No se han los partidos del equipo con ID: "+teamId);
+        }
+        teamMatches.value=data.value;
+    }
+
     onMounted(async()=>{
          await getTeamInfo();
     });
