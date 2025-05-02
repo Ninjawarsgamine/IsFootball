@@ -62,23 +62,19 @@
    
    const teams = ref([]);
    const getTeams= async () => {
-      try {
-         loading.setLoading(true);
-         if (!teamName.value.trim()) {
-            loading.setLoading(false);
-            return;
-         }
- 
-         hasSearched.value=true;
-         const teamNameEncoded=encodeURI(teamName.value.trim());
-         const {data,error}=await useFetch(`/api/teams/${teamNameEncoded}`);
-         if(error){
-            console.log("Error al obtener competiciones con la cadena: '"+teamName.value+"'.")
-            return;
-         }
-         teams.value=data.value;
-      }catch (error){
-         console.log("Se ha producido un error: ", error);
+      loading.setLoading(true);
+      if (!teamName.value.trim()) {
+         loading.setLoading(false);
+         return;
       }
+ 
+      hasSearched.value=true;
+      const teamNameEncoded=encodeURI(teamName.value.trim());
+      const {data,error}=await useFetch(`/api/teams/${teamNameEncoded}`);
+      if(error){
+         console.log("Error al obtener competiciones con la cadena: '"+teamName.value+"'.")
+         return;
+      }
+         teams.value=data.value;
    };
  </script>

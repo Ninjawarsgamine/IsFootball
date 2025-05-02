@@ -73,6 +73,7 @@ public class CompetitionService {
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	//Convertimos  la respuesta en un objeto de Java.	
+			System.out.println(responseBody);
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
 	    	
@@ -284,6 +285,7 @@ public class CompetitionService {
 		List<Competition> competitions=new ArrayList<>();
 		String url="https://"+apiHost+"/leagues?season="+season;
 		JsonNode allCompetitions= doRequest(url);
+		
 		if(allCompetitions!=null && allCompetitions.isArray()) {
 			List <Integer>idsList=Arrays.asList(ids);
 			try {
@@ -312,7 +314,6 @@ public class CompetitionService {
 					if(competitions.size()==idsList.size()){
 						break;
 					}
-					//Si ya se han encontrado todas las ligas, se frena el bucle.
 				}
 			}catch(Exception e) {
 				e.printStackTrace();

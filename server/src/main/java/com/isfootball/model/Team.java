@@ -16,7 +16,6 @@ public class Team implements Serializable  {
 	private String code;
 	private Country country;
 	private Integer founded;
-
 	private Venue venue;
 
 	private List<Competition>competitions;

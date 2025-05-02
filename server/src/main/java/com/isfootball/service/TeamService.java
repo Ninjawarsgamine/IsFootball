@@ -62,7 +62,6 @@ public class TeamService {
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	//Convertimos la respuesta en un objeto de Java.	
-			System.out.println(responseBody);
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
 	    	
@@ -87,17 +86,13 @@ public class TeamService {
 		Team team=new Team();
 
 		try{
-			for(Team teamInfo: teamsByName){
-				System.out.println("Comparando ID: " + teamInfo.getId() + " con " + teamId);
-				
+			for(Team teamInfo: teamsByName){	
 				if(teamInfo.getId().equals(teamId)){
 					team.setId(teamInfo.getId());
 					team.setName(teamInfo.getName());
 					team.setLogo(teamInfo.getLogo());
 					team.setFounded(teamInfo.getFounded());
-					System.out.println("Estamos bien hasta aquí");
 					String urlCountry="https://"+apiHost+"/countries?name="+teamInfo.getCountry().getName();
-					System.out.println("Country URL: "+urlCountry);
 					JsonNode countryData=doRequest(urlCountry).get(0);
 					Country country=new Country();
 					country.setFlag(countryData.path("flag").asText());
@@ -135,7 +130,6 @@ public class TeamService {
 			return null;
 		}
 		String url="https://"+apiHost+"/teams?search="+teamName;
-		System.out.println(url);
 		JsonNode responseData=doRequest(url);
 		try{
 			for(JsonNode teamData: responseData){
@@ -144,7 +138,7 @@ public class TeamService {
 				team.setId(teamInfo.path("id").asInt());
 				team.setName(teamInfo.path("name").asText());
 				team.setLogo(teamInfo.path("logo").asText());
-				team.setFounded(teamInfo.path("ifounded").asInt());
+				team.setFounded(teamInfo.path("founded").asInt());
 
 				Country country=new Country();
 				country.setName(teamInfo.path("country").asText());

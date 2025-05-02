@@ -61,25 +61,22 @@
    const competitions = ref([]);
 
    const getCompetitions = async () => {
-      try {
-         loading.setLoading(true);
-         if (!competitionName.value.trim()) {
-            loading.setLoading(false);
-            return;
-         }
-         //Si no hay ningún nombre no se hace nada.
 
-         hasSearched.value=true;
-         const competitionNameEncoded=encodeURI(competitionName.value.trim());
-         const {data,error}=await useFetch(`/api/competitions/${competitionNameEncoded}`);
-         if(error){
-            console.log("Error al obtener competiciones con la cadena: '"+competitionName.value+"'.")
-            return;
-         }
-         competitions.value=data.value;
-      }catch (error){
-         console.log("Se ha producido un error: ", error);
+      loading.setLoading(true);
+      if (!competitionName.value.trim()) {
+         loading.setLoading(false);
+         return;
       }
+      //Si no hay ningún nombre no se hace nada.
+
+      hasSearched.value=true;
+      const competitionNameEncoded=encodeURI(competitionName.value.trim());
+      const {data,error}=await useFetch(`/api/competitions/${competitionNameEncoded}`);
+      if(error){
+         console.log("Error al obtener competiciones con la cadena: '"+competitionName.value+"'.")
+         return;
+      }
+      competitions.value=data.value;
    };
    //Función que hace una llamada al back y devuelve las competiciones que
    //coincidan con "competitionName".

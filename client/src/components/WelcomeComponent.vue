@@ -23,6 +23,7 @@
     import { ref, onMounted } from 'vue';
     const ids= [39,140,135,78,61,2];
     //Ids de las principales competiciones.
+    
     const mainCompetitions=ref([]);
 
     const getCompetitions=async()=>{
@@ -33,7 +34,6 @@
             return;
         }
         mainCompetitions.value=data.value;
-        console.log(mainCompetitions.value)
     };
 
     onMounted(async()=>{

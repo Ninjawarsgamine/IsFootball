@@ -1,14 +1,8 @@
 <template>
     <div class="competition-info-container" 
     v-if="competition.country">
-
-        <div class="component-header">
-            <img :src="competition.logo" alt="Logo de la competición">
-            <h1>{{ competition.name }}</h1>
-            <img class="component-header__component-country img-fluid"
-            :src="competition.country.flag" v-if="competition.country.flag!=='null'" 
-            alt="Bandera del país de la competición">
-        </div>
+        <ComponentHeader :componentLogo="competition.logo" :componentName="competition.name"
+        :componentCountry="competition.country"/>
 
         <ul class="nav nav-underline mb-3" role="tablist">
             <li class="nav-item" role="presentation" v-if="competition.type=='League' || competition.teamsCompetitionStatistics">
@@ -22,7 +16,7 @@
                 <button class="nav-link" id="matches-tab" data-bs-toggle="tab" 
                 data-bs-target="#matches" type="button" role="tab" aria-selected="true"
                 @click="getcompetitionRoundMatches(competitionRounds[0]);">
-                    Todos los partidos
+                    Partidos
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -113,6 +107,7 @@
 <script setup>
     import { useRoute } from 'vue-router';
     import { computed, onMounted, ref, watch } from "vue";
+    import ComponentHeader from '@/components/ComponentHeader.vue';
     import CompetitionTableComponent from '@/components/CompetitionTableComponent.vue';
     import CompetitionStatisticTableComponent from '@/components/CompetitionStatisticTableComponent.vue';
     import MatchCardComponent from '@/components/MatchCardComponent.vue';
@@ -124,7 +119,6 @@
     const competition=ref([]);
     const getCompetitionInfo= async() =>{
         const {data, error}=await useFetch(`/api/competitionAllData/${competitionId}`);
-        console.log(data);
         if(error){
             console.log("No se ha encontrado ninguna competición con ID "+competitionId);
             return;
@@ -167,14 +161,12 @@
                 return;
             }
             competitionTopScorers.value=data.value;
-            console.log(competitionTopScorers.value)
     }
     //Esta función saca los máximos goleadores de una competición.
 
     const competitionTopAssistsProviders=ref([]);
     const getCompetitionTopAssistsProviders=async()=>{
         const {data,error}=await useFetch(`/api/competitions/${competitionId}/top-assists-providers`);
-        console.log(data.value);
         if(error){
             console.log("No se han encontrado los máximos asistentes de la competición con ID: "+competitionId);
             return;
