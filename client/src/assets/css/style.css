@@ -493,12 +493,13 @@
   border-right: 1px solid #ddd;
   padding-right: 1.5rem;
 }
-@media (max-width: 800px) {
+@media only screen and (max-width: 800px) {
   .team-info-container__team-basic-data__team-info-content__team-info-general {
     border-right: none;
     border-bottom: 1px solid #ddd;
     padding-right: 0;
     padding-bottom: 1.5rem;
+    flex: 1 1 100%;
   }
 }
 .team-info-container__team-basic-data__team-info-content__team-info-general__team-info-data {
@@ -529,6 +530,11 @@
 .team-info-container__team-info-venue {
   flex: 1 1 45%;
 }
+@media only screen and (max-width: 800px) {
+  .team-info-container__team-info-venue {
+    flex: 1 1 100%;
+  }
+}
 .team-info-container__team-info-venue h2 {
   font-size: 1.25rem;
   font-weight: 600;
@@ -539,15 +545,21 @@
   flex-direction: row;
   gap: 1.5rem;
 }
-@media (max-width: 800px) {
+@media only screen and (max-width: 800px) {
   .team-info-container__team-info-venue__team-info-venue-data {
     flex-direction: column;
+    align-items: center;
   }
 }
 .team-info-container__team-info-venue__team-info-venue-data img {
   max-width: 16vw;
   border-radius: 0.5rem;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+@media only screen and (max-width: 800px) {
+  .team-info-container__team-info-venue__team-info-venue-data img {
+    max-width: 30vh;
+  }
 }
 .team-info-container__team-info-venue__team-info-venue-data > div {
   display: flex;

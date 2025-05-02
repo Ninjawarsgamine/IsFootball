@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isfootball.model.Match;
 import com.isfootball.model.Team;
 import com.isfootball.service.TeamService;
 
@@ -33,6 +34,17 @@ public class TeamController {
 	@GetMapping("/api/teamByNameAndId/{name}/{id}")
 	public Team getTeamByNameAndId(@PathVariable String name, @PathVariable String id) {
 		return teamService.getTeamByNameAndId(name, Integer.valueOf(id));
+	}	
+
+	 /**
+	 * Endpoint REST para obtener todos los partidos de un equipo por su id.
+	 * 
+	 * @param id El id del equipo.
+	 * @return Una lista con todos los partidos de un equipo que tenga un ID especificado.
+	 */
+	@GetMapping("/api/teamMatches/{id}")
+	public List<Match> getTeamMatches(@PathVariable String id) {
+		return teamService.getTeamMatches(Integer.valueOf(id));
 	}	
 
   	/**

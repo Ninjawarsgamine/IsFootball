@@ -31,11 +31,12 @@
             border-right: 1px solid $color-grey-light;
             padding-right: 1.5rem;
       
-            @media (max-width: $max-width) {
+            @media only screen and (max-width: $max-width) {
               border-right: none;
               border-bottom: 1px solid $color-grey-light;
               padding-right: 0;
               padding-bottom: 1.5rem;
+              flex: 1 1 100%;
             }
             
             &__team-info-data {
@@ -70,7 +71,10 @@
 
     &__team-info-venue {
         flex: 1 1 45%;
-      
+        @media only screen and (max-width: $max-width) {
+            flex: 1 1 100%;
+        }
+        
         h2 {
           font-size: 1.25rem;
           font-weight: 600;
@@ -82,14 +86,18 @@
           flex-direction: row;
           gap: 1.5rem;
             
-          @media (max-width: $max-width) {
+          @media only screen and (max-width: $max-width) {
             flex-direction: column;
+            align-items: center;
           }
       
           img {
             max-width: 16vw;
             border-radius: 0.5rem;
             box-shadow: 0 0 8px $color-shadow-medium;
+            @media only screen and (max-width: $max-width) {
+                max-width: 30vh;
+            }
           }
       
           > div {

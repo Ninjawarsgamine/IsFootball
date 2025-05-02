@@ -12,7 +12,8 @@
 
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="matches-tab" data-bs-toggle="tab" 
-                data-bs-target="#matches" type="button" role="tab" aria-selected="true">
+                data-bs-target="#matches" type="button" role="tab" aria-selected="true"
+                @click="getTeamMatches()">
                     Todos los partidos
                 </button>
             </li>
@@ -87,7 +88,7 @@
         }
         team.value=data.value;
     }
-
+    
     onMounted(async()=>{
          await getTeamInfo();
     });
