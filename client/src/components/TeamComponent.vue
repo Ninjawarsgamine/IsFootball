@@ -26,7 +26,7 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="players-tab" data-bs-toggle="tab" 
                 data-bs-target="#players" type="button" role="tab"
-                aria-selected="true">
+                aria-selected="true" @click="getTeamPlayers()">
                     Jugadores
                 </button>
             </li>
@@ -84,8 +84,7 @@
     import { onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router';
     import ComponentHeader from '@/components/ComponentHeader.vue';
-    import MatchCardComponent from '@/components/MatchCardComponent.vue';
-    
+
     const route=useRoute();
     const teamId=route.params.id;
     const teamName=route.params.name;

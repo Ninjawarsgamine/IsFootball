@@ -73,7 +73,6 @@ public class CompetitionService {
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	//Convertimos  la respuesta en un objeto de Java.	
-			System.out.println(responseBody);
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
 	    	
@@ -343,7 +342,6 @@ public class CompetitionService {
 					Player player=new Player();
 					player.setId(playerBasicInfo.path("id").asInt());
 					player.setName(playerBasicInfo.path("name").asText());
-					player.setNacionality(playerBasicInfo.path("nationality").asText());
 					player.setPhoto(playerBasicInfo.path("photo").asText());
 					playerCompetitionStatistics.setPlayer(player);
 					
@@ -389,7 +387,6 @@ public class CompetitionService {
 					Player player=new Player();
 					player.setId(playerBasicInfo.path("id").asInt());
 					player.setName(playerBasicInfo.path("name").asText());
-					player.setNacionality(playerBasicInfo.path("nationality").asText());
 					player.setPhoto(playerBasicInfo.path("photo").asText());
 					playerCompetitionStatistics.setPlayer(player);
 					
@@ -435,7 +432,6 @@ public class CompetitionService {
 					Player player=new Player();
 					player.setId(playerBasicInfo.path("id").asInt());
 					player.setName(playerBasicInfo.path("name").asText());
-					player.setNacionality(playerBasicInfo.path("nationality").asText());
 					player.setPhoto(playerBasicInfo.path("photo").asText());
 					playerCompetitionStatistics.setPlayer(player);
 					
@@ -481,7 +477,6 @@ public class CompetitionService {
 					Player player=new Player();
 					player.setId(playerBasicInfo.path("id").asInt());
 					player.setName(playerBasicInfo.path("name").asText());
-					player.setNacionality(playerBasicInfo.path("nationality").asText());
 					player.setPhoto(playerBasicInfo.path("photo").asText());
 					playerCompetitionStatistics.setPlayer(player);
 					

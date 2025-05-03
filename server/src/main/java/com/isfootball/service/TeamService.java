@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
 import com.isfootball.model.Match;
+import com.isfootball.model.Player;
 import com.isfootball.model.Team;
 import com.isfootball.model.Venue;
 import com.isfootball.utils.Utils;
@@ -178,7 +179,6 @@ public class TeamService {
 		String url="https://"+apiHost+"/fixtures?season="+season+"&team="+teamId+
 		"&timezone="+timeZoneId;
 		JsonNode responseData=doRequest(url);
-		System.out.println(responseData);
 		if(responseData!=null && responseData.isArray()){
 			try{
 				for(JsonNode matchData: responseData){
@@ -229,6 +229,41 @@ public class TeamService {
 			}
 		}
 
+		return null;
+	}
+
+	/**
+	 * Función que obtiene una lista de jugadores de un equipo determinado.
+	 * 
+	 * @param teamId Es el ID del equipo del que se van a sacar los jugadores
+	 * @return Una lista de jugadores de un equipo determinado.
+	 */
+	public List<Player> getTeamPlayers(Integer teamId){
+		List<Player>teamPlayers=new ArrayList<>();
+
+		String url="https://"+apiHost+"/players?team="+teamId+"&season="+season;
+		JsonNode responseData=doRequest(url);
+		try {
+			if(responseData!=null && responseData.isArray()){
+				for(JsonNode playerData: responseData){
+					JsonNode playerInfo=playerData.path("player");
+
+					Player player=new Player();
+					player.setId(playerInfo.path("id").asInt());
+					player.setName(playerInfo.path("name").asText());
+					player.setPhoto(playerInfo.path("photo").asText());
+					player.setPosition(playerInfo.path("position").asText());
+
+					Country country=new Country();
+					country.setName(playerInfo.path("nationality").asText());
+
+					teamPlayers.add(player);
+				}
+				return teamPlayers;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return null;
 	}
 

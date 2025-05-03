@@ -10,9 +10,10 @@ public class Player implements Serializable {
 
 	private Integer id;
 	private String name;
+	private String position;
+	private Country nacionality;
 	private Integer age;
 	private String birthday;
-	private String nacionality;
 	private Integer height;
 	private Integer weight;
 	private String photo;
@@ -34,6 +35,22 @@ public class Player implements Serializable {
 		this.name = name;
 	}
 	
+	public String getPosition() {
+		return position;
+	}
+	
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	
+	public Country getNacionality() {
+		return nacionality;
+	}
+	
+	public void setNacionality(Country nacionality) {
+		this.nacionality = nacionality;
+	}
+	
 	public Integer getAge() {
 		return age;
 	}
@@ -48,14 +65,6 @@ public class Player implements Serializable {
 	
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
-	}
-	
-	public String getNacionality() {
-		return nacionality;
-	}
-	
-	public void setNacionality(String nacionality) {
-		this.nacionality = nacionality;
 	}
 	
 	public Integer getHeight() {
@@ -89,4 +98,5 @@ public class Player implements Serializable {
 	public void setIsInjured(Boolean isInjured) {
 		this.isInjured = isInjured;
 	}
+	
 }

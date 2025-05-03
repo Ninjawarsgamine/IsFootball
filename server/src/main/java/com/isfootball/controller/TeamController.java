@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isfootball.model.Match;
+import com.isfootball.model.Player;
 import com.isfootball.model.Team;
 import com.isfootball.service.TeamService;
 
@@ -59,6 +60,17 @@ public class TeamController {
 	public List<Team> geTeamsByName(@PathVariable String name) {
 		return teamService.getTeamsByName(name);
 	}
+
+	/**
+	 * Endpoint REST para obtener todos los datos de una competición por su id.
+	 * 
+	 * @param id El id de la competición.
+	 * @return Un objeto "Competition" con los datos de cada competición.
+	 */
+	@GetMapping("/api/teamPlayers/{id}")
+	public List<Player> getTeamPlayers(@PathVariable String id) {
+		return teamService.getTeamPlayers(Integer.valueOf(id));
+	}	
 
     /**
 	 * Endpoint REST para obtener todos los datos de una competición por su id.
