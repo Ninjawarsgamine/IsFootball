@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isfootball.model.Coach;
 import com.isfootball.model.Match;
 import com.isfootball.model.Player;
 import com.isfootball.model.Team;
@@ -29,7 +30,7 @@ public class TeamController {
 	 /**
 	 * Endpoint REST para obtener todos los datos de un equipo por su id.
 	 * 
-	 * @param id El id del equipo.
+	 * @param id El ID del equipo.
 	 * @return Un objeto "Team" con los datos de un equipo que tenga un ID especificado.
 	 */
 	@GetMapping("/api/teamByNameAndId/{name}/{id}")
@@ -40,7 +41,7 @@ public class TeamController {
 	 /**
 	 * Endpoint REST para obtener todos los partidos de un equipo por su id.
 	 * 
-	 * @param id El id del equipo.
+	 * @param id El ID del equipo.
 	 * @return Una lista con todos los partidos de un equipo que tenga un ID especificado.
 	 */
 	@GetMapping("/api/teamMatches/{id}")
@@ -62,10 +63,21 @@ public class TeamController {
 	}
 
 	/**
-	 * Endpoint REST para obtener todos los datos de una competición por su id.
+	 * Endpoint REST para obtener la información del entrenador de un equipo con un ID especificado.
 	 * 
-	 * @param id El id de la competición.
-	 * @return Un objeto "Competition" con los datos de cada competición.
+	 * @param id El ID del equipo.
+	 * @return Un objeto "Coach" con los datos del entrenador de un equipo con un ID especificado.
+	 */
+	@GetMapping("/api/teamCoach/{id}")
+	public Coach getTeamCoach(@PathVariable String id) {
+		return teamService.getTeamCoach(Integer.valueOf(id));
+	}	
+
+	/**
+	 * Endpoint REST para obtener todos los jugadores de un equipo por su id.
+	 * 
+	 * @param id El ID del equipo.
+	 * @return Una lista con todos los jugadores de un equipo con un ID especificado.
 	 */
 	@GetMapping("/api/teamPlayers/{id}")
 	public List<Player> getTeamPlayers(@PathVariable String id) {
@@ -75,7 +87,7 @@ public class TeamController {
     /**
 	 * Endpoint REST para obtener todos los datos de una competición por su id.
 	 * 
-	 * @param id El id de la competición.
+	 * @param id El ID de la competición.
 	 * @return Un objeto "Competition" con los datos de cada competición.
 	 */
 	@GetMapping("/api/competitionTeams/{id}")

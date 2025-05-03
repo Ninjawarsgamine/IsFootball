@@ -12,7 +12,7 @@ public class Coach implements Serializable {
 	private Integer id;
     private String name;
     private String photo;
-    private Country country;
+    private Country nationality;
     
     public Integer getId() {
         return id;
@@ -38,12 +38,12 @@ public class Coach implements Serializable {
         this.photo = photo;
     }
 
-    public Country getCountry() {
-        return country;
+    public Country getNationality() {
+        return nationality;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setNationality(Country nationality) {
+        this.nationality = nationality;
     }
 
 

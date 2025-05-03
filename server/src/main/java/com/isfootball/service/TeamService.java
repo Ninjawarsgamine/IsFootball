@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isfootball.model.Coach;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
 import com.isfootball.model.Match;
@@ -70,7 +71,6 @@ public class TeamService {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	//Convertimos la respuesta en un objeto de Java.	
 	    	JsonNode responseData=responseBody.path("response");
-			System.out.println(responseBody);
 	    	return responseData;
 	    	
 	    }catch(Exception e) {
@@ -230,6 +230,32 @@ public class TeamService {
 			}
 		}
 
+		return null;
+	}
+
+	/**
+	 * Función que obtiene la información de un entrenador de un equipo determinado.
+	 * 
+	 * @param teamId Es el ID del equipo del que se va a sacar el entrenador.
+	 * @return El entrenador de un equipo con un ID especificado.
+	 */
+	@Cacheable("teamCoach")
+	public Coach getTeamCoach(Integer teamId){
+		Coach coach=new Coach();
+
+		String url="https://"+apiHost+"/coachs?team="+teamId;
+		JsonNode responseData=doRequest(url);
+		try {
+			if(responseData!=null && responseData.isArray()){
+				JsonNode coachData=responseData.get(0);
+				coach.setName(coachData.path("name").asText());
+				coach.setPhoto(coachData.path("photo").asText());
+
+				return coach;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return null;
 	}
 

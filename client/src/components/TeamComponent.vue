@@ -26,7 +26,7 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="players-tab" data-bs-toggle="tab" 
                 data-bs-target="#players" type="button" role="tab"
-                aria-selected="true" @click="getTeamPlayersOrderedByPosition()">
+                aria-selected="true" @click=" getTeamCoach(); getTeamPlayersOrderedByPosition()">
                     Plantilla
                 </button>
             </li>
@@ -80,7 +80,19 @@
         <div class="tab-content" id="teamPlayers">
             <div class="tab-pane fade show" id="players" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Plantilla</h1>  
+
                 <div class="team-info-container__team-players list-group">
+                    <h3>Entrenador</h3>
+                    <div class="team-info-container__team-players__player-data list-group-item-action 
+                    d-flex align-items-center p-3">
+                        <img class="rounded-circle flex-shrink-0 me-3" :src="teamCoach?.photo"
+                        :alt="'Foto de ' + teamCoach.name"/>
+                        <div class="team-info-container__team-players__player-data__player-info">
+                            <h6>{{ teamCoach.name }}</h6>
+                        </div>
+                    </div>
+                    
+                    <h3>Jugadores</h3>
                     <router-link v-for="player in teamPlayers" :key="player.id" 
                     class="team-info-container__team-players__player-data list-group-item-action 
                     d-flex align-items-center p-3" :to="`/players/${player.id}`">
@@ -128,6 +140,15 @@
         teamMatches.value=data.value;
     }
     //Esta función obtiene una lista de todos los partidos que ha jugado un equipo.
+
+    const teamCoach=ref([]);
+    const getTeamCoach=async()=>{
+        const{data,error}=await useFetch(`/api/teamCoach/${teamId}`);
+        if(error){
+            console.log("No se han encontrado el entrenador del equipo con ID: "+teamId)
+        }
+        teamCoach.value=data.value;
+    }
 
     const teamPlayers=ref([]);
 

@@ -575,33 +575,9 @@
 .team-info-container__team-info-venue__item:hover {
   background-color: var(--bs-light) !important;
 }
-.team-info-container__team-info-venue__avatar {
-  width: 48px;
-  height: 48px;
-  object-fit: cover;
-  border: 2px solid var(--bs-primary);
-}
-.team-info-container__team-info-venue__info {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-.team-info-container__team-info-venue__top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.team-info-container__team-info-venue__name {
-  font-size: 1rem;
-  font-weight: 500;
-}
-.team-info-container__team-info-venue__nationality {
-  font-size: 0.875rem;
-  color: var(--bs-gray-600);
-}
-.team-info-container__team-info-venue__position {
-  font-size: 0.875rem;
-  color: var(--bs-gray-500);
+.team-info-container__team-players h3 {
+  text-align: left;
+  margin-left: 0.5rem;
 }
 .team-info-container__team-players__player-data {
   text-decoration: none;
