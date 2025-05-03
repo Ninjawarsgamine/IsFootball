@@ -151,7 +151,7 @@ public class CompetitionController {
 	 * datos del sumario de los partidos.
 	 */
 	@GetMapping("/api/competitions/{competitionId}/round-matches-summary")
-	public List<Match>ggetCompetitionRoundMatchesSummary( @PathVariable Integer competitionId, @RequestParam String round){
+	public List<Match>getCompetitionRoundMatchesSummary( @PathVariable Integer competitionId, @RequestParam String round){
 		return competitionService.getCompetitionRoundMatchesSummary(competitionId, round);
 	}
 }

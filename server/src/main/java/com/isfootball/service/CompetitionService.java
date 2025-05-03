@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
 import com.isfootball.model.Goal;
+import com.isfootball.model.HomeAwayTotalStats;
 import com.isfootball.model.Match;
-import com.isfootball.model.MatchesTeamStatistics;
 import com.isfootball.model.Player;
 import com.isfootball.model.PlayerCompetitionStatistics;
 import com.isfootball.model.Team;
@@ -74,6 +74,7 @@ public class CompetitionService {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	//Convertimos  la respuesta en un objeto de Java.	
 	    	JsonNode responseData=responseBody.path("response");
+	    	System.out.println(responseBody);
 	    	return responseData;
 	    	
 	    }catch(Exception e) {
@@ -141,28 +142,36 @@ public class CompetitionService {
 							
 							JsonNode competitionTeamMatchesInfo=competitionTeamStatisticsData.path("all");
 			
-							MatchesTeamStatistics matchesPlayed=new MatchesTeamStatistics();
-							matchesPlayed.setTotal(competitionTeamMatchesInfo.path("played").asInt());
+							HomeAwayTotalStats matchesPlayed=new HomeAwayTotalStats();
+							matchesPlayed.setTotal(competitionTeamMatchesInfo.path("played").asText());
 							competitionTeamStatistics.setMatchesPlayed(matchesPlayed);
 						
-							MatchesTeamStatistics matchesWon=new MatchesTeamStatistics();
-							matchesWon.setTotal(competitionTeamMatchesInfo.path("win").asInt());
+							HomeAwayTotalStats matchesWon=new HomeAwayTotalStats();
+							matchesWon.setTotal(competitionTeamMatchesInfo.path("win").asText());
 							competitionTeamStatistics.setMatchesWon(matchesWon);
 
-							MatchesTeamStatistics matchesDrawn=new MatchesTeamStatistics();
-							matchesDrawn.setTotal(competitionTeamMatchesInfo.path("draw").asInt());
+							HomeAwayTotalStats matchesDrawn=new HomeAwayTotalStats();
+							matchesDrawn.setTotal(competitionTeamMatchesInfo.path("draw").asText());
 							competitionTeamStatistics.setMatchesDrawn(matchesDrawn);
 
-							MatchesTeamStatistics matchesLost=new MatchesTeamStatistics();
-							matchesLost.setTotal(competitionTeamMatchesInfo.path("lose").asInt());
+							HomeAwayTotalStats matchesLost=new HomeAwayTotalStats();
+							matchesLost.setTotal(competitionTeamMatchesInfo.path("lose").asText());
 							competitionTeamStatistics.setMatchesLost(matchesLost);
 							
 							Goal goalsFor=new Goal();
-							goalsFor.setTotal(competitionTeamMatchesInfo.path("goals").path("for").asInt());
+							HomeAwayTotalStats goalsForDistribution=new HomeAwayTotalStats();
+							goalsForDistribution.setTotal(competitionTeamMatchesInfo.
+							path("goals").path("for").asText());
 							competitionTeamStatistics.setGoalsFor(goalsFor);
 
 							Goal goalsAgainst=new Goal();
-							goalsAgainst.setTotal(competitionTeamMatchesInfo.path("goals").path("against").asInt());
+							
+							HomeAwayTotalStats goalsAgainstDistribution=new HomeAwayTotalStats();
+							goalsForDistribution.setTotal(competitionTeamMatchesInfo.
+							path("goals").path("for").asText());
+
+							goalsAgainstDistribution.setTotal(competitionTeamMatchesInfo
+							.path("goals").path("against").asText());
 							competitionTeamStatistics.setGoalsAgainst(goalsAgainst);
 
 							competitionTeamsStatistics.add(competitionTeamStatistics);

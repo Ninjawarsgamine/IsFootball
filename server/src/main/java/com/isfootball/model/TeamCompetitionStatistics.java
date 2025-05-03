@@ -1,6 +1,7 @@
 package com.isfootball.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,11 +24,11 @@ public class TeamCompetitionStatistics implements Serializable {
 
 	private String form;
 
-	private MatchesTeamStatistics matchesPlayed;
+	private  HomeAwayTotalStats matchesPlayed;
 	
-	private  MatchesTeamStatistics matchesWon;
-	private  MatchesTeamStatistics matchesDrawn;
-	private  MatchesTeamStatistics matchesLost;
+	private  HomeAwayTotalStats matchesWon;
+	private  HomeAwayTotalStats matchesDrawn;
+	private  HomeAwayTotalStats matchesLost;
 
 	private Goal goalsFor;
 	private Goal goalsAgainst;
@@ -35,31 +36,23 @@ public class TeamCompetitionStatistics implements Serializable {
 
 	private Integer biggestStreakWins;
 	private Integer biggestStreakDraws;
-	private Integer biggestSreakLoses;
+	private Integer biggestStreakLoses;
 
-	private Integer biggestWinsHome;
-	private Integer biggestWinsAway;
-	private Integer biggestLosesHome;
-	private Integer biggestLosesAway;
+	private HomeAwayStats biggestWins;
+	private HomeAwayStats biggestLoses;
 
-	private Integer biggestGoalsForHome;
-	private Integer biggestGoalsForAway;
-	private Integer biggestGoalsAgainstHome;
-	private Integer biggestGoalsAgainstAway;
+	private HomeAwayStats biggestGoalsFor;
+	private HomeAwayStats biggestGoalsAgainst;
 
-	private Integer cleanSheetHome;
-	private Integer cleanSheetAway;
-	private Integer cleanSheetTotal;
+	private HomeAwayTotalStats cleanSheet;
 
-	private Integer failedToScoreHome;
-	private Integer failedToScoreAway;
-	private Integer failedToScoreTotal;
+	private HomeAwayTotalStats failedToScore;
 
 	private Integer totalPenalties;
 	private Stat penaltiesScored;
 	private Stat penaltiesMissed;
 
-	private Lineup[] lineups;
+	private List<Lineup> lineups;
 	
 	private Map<String, Stat> cardsYellow;
 
@@ -113,35 +106,35 @@ public class TeamCompetitionStatistics implements Serializable {
 		this.form = form;
 	}
 	
-	public MatchesTeamStatistics getMatchesPlayed() {
+	public HomeAwayTotalStats getMatchesPlayed() {
 		return matchesPlayed;
 	}
 	
-	public void setMatchesPlayed(MatchesTeamStatistics matchesPlayed) {
+	public void setMatchesPlayed(HomeAwayTotalStats matchesPlayed) {
 		this.matchesPlayed = matchesPlayed;
 	}
 	
-	public MatchesTeamStatistics getMatchesWon() {
+	public HomeAwayTotalStats getMatchesWon() {
 		return matchesWon;
 	}
 	
-	public void setMatchesWon(MatchesTeamStatistics matchesWon) {
+	public void setMatchesWon(HomeAwayTotalStats matchesWon) {
 		this.matchesWon = matchesWon;
 	}
 	
-	public MatchesTeamStatistics getMatchesDrawn() {
+	public HomeAwayTotalStats getMatchesDrawn() {
 		return matchesDrawn;
 	}
 	
-	public void setMatchesDrawn(MatchesTeamStatistics matchesDrawn) {
+	public void setMatchesDrawn(HomeAwayTotalStats matchesDrawn) {
 		this.matchesDrawn = matchesDrawn;
 	}
 	
-	public MatchesTeamStatistics getMatchesLost() {
+	public HomeAwayTotalStats getMatchesLost() {
 		return matchesLost;
 	}
 	
-	public void setMatchesLost(MatchesTeamStatistics matchesLost) {
+	public void setMatchesLost(HomeAwayTotalStats matchesLost) {
 		this.matchesLost = matchesLost;
 	}
 	
@@ -177,124 +170,60 @@ public class TeamCompetitionStatistics implements Serializable {
 		this.biggestStreakDraws = biggestStreakDraws;
 	}
 	
-	public Integer getBiggestSreakLoses() {
-		return biggestSreakLoses;
+	public Integer getBiggestStreakLoses() {
+		return biggestStreakLoses;
 	}
 	
-	public void setBiggestSreakLoses(Integer biggestSreakLoses) {
-		this.biggestSreakLoses = biggestSreakLoses;
+	public void setBiggestStreakLoses(Integer biggestSreakLoses) {
+		this.biggestStreakLoses = biggestSreakLoses;
 	}
 	
-	public Integer getBiggestWinsHome() {
-		return biggestWinsHome;
+	public HomeAwayStats getBiggestWins() {
+		return biggestWins;
 	}
 	
-	public void setBiggestWinsHome(Integer biggestWinsHome) {
-		this.biggestWinsHome = biggestWinsHome;
+	public void setBiggestWins(HomeAwayStats biggestWins) {
+		this.biggestWins = biggestWins;
 	}
 	
-	public Integer getBiggestWinsAway() {
-		return biggestWinsAway;
+	public HomeAwayStats getBiggestLoses() {
+		return biggestLoses;
 	}
 	
-	public void setBiggestWinsAway(Integer biggestWinsAway) {
-		this.biggestWinsAway = biggestWinsAway;
+	public void setBiggestLoses(HomeAwayStats biggestLoses) {
+		this.biggestLoses = biggestLoses;
 	}
 	
-	public Integer getBiggestLosesHome() {
-		return biggestLosesHome;
+	public HomeAwayStats getBiggestGoalsFor() {
+		return biggestGoalsFor;
 	}
 	
-	public void setBiggestLosesHome(Integer biggestLosesHome) {
-		this.biggestLosesHome = biggestLosesHome;
+	public void setBiggestGoalsFor(HomeAwayStats biggestGoalsFor) {
+		this.biggestGoalsFor = biggestGoalsFor;
 	}
 	
-	public Integer getBiggestLosesAway() {
-		return biggestLosesAway;
+	public HomeAwayStats getBiggestGoalsAgainst() {
+		return biggestGoalsAgainst;
 	}
 	
-	public void setBiggestLosesAway(Integer biggestLosesAway) {
-		this.biggestLosesAway = biggestLosesAway;
+	public void setBiggestGoalsAgainst(HomeAwayStats biggestGoalsAgainst) {
+		this.biggestGoalsAgainst = biggestGoalsAgainst;
 	}
 	
-	public Integer getBiggestGoalsForHome() {
-		return biggestGoalsForHome;
+	public HomeAwayTotalStats getCleanSheet() {
+		return cleanSheet;
 	}
 	
-	public void setBiggestGoalsForHome(Integer biggestGoalsForHome) {
-		this.biggestGoalsForHome = biggestGoalsForHome;
+	public void setCleanSheet(HomeAwayTotalStats cleanSheet) {
+		this.cleanSheet = cleanSheet;
 	}
 	
-	public Integer getBiggestGoalsForAway() {
-		return biggestGoalsForAway;
+	public HomeAwayTotalStats getFailedToScore() {
+		return failedToScore;
 	}
 	
-	public void setBiggestGoalsForAway(Integer biggestGoalsForAway) {
-		this.biggestGoalsForAway = biggestGoalsForAway;
-	}
-	
-	public Integer getBiggestGoalsAgainstHome() {
-		return biggestGoalsAgainstHome;
-	}
-	
-	public void setBiggestGoalsAgainstHome(Integer biggestGoalsAgainstHome) {
-		this.biggestGoalsAgainstHome = biggestGoalsAgainstHome;
-	}
-	
-	public Integer getBiggestGoalsAgainstAway() {
-		return biggestGoalsAgainstAway;
-	}
-	
-	public void setBiggestGoalsAgainstAway(Integer biggestGoalsAgainstAway) {
-		this.biggestGoalsAgainstAway = biggestGoalsAgainstAway;
-	}
-	
-	public Integer getCleanSheetHome() {
-		return cleanSheetHome;
-	}
-	
-	public void setCleanSheetHome(Integer cleanSheetHome) {
-		this.cleanSheetHome = cleanSheetHome;
-	}
-	
-	public Integer getCleanSheetAway() {
-		return cleanSheetAway;
-	}
-	
-	public void setCleanSheetAway(Integer cleanSheetAway) {
-		this.cleanSheetAway = cleanSheetAway;
-	}
-	
-	public Integer getCleanSheetTotal() {
-		return cleanSheetTotal;
-	}
-	
-	public void setCleanSheetTotal(Integer cleanSheetTotal) {
-		this.cleanSheetTotal = cleanSheetTotal;
-	}
-	
-	public Integer getFailedToScoreHome() {
-		return failedToScoreHome;
-	}
-	
-	public void setFailedToScoreHome(Integer failedToScoreHome) {
-		this.failedToScoreHome = failedToScoreHome;
-	}
-	
-	public Integer getFailedToScoreAway() {
-		return failedToScoreAway;
-	}
-	
-	public void setFailedToScoreAway(Integer failedToScoreAway) {
-		this.failedToScoreAway = failedToScoreAway;
-	}
-	
-	public Integer getFailedToScoreTotal() {
-		return failedToScoreTotal;
-	}
-	
-	public void setFailedToScoreTotal(Integer failedToScoreTotal) {
-		this.failedToScoreTotal = failedToScoreTotal;
+	public void setFailedToScore(HomeAwayTotalStats failedToScore) {
+		this.failedToScore = failedToScore;
 	}
 	
 	public Integer getTotalPenalties() {
@@ -320,12 +249,12 @@ public class TeamCompetitionStatistics implements Serializable {
 	public void setPenaltiesMissed(Stat penaltiesMissed) {
 		this.penaltiesMissed = penaltiesMissed;
 	}
-	
-	public Lineup[] getLineups() {
+
+	public List<Lineup> getLineups() {
 		return lineups;
 	}
 	
-	public void setLineups(Lineup[] lineups) {
+	public void setLineups(List<Lineup> lineups) {
 		this.lineups = lineups;
 	}
 	
@@ -343,6 +272,6 @@ public class TeamCompetitionStatistics implements Serializable {
 	
 	public void setCardsRed(Map<String, Stat> cardsRed) {
 		this.cardsRed = cardsRed;
-	}	
+	}
 }
 

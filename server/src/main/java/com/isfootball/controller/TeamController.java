@@ -12,6 +12,7 @@ import com.isfootball.model.Competition;
 import com.isfootball.model.Match;
 import com.isfootball.model.Player;
 import com.isfootball.model.Team;
+import com.isfootball.model.TeamCompetitionStatistics;
 import com.isfootball.service.TeamService;
 
 @RestController
@@ -108,4 +109,19 @@ public class TeamController {
 	public List<Team> getCompetitionTeams(@PathVariable String id) {
 		return teamService.getCompetitionTeams(Integer.valueOf(id));
 	}	
+
+	/**
+	 * Endpoint REST para obtener todos los datos de un equipo con un ID especificado de una
+	 *  competición con un ID especificado.
+	 * 
+	 * @param teamId El ID del equipo.
+	 * @param competitionId El ID de la competición.
+	 * @return Un objeto "Competition" con los datos de cada competición.
+	 */
+	@GetMapping("/api/teamCompetitionStatistics/{teamId}/{competitionId}")
+	public TeamCompetitionStatistics getTeamCompetitionStatistics(@PathVariable String teamId,
+	 @PathVariable String competitionId) {
+		return teamService.getTeamCompetitionStatistics(Integer.valueOf(teamId),
+		Integer.valueOf(competitionId));
+	}
 }

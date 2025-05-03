@@ -32,7 +32,6 @@ select.form-select {
   line-height: 1.5;
   border-radius: 0.375rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  margin-left: 0.5rem;
 }
 select.form-select:focus {
   border-color: whitesmoke;

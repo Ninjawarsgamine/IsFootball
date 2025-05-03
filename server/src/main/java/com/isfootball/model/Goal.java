@@ -10,79 +10,44 @@ public class Goal implements Serializable{
 
     private static final long serialVersionUID = 4990606117528824808L;
     
-	private Integer home;
-    private Integer away;
-    private Integer total;
+    private HomeAwayTotalStats distribution;
     
-	private Integer totalAvarage;
-	private Integer averageHome;
-	private Integer averageAway;
+    private HomeAwayTotalStats average;
 
-    private Map<String,Stat>minutes;
+    private Map<String,Stat> minutes;
 
-    private Map<String, UnderOver>undercover;
+    private Map<String, UnderOver> underOver;
 
-    public Integer getHome() {
-        return home;
+
+    public HomeAwayTotalStats getDistribution() {
+        return distribution;
     }
-
-    public void setHome(Integer home) {
-        this.home = home;
+    
+    public void setDistribution(HomeAwayTotalStats distribution) {
+        this.distribution = distribution;
     }
-
-    public Integer getAway() {
-        return away;
+    
+    public HomeAwayTotalStats getAverage() {
+        return average;
     }
-
-    public void setAway(Integer away) {
-        this.away = away;
+    
+    public void setAverage(HomeAwayTotalStats average) {
+        this.average = average;
     }
-
-    public Integer getTotal() {
-        return total;
-    }
-
-    public void setTotal(Integer total) {
-        this.total = total;
-    }
-
-    public Integer getTotalAvarage() {
-        return totalAvarage;
-    }
-
-    public void setTotalAvarage(Integer totalAvarage) {
-        this.totalAvarage = totalAvarage;
-    }
-
-    public Integer getAverageHome() {
-        return averageHome;
-    }
-
-    public void setAverageHome(Integer averageHome) {
-        this.averageHome = averageHome;
-    }
-
-    public Integer getAverageAway() {
-        return averageAway;
-    }
-
-    public void setAverageAway(Integer averageAway) {
-        this.averageAway = averageAway;
-    }
-
+    
     public Map<String, Stat> getMinutes() {
         return minutes;
     }
-
+    
     public void setMinutes(Map<String, Stat> minutes) {
         this.minutes = minutes;
     }
-
-    public Map<String, UnderOver> getUndercover() {
-        return undercover;
+    
+    public Map<String, UnderOver> getUnderCover() {
+        return underOver;
     }
-
-    public void setUndercover(Map<String, UnderOver> undercover) {
-        this.undercover = undercover;
+    
+    public void setUnderOver(Map<String, UnderOver> underOver) {
+        this.underOver = underOver;
     }
 }

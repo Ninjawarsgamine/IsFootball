@@ -20,14 +20,14 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="statistics-tab" data-bs-toggle="tab" 
                 data-bs-target="#statistics" type="button" role="tab" aria-selected="true"
-                @click="getTeamsCompetitions()">
+                @click="getTeamsCompetitionStatistics(teamCompetitions[0].id)">
                     Estadísticas
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="players-tab" data-bs-toggle="tab" 
                 data-bs-target="#players" type="button" role="tab"
-                aria-selected="true" @click=" getTeamCoach(); getTeamPlayersOrderedByPosition()">
+                aria-selected="true" @click="getTeamCoach(); getTeamPlayersOrderedByPosition()">
                     Plantilla
                 </button>
             </li>
@@ -85,7 +85,7 @@
                 class="team-info-container__select form-select">
                     <option :value="competition.id" v-for="competition in teamCompetitions" 
                     :key="competition.id">
-                        {{ competition.name }}
+                      {{ competition.name }}
                     </option>
                 </select>
             </div>
@@ -144,7 +144,7 @@
         }
         team.value=data.value;
     }
-
+    
     const teamMatches=ref([]);
     const getTeamMatches=async()=>{
         const {data, error}=await useFetch(`/api/teamMatches/${teamId}`);
@@ -159,6 +159,8 @@
 
     const getTeamsCompetitions=async()=>{
         const {data,error}=await useFetch(`/api/teamsCompetitions/${teamId}`);
+        console.log("Competiciones: "+data.value);
+        
         if(error){
             console.log("No se han encontrado las competiciones disputadas por el equipo con ID: "
             +teamId);
@@ -173,6 +175,16 @@
         }
     });
 
+    const teamsCompetitionStatistics=ref(null);
+
+    const getTeamsCompetitionStatistics=async(competitionId)=>{
+        const {data,error}=await useFetch(`/api/teamCompetitionStatistics/${teamId}/${competitionId}`);
+        if(error){
+            console.log("No se han encontrado las estadísticas de la competición");
+            teamsCompetitionStatistics.value=data.value;
+        }
+    }
+       
     const teamCoach=ref([]);
     const getTeamCoach=async()=>{
         const{data,error}=await useFetch(`/api/teamCoach/${teamId}`);

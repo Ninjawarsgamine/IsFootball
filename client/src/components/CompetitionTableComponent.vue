@@ -30,8 +30,8 @@
                     <td>{{ team.matchesWon.total }}</td>
                     <td>{{ team.matchesDrawn.total }}</td>
                     <td>{{ team.matchesLost.total }}</td>
-                    <td>{{ team.goalsFor.total }}</td>
-                    <td>{{ team.goalsAgainst.total }}</td>
+                    <td>{{ team.goalsFor.distribution.total }}</td>
+                    <td>{{ team.goalsAgainst.distribution.total }}</td>
                     <td>{{ team.goalsDiff }}</td>
                     <td class="competition-info-container__team-points">{{ team.points }}</td>
                     <td>

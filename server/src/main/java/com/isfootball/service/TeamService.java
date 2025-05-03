@@ -1,9 +1,12 @@
 package com.isfootball.service;
 
+import java.lang.reflect.Array;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -18,14 +21,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isfootball.model.Coach;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
+import com.isfootball.model.Goal;
+import com.isfootball.model.HomeAwayStats;
+import com.isfootball.model.HomeAwayTotalStats;
+import com.isfootball.model.Lineup;
 import com.isfootball.model.Match;
 import com.isfootball.model.Player;
+import com.isfootball.model.Stat;
 import com.isfootball.model.Team;
+import com.isfootball.model.TeamCompetitionStatistics;
+import com.isfootball.model.UnderOver;
 import com.isfootball.model.Venue;
 import com.isfootball.utils.Utils;
 
@@ -265,6 +276,178 @@ public class TeamService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+
+	public TeamCompetitionStatistics getTeamCompetitionStatistics(Integer teamId, Integer competitionId) {
+	
+		TeamCompetitionStatistics teamCompetitionStatistics=new TeamCompetitionStatistics();
+    	String url="https://"+apiHost+"/teams/statistics?league="+competitionId+"&season="+season+"&team="+
+		teamId;
+
+    	JsonNode responseData = doRequest(url);
+    	try{
+			JsonNode matchesInfo=responseData.path("fixtures");
+			//Información sobre los partidos (ganados, empatados y perdidos.)
+			JsonNode matchesPlayedInfo=matchesInfo.path("played");
+			HomeAwayTotalStats matchesPlayed=Utils.parseHomeAwayTotalStats(matchesPlayedInfo);
+			teamCompetitionStatistics.setMatchesPlayed(matchesPlayed);
+
+			JsonNode matchesWonInfo=matchesInfo.path("wins");
+			HomeAwayTotalStats matchesWon=Utils.parseHomeAwayTotalStats(matchesWonInfo);
+			teamCompetitionStatistics.setMatchesWon(matchesWon);
+
+			JsonNode matchesDrawnInfo=matchesInfo.path("draws");
+			HomeAwayTotalStats matchesDrawn=Utils.parseHomeAwayTotalStats(matchesDrawnInfo);
+			teamCompetitionStatistics.setMatchesDrawn(matchesDrawn);
+
+			JsonNode matchesLostInfo=matchesInfo.path("loses");
+			HomeAwayTotalStats matchesLost=Utils.parseHomeAwayTotalStats(matchesLostInfo);
+			teamCompetitionStatistics.setMatchesLost(matchesLost);
+
+
+			JsonNode goalsInfo=responseData.path("goals");
+			//Información sobre los goles.
+
+			JsonNode goalsForInfo=goalsInfo.path("for");
+			Goal goalsFor=new Goal();
+			
+			HomeAwayTotalStats goalsForStats=Utils.parseHomeAwayTotalStats(goalsForInfo.path("total"));
+			goalsFor.setDistribution(goalsForStats);
+
+			HomeAwayTotalStats averageForStats=Utils.parseHomeAwayTotalStats(goalsForInfo.path("average"));
+			goalsFor.setAverage(averageForStats);
+
+			JsonNode minutesForInfo=goalsForInfo.path("minute");
+			Map<String,Stat>minutesFor=objectMapper.convertValue(minutesForInfo, 
+			new TypeReference<Map<String,Stat>>(){});
+			//Al tener la misma estructura que el JSON, en este caso podemos importar el valor 
+			//de manera automática con "Jackson".
+
+			goalsFor.setMinutes(minutesFor);
+
+			JsonNode underOverForInfo=goalsForInfo.path("under_over");
+			Map<String,UnderOver>underOverFor=objectMapper.convertValue(underOverForInfo, 
+			new TypeReference<Map<String,UnderOver>>(){});	
+			goalsFor.setUnderOver(underOverFor);
+
+			teamCompetitionStatistics.setGoalsFor(goalsFor);
+
+
+			JsonNode goalsAgainstInfo=goalsInfo.path("against");
+			Goal goalsAgainst=new Goal();
+			
+
+			HomeAwayTotalStats goalsAgainstStats=Utils.parseHomeAwayTotalStats(goalsAgainstInfo.
+			path("total"));
+			goalsAgainst.setDistribution(goalsAgainstStats);
+
+			HomeAwayTotalStats averageAgainstStats=Utils.parseHomeAwayTotalStats(goalsAgainstInfo.
+			path("average"));
+			goalsAgainst.setAverage(averageAgainstStats);
+
+			JsonNode minutesAgainstInfo=goalsAgainstInfo.path("minute");
+			Map<String,Stat>minutesAgainst=objectMapper.convertValue(minutesAgainstInfo, 
+			new TypeReference<Map<String,Stat>>(){});
+		
+			goalsAgainst.setMinutes(minutesAgainst);
+
+			JsonNode underOverAgainstInfo=goalsAgainstInfo.path("under_over");
+			Map<String,UnderOver>underOverAgainst=objectMapper.convertValue(underOverAgainstInfo, 
+			new TypeReference<Map<String,UnderOver>>(){});	
+			goalsAgainst.setUnderOver(underOverAgainst);
+
+			teamCompetitionStatistics.setGoalsAgainst(goalsAgainst);
+
+			JsonNode biggestInfo=responseData.path("biggest");
+			
+			JsonNode biggestStreakInfo=biggestInfo.path("streak");
+			//Información del biggestStreak.
+
+			teamCompetitionStatistics.setBiggestStreakWins(biggestStreakInfo.path("wins").asInt());
+			teamCompetitionStatistics.setBiggestStreakDraws(biggestStreakInfo.path("draws").asInt());
+			teamCompetitionStatistics.setBiggestStreakLoses(biggestStreakInfo.path("loses").asInt());
+
+			JsonNode biggestWinsInfo=biggestInfo.path("wins");
+			//Información del biggestWin.
+
+			HomeAwayStats biggestWins=Utils.parseHomeAwayStats(biggestWinsInfo);
+			teamCompetitionStatistics.setBiggestWins(biggestWins);
+
+			JsonNode biggestLosesInfo=biggestInfo.path("loses");
+			HomeAwayStats biggestLoses=Utils.parseHomeAwayStats(biggestLosesInfo);
+			teamCompetitionStatistics.setBiggestLoses(biggestLoses);
+
+			JsonNode biggestGoalsInfo=biggestInfo.path("goals");
+			
+			HomeAwayStats biggestGoalsFor=Utils.parseHomeAwayStats(biggestGoalsInfo.path("for"));
+			teamCompetitionStatistics.setBiggestGoalsFor(biggestGoalsFor);
+
+			HomeAwayStats biggestGoalsAgainst=Utils.parseHomeAwayStats(biggestGoalsInfo.path("against"));
+			teamCompetitionStatistics.setBiggestGoalsAgainst(biggestGoalsAgainst);
+
+			JsonNode cleanSheetInfo=responseData.path("clean_sheet");
+			HomeAwayTotalStats cleanSheet=Utils.parseHomeAwayTotalStats(cleanSheetInfo);
+			teamCompetitionStatistics.setCleanSheet(cleanSheet);
+			//Información del "clean_sheet".
+
+			JsonNode failedToScoreInfo=responseData.path("failed_to_score");
+			HomeAwayTotalStats failedToScore=Utils.parseHomeAwayTotalStats(failedToScoreInfo);
+			teamCompetitionStatistics.setFailedToScore(failedToScore);
+			//Información de "failed_to_score".
+
+			JsonNode penaltiesInfo=responseData.path("penalty");
+			//Información de "penalty".
+
+			JsonNode penaltiesScoredInfo=penaltiesInfo.path("scored");
+			Stat penaltiesScored=new Stat();
+			penaltiesScored.setTotal(penaltiesScoredInfo.path("total").asInt());
+			penaltiesScored.setPercentage(penaltiesScoredInfo.path("percentage").asText());
+			teamCompetitionStatistics.setPenaltiesScored(penaltiesScored);
+
+			JsonNode penaltiesMissedInfo=penaltiesInfo.path("missed");
+			Stat penaltiesMissed=new Stat();
+			penaltiesMissed.setTotal(penaltiesMissedInfo.path("total").asInt());
+			penaltiesMissed.setPercentage(penaltiesMissedInfo.path("percentage").asText());
+			teamCompetitionStatistics.setPenaltiesMissed(penaltiesMissed);
+
+			teamCompetitionStatistics.setTotalPenalties(penaltiesInfo.path("total").asInt());
+
+			JsonNode linupsInfo=responseData.path("lineups");
+			//Información de las "lineups".
+			
+			List<Lineup>lineups=new ArrayList<>();
+
+			for(JsonNode lineupInfo:linupsInfo){
+				Lineup lineup=new Lineup();
+				lineup.setFormation(lineupInfo.path("formation").asText());
+				lineup.setMatchesPlayed(lineupInfo.path("played").asInt());
+				lineups.add(lineup);
+			}
+			teamCompetitionStatistics.setLineups(lineups);
+
+			JsonNode cardsInfo=responseData.path("cards");
+			//Información de "cards".
+
+			JsonNode cardsYellowInfo=cardsInfo.path("yellow");
+			Map<String,Stat>cardsYellow=objectMapper.convertValue(cardsYellowInfo, 
+			new TypeReference<Map<String,Stat>>(){});
+
+			teamCompetitionStatistics.setCardsYellow(cardsYellow);
+
+			JsonNode cardsRedsInfo=cardsInfo.path("yellow");
+			Map<String,Stat>cardsRed=objectMapper.convertValue(cardsRedsInfo, 
+			new TypeReference<Map<String,Stat>>(){});
+
+			teamCompetitionStatistics.setCardsRed(cardsRed);
+
+
+			return teamCompetitionStatistics;
+		
+    	} catch (Exception e) {
+        	e.printStackTrace();
+    	}
+    	return null;
 	}
 
 	/**
