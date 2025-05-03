@@ -281,31 +281,23 @@
   max-height: 2rem;
 }
 
-.team-info-container__team-basic-data {
-  font-family: "Arial", sans-serif;
-  color: #333;
+.competition-info-container h2 {
+  text-align: left;
 }
-.team-info-container__team-basic-data h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
+.competition-info-container table a {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  display: flex;
+  column-gap: 0.25rem;
+  align-items: center;
 }
-.team-info-container__team-basic-data h2 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
+.competition-info-container__team-logo {
+  max-height: 2.5rem;
+  max-width: 2.5rem;
 }
-.team-info-container__team-basic-data p {
-  font-size: 1rem;
-  line-height: 1.5;
-}
-.team-info-container__team-basic-data__country-flag {
-  max-width: 2rem;
-  vertical-align: middle;
-}
-.team-info-container__team-basic-data__venue__team-venue-info img {
-  max-width: 200px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 6px;
+.competition-info-container__team-points {
+  font-weight: bold;
 }
 
 .match-card-container {
@@ -347,6 +339,7 @@
   }
 }
 .match-card-container__competition__name {
+  color: black;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -570,6 +563,71 @@
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
+}
+.team-info-container__team-info-venue__item {
+  border: none;
+  border-bottom: 1px solid var(--bs-gray-200);
+  transition: background-color 0.2s ease;
+}
+.team-info-container__team-info-venue__item:last-child {
+  border-bottom: none;
+}
+.team-info-container__team-info-venue__item:hover {
+  background-color: var(--bs-light) !important;
+}
+.team-info-container__team-info-venue__avatar {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border: 2px solid var(--bs-primary);
+}
+.team-info-container__team-info-venue__info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.team-info-container__team-info-venue__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.team-info-container__team-info-venue__name {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.team-info-container__team-info-venue__nationality {
+  font-size: 0.875rem;
+  color: var(--bs-gray-600);
+}
+.team-info-container__team-info-venue__position {
+  font-size: 0.875rem;
+  color: var(--bs-gray-500);
+}
+.team-info-container__team-players__player-data {
+  text-decoration: none;
+  border: none;
+  border-bottom: 1px solid var(--bs-gray-200);
+  color: black;
+  transition: background-color 0.2s ease;
+}
+.team-info-container__team-players__player-data img {
+  max-width: 3.5rem;
+  max-width: 3.5rem;
+  object-fit: cover;
+}
+.team-info-container__team-players__player-data__player-info {
+  display: flex;
+  flex-direction: column;
+}
+.team-info-container__team-players__player-data__player-info h6 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+.team-info-container__team-players__player-data__player-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .loading-container {

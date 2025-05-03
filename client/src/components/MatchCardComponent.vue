@@ -1,12 +1,14 @@
 <template>
-  <div class="match-card-container" :key="match.id">
+  <div class="match-card-container" :key="match.id" v-if="match?.competition?.logo">
     <div class="match-card-container__header d-flex justify-content-between align-items-start mb-3">
       <div class="match-card-container__competition d-flex align-items-center">
-        <img :src="match.competition.logo" 
-        class="match-card-container__competition__logo me-2">
-        <span class="match-card-container__competition__name">
-          {{ match.competition.name }}
-        </span>
+        <router-link :to="`/competitions/${match.competition.id}`">
+          <img :src="match.competition.logo" 
+          class="match-card-container__competition__logo me-2">
+          <span class="match-card-container__competition__name">
+            {{ match.competition.name }}
+          </span>
+        </router-link>
       </div>
 
       <div class="match-card-container__meta text-end">

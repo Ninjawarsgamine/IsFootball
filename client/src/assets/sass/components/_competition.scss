@@ -1,34 +1,26 @@
-.team-info-container__team-basic-data {
-    font-family: 'Arial', sans-serif;
-    color: #333;
-  
-    h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
-    }
-  
-    h2 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-    }
-  
-    p {
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-  
-    &__country-flag {
-      max-width: 2rem;
-      vertical-align: middle;
-    }
-  
-    &__venue__team-venue-info {
-      img {
-        max-width: 200px;
-        height: auto;
-        object-fit: cover;
-        border-radius: 6px;
-      }
-    }
+.competition-info-container{
+
+  h2{
+      text-align: left;
   }
   
+  table{
+      a{
+          text-decoration: none;  
+          color: inherit; 
+          width:100%;
+          display: flex;
+          column-gap: 0.25rem;
+          align-items: center;
+      }
+  }
+
+  &__team-logo{
+      max-height: 2.5rem;
+      max-width:  2.5rem;
+  }
+
+  &__team-points{
+      font-weight: bold;
+  }
+}

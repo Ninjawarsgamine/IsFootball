@@ -1,119 +1,196 @@
-.team-info-container{
-    &__team-basic-data {
-        background-color: $color-white;
-        padding: 2rem;
-        border: 1px solid $color-grey-light;
-        border-radius: 0.5rem;
-        box-shadow: 0 0 12px $color-shadow-light;
-        max-width: 1000px;
-        margin: 0 auto;
-      
-        h1 {
-          font-size: 2rem;
-          font-weight: 700;
-          text-align: center;
-          margin-bottom: 2rem;
-        }
+.team-info-container {
+  &__team-basic-data {
+    background-color: $color-white;
+    padding: 2rem;
+    border: 1px solid $color-grey-light;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 12px $color-shadow-light;
+    max-width: 1000px;
+    margin: 0 auto;
 
-        h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        &__team-info-content {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 2rem;
-      
-          &__team-info-general {
-            flex: 1 1 45%;
-            border-right: 1px solid $color-grey-light;
-            padding-right: 1.5rem;
-      
-            @media only screen and (max-width: $max-width) {
-              border-right: none;
-              border-bottom: 1px solid $color-grey-light;
-              padding-right: 0;
-              padding-bottom: 1.5rem;
-              flex: 1 1 100%;
-            }
-            
-            &__team-info-data {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              gap: 1rem;
-            
-              div {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-
-                &:first-of-type{
-                    margin-top:2rem;
-                    @media (max-width: $max-width) {
-                       margin-top: 0;
-                    }
-                }
-
-                img {
-                    max-width: 2rem;
-                    margin-left: 0.5rem;
-                    vertical-align: middle;
-                    border: 1px $color-primary solid;
-                }
-              }
-            }
-          }
-        }
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2rem;
     }
 
-    &__team-info-venue {
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    &__team-info-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+
+      &__team-info-general {
         flex: 1 1 45%;
+        border-right: 1px solid $color-grey-light;
+        padding-right: 1.5rem;
+
         @media only screen and (max-width: $max-width) {
-            flex: 1 1 100%;
+          border-right: none;
+          border-bottom: 1px solid $color-grey-light;
+          padding-right: 0;
+          padding-bottom: 1.5rem;
+          flex: 1 1 100%;
         }
-        
-        h2 {
-          font-size: 1.25rem;
-          font-weight: 600;
-          margin-bottom: 1rem;
-        }
-      
-        &__team-info-venue-data {
+
+        &__team-info-data {
           display: flex;
-          flex-direction: row;
-          gap: 1.5rem;
-            
-          @media only screen and (max-width: $max-width) {
-            flex-direction: column;
-            align-items: center;
-          }
-      
-          img {
-            max-width: 16vw;
-            border-radius: 0.5rem;
-            box-shadow: 0 0 8px $color-shadow-medium;
-            @media only screen and (max-width: $max-width) {
-                max-width: 30vh;
-            }
-          }
-      
-          > div {
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+
+          div {
             display: flex;
-            flex-direction: column;
+            align-items: center;
             gap: 0.5rem;
-      
-            > div {
-              display: flex;
-              flex-direction: row;
-              gap: 0.5rem;
+
+            &:first-of-type {
+              margin-top: 2rem;
+              @media (max-width: $max-width) {
+                margin-top: 0;
+              }
+            }
+
+            img {
+              max-width: 2rem;
+              margin-left: 0.5rem;
+              vertical-align: middle;
+              border: 1px $color-primary solid;
             }
           }
         }
       }
-}
-  
+    }
+  }
 
+  &__team-info-venue {
+    flex: 1 1 45%;
+    @media only screen and (max-width: $max-width) {
+      flex: 1 1 100%;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    &__team-info-venue-data {
+      display: flex;
+      flex-direction: row;
+      gap: 1.5rem;
+
+      @media only screen and (max-width: $max-width) {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      img {
+        max-width: 16vw;
+        border-radius: 0.5rem;
+        box-shadow: 0 0 8px $color-shadow-medium;
+        @media only screen and (max-width: $max-width) {
+          max-width: 30vh;
+        }
+      }
+
+      > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        > div {
+          display: flex;
+          flex-direction: row;
+          gap: 0.5rem;
+        }
+      }
+    }
+    &__item {
+      border: none;
+      border-bottom: 1px solid var(--bs-gray-200);
+      transition: background-color 0.2s ease;
   
+      &:last-child {
+        border-bottom: none;
+      }
+  
+      &:hover {
+        background-color: var(--bs-light) !important;
+      }
+    }
+  
+    &__avatar {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border: 2px solid var(--bs-primary);
+    }
+  
+    &__info {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+  
+    &__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    &__name {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+  
+    &__nationality {
+      font-size: 0.875rem;
+      color: var(--bs-gray-600);
+    }
+  
+    &__position {
+      font-size: 0.875rem;
+      color: var(--bs-gray-500);
+    }
+  }
+
+  &__team-players{
+      &__player-data{
+        text-decoration: none;
+        border: none;
+        border-bottom: 1px solid var(--bs-gray-200);
+        color:$color-primary;
+        transition: background-color 0.2s ease;
+        
+        img{
+          max-width: 3.5rem;
+          max-width: 3.5rem;
+          object-fit: cover;
+        }
+
+        &__player-info {
+          display: flex;
+          flex-direction: column;
+
+          h6{
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+          }
+
+          div{
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+          }
+        }    
+      }
+  }
+}

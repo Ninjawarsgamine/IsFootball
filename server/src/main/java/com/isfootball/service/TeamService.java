@@ -70,6 +70,7 @@ public class TeamService {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	//Convertimos la respuesta en un objeto de Java.	
 	    	JsonNode responseData=responseBody.path("response");
+			System.out.println(responseBody);
 	    	return responseData;
 	    	
 	    }catch(Exception e) {
@@ -238,6 +239,7 @@ public class TeamService {
 	 * @param teamId Es el ID del equipo del que se van a sacar los jugadores
 	 * @return Una lista de jugadores de un equipo determinado.
 	 */
+	@Cacheable("teamPlayers")
 	public List<Player> getTeamPlayers(Integer teamId){
 		List<Player>teamPlayers=new ArrayList<>();
 
@@ -252,10 +254,12 @@ public class TeamService {
 					player.setId(playerInfo.path("id").asInt());
 					player.setName(playerInfo.path("name").asText());
 					player.setPhoto(playerInfo.path("photo").asText());
-					player.setPosition(playerInfo.path("position").asText());
+					player.setPosition(playerData.path("statistics").get(0)
+					.path("games").path("position").asText());
 
 					Country country=new Country();
 					country.setName(playerInfo.path("nationality").asText());
+					player.setNationality(country);
 
 					teamPlayers.add(player);
 				}

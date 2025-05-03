@@ -26,8 +26,8 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="players-tab" data-bs-toggle="tab" 
                 data-bs-target="#players" type="button" role="tab"
-                aria-selected="true" @click="getTeamPlayers()">
-                    Jugadores
+                aria-selected="true" @click="getTeamPlayersOrderedByPosition()">
+                    Plantilla
                 </button>
             </li>
         </ul>
@@ -67,12 +67,32 @@
                 </div>
             </div>
         </div>
-        <div class="tab-content" id="competitionMatches">
+
+        <div class="tab-content" id="teamMatches">
             <div class="tab-pane fade show" id="matches" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Partidos</h1>
-                <div class="competition-info-container__competition-matches-container">
-                    <MatchCardComponent :match="match" v-for="match in teamMatches" 
-                    :key="match.id"/>
+               <div class="d-flex flex-wrap align-items-center">
+                    <MatchCardComponent :match="match" v-for="match in teamMatches"  :key="match.id"/>
+               </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="teamPlayers">
+            <div class="tab-pane fade show" id="players" role="tabpanel" aria-labelledby="table-tab">
+                <h1>Plantilla</h1>  
+                <div class="team-info-container__team-players list-group">
+                    <router-link v-for="player in teamPlayers" :key="player.id" 
+                    class="team-info-container__team-players__player-data list-group-item-action 
+                    d-flex align-items-center p-3" :to="`/players/${player.id}`">
+                        <img class="rounded-circle flex-shrink-0 me-3" :src="player.photo"
+                        :alt="'Foto de ' + player.name"/>
+                        <div class="team-info-container__team-players__player-data__player-info">
+                            <h6>{{ player.name }}</h6>
+                            <div>
+                                <span>{{ player.position }}</span>
+                            </div>
+                        </div>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -84,6 +104,7 @@
     import { onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router';
     import ComponentHeader from '@/components/ComponentHeader.vue';
+    import MatchCardComponent from '@/components/MatchCardComponent.vue';
 
     const route=useRoute();
     const teamId=route.params.id;
@@ -106,6 +127,35 @@
         }
         teamMatches.value=data.value;
     }
+    //Esta función obtiene una lista de todos los partidos que ha jugado un equipo.
+
+    const teamPlayers=ref([]);
+
+    const getTeamPlayers=async()=>{
+        const {data,error}=await useFetch(`/api/teamPlayers/${teamId}`);
+        if(error){
+            console.log("No se han encontrado los jugadores para el equipo con ID: "+teamId)
+        }
+        teamPlayers.value=data.value;
+    }
+    //Esta función obtiene una lista de los jugadores de un equipo.
+
+    const teamPositions=['Goalkeeper', 'Defender', 'Midfielder', 'Attacker'];
+
+    const getTeamPlayersOrderedByPosition=async()=>{
+        await getTeamPlayers();
+        teamPlayers.value.sort((a, b) => {
+            const indexA = teamPositions.indexOf(a.position);
+            const indexB = teamPositions.indexOf(b.position);
+            
+            return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+            //Lo que hacemos es que restamos el "indexA"("goalkeeper") menos el "indexB"("Attacker")
+            //para que se ordene primero por el "goalkeeper". Si hace que si alguno de los "index"
+            //es "-1" (o sea, no está en la lista), se ponga al final de la lista.
+        });
+    }
+    //Esta función ordena los jugadores de un equipo. por posición (desde "Goalkeeper" 
+    //hasta "Attacker").
 
     onMounted(async()=>{
          await getTeamInfo();

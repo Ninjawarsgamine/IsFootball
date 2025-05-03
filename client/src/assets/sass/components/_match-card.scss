@@ -26,7 +26,6 @@
             object-fit: contain;
 
             @media only screen and (max-width: $max-width) {
-        
                 width: 1.5rem;
                 height:1.5rem;
             }
@@ -37,6 +36,7 @@
         }
   
         &__name {
+            color:$color-primary;
             font-size: 1rem;
             font-weight: 600;
             @media only screen and (max-width: $max-width) {

@@ -11,7 +11,7 @@ public class Player implements Serializable {
 	private Integer id;
 	private String name;
 	private String position;
-	private Country nacionality;
+	private Country nationality;
 	private Integer age;
 	private String birthday;
 	private Integer height;
@@ -43,12 +43,12 @@ public class Player implements Serializable {
 		this.position = position;
 	}
 	
-	public Country getNacionality() {
-		return nacionality;
+	public Country getNationality() {
+		return nationality;
 	}
 	
-	public void setNacionality(Country nacionality) {
-		this.nacionality = nacionality;
+	public void setNationality(Country nationality) {
+		this.nationality = nationality;
 	}
 	
 	public Integer getAge() {
