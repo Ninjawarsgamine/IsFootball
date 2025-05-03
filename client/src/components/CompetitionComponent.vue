@@ -87,17 +87,14 @@
         <div class="tab-content" id="competitionTeams">
             <div class="tab-pane fade show" id="teams" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Equipos</h1>
-                <div class="competition-info-container__teams-list-container table-responsive">
-                        <table class="table table-hover align-middle text-center">
-                            <tr v-for="team in teamsOrdered" :key="team.id">
-                                <td class="d-flex align-items-center gap-3 pd-4">
-                                    <router-link :to="`/teams/${team.id}`">
-                                        <img :src="team.logo" class="img-fluid" />
-                                        <span>{{ team.name }}</span>
-                                    </router-link>
-                                </td>
-                            </tr>
-                     </table>
+                <div class="competition-info-container__competition-teams table-responsive">
+                    <router-link v-for="team in teamsOrdered" :key="team.id" 
+                    class="competition-info-container__competition-teams__team-data list-group-item-action 
+                    d-flex align-items-center p-3" :to="`/players/${team.id}`">
+                        <img class="flex-shrink-0 me-3" :src="team.logo"
+                        :alt="'Foto de ' + team.name"/>
+                        <h6>{{ team.name }}</h6>
+                    </router-link>
                 </div>
             </div>
         </div>

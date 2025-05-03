@@ -1,18 +1,16 @@
 .competition-info-container{
-
   h2{
       text-align: left;
+      margin-left:2.2rem;
   }
   
-  table{
-      a{
-          text-decoration: none;  
-          color: inherit; 
-          width:100%;
-          display: flex;
-          column-gap: 0.25rem;
-          align-items: center;
-      }
+  table a{
+      text-decoration: none;  
+      color: inherit; 
+      width:100%;
+      display: flex;
+      column-gap: 0.25rem;
+      align-items: center;   
   }
 
   &__team-logo{
@@ -22,5 +20,71 @@
 
   &__team-points{
       font-weight: bold;
+  }
+
+  &__competition-matches-container{
+    display:flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__statistic-table{
+    width:95%;
+    text-align: left;
+    font-size: 1.1rem;
+
+    th{
+        text-align: center;
+    }
+    
+    td{
+        a{
+            display: flex;
+            align-items: center;
+        
+           
+            img{
+                max-width: 2.3rem;
+            }
+        }
+
+        span{
+            display: flex;
+            align-items: center;
+            margin-top:0.5rem;
+            justify-content: center;
+            justify-items: center;
+        }
+    }
+
+    &__player-photo{
+        border-radius: 3rem;
+    }
+  }
+
+  &__competition-teams {
+    
+    &__team-data {
+      text-decoration: none;
+      border: 1.5px solid var(--bs-gray-200);
+      border-bottom: none;
+      color: $color-primary;
+      transition: background-color 0.2s ease;
+      &:last-child{
+        border-bottom: 1.5px solid var(--bs-gray-200);
+      }
+
+      img {
+        max-width: 3.5rem;
+        max-width: 3.5rem;
+        object-fit: cover;
+      }
+      
+      h6 {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+      }
+    }
   }
 }

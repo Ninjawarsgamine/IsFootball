@@ -19,3 +19,23 @@
     overflow-x: auto;
     width:98%;
 }
+select.form-select {
+    width:30%;
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
+    color: #212529;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    margin-left:0.5rem;
+    &:focus {
+      border-color: whitesmoke;
+      box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
+      background-color: #ffffff;
+      color: #212529;
+      outline: none;
+    }
+}
+  

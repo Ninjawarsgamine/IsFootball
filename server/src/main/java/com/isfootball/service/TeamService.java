@@ -240,6 +240,7 @@ public class TeamService {
 	 * @param ID Es el ID del equipo.
 	 * @return Una lista con todas las competiciones que juega un equipo.
 	 */
+	@Cacheable("teamsCompetitions")
 	public List<Competition> getTeamCompetitions(Integer teamId){
 		List<Competition>teamCompetitions=new ArrayList<>();
 
@@ -258,7 +259,7 @@ public class TeamService {
 				//la competición.
 			}
 			teamCompetitions.addAll(teamCompetitionsMap.values());
-			System.out.println(teamCompetitions);
+			
 			return teamCompetitions;
 		}catch(Exception e){
 			e.printStackTrace();

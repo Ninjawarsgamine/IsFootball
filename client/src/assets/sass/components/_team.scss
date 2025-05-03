@@ -112,6 +112,7 @@
         }
       }
     }
+
     &__item {
       border: none;
       border-bottom: 1px solid var(--bs-gray-200);
@@ -132,11 +133,11 @@
       text-align: left;
       margin-left: 0.5rem;
     }
+
     &__player-data {
       text-decoration: none;
       border: none;
       border-bottom: 1px solid var(--bs-gray-200);
-      color: $color-primary;
       transition: background-color 0.2s ease;
 
       img {
@@ -148,7 +149,7 @@
       &__player-info {
         display: flex;
         flex-direction: column;
-
+        
         h6 {
           font-size: 1rem;
           font-weight: 500;

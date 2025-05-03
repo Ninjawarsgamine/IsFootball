@@ -32,12 +32,12 @@
                 </button>
             </li>
         </ul>
+
         <div class="tab-content" id="basicDataContent">
             <div class="tab-pane fade show active" id="basicData" role="tabpanel" 
             aria-labelledby="table-tab" >
                 <div class="team-info-container__team-basic-data" v-if="team?.venue">
                     <h1>Datos básicos del equipo</h1>
-
                     <div class="team-info-container__team-basic-data__team-info-content">
                         <div 
                         class="team-info-container__team-basic-data__team-info-content__team-info-general">
@@ -68,13 +68,26 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="tab-content" id="teamMatches">
             <div class="tab-pane fade show" id="matches" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Partidos</h1>
                <div class="d-flex flex-wrap align-items-center">
                     <MatchCardComponent :match="match" v-for="match in teamMatches"  :key="match.id"/>
                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="teamStatistics">
+            <div class="tab-pane fade show" id="statistics" role="tabpanel" aria-labelledby="table-tab">
+                <h1>Estadísticas</h1>
+                <select v-model="competitionSelected" name="team-competition" 
+                class="team-info-container__select form-select">
+                    <option :value="competition.id" v-for="competition in teamCompetitions" 
+                    :key="competition.id">
+                        {{ competition.name }}
+                    </option>
+                </select>
             </div>
         </div>
 
@@ -114,7 +127,7 @@
 
 <script setup>
     import { useFetch } from '@/composables/useFetch';
-    import { onMounted, ref } from 'vue';
+    import { onMounted, ref, watch } from 'vue';
     import { useRoute } from 'vue-router';
     import ComponentHeader from '@/components/ComponentHeader.vue';
     import MatchCardComponent from '@/components/MatchCardComponent.vue';
@@ -153,6 +166,12 @@
         teamCompetitions.value=data.value;
     }
 
+    const competitionSelected=ref("");
+    watch(teamCompetitions, (newCompetitions)=>{
+        if(newCompetitions.length>0 && !competitionSelected.value){
+            competitionSelected.value=newCompetitions[0];
+        }
+    });
 
     const teamCoach=ref([]);
     const getTeamCoach=async()=>{
@@ -191,8 +210,9 @@
     }
     //Esta función ordena los jugadores de un equipo. por posición (desde "Goalkeeper" 
     //hasta "Attacker").
-
+    
     onMounted(async()=>{
          await getTeamInfo();
+         await getTeamsCompetitions();
     });
 </script>

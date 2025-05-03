@@ -22,6 +22,26 @@
   width: 98%;
 }
 
+select.form-select {
+  width: 30%;
+  border: 1px solid #ced4da;
+  background-color: #f8f9fa;
+  color: #212529;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-left: 0.5rem;
+}
+select.form-select:focus {
+  border-color: whitesmoke;
+  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
+  background-color: #ffffff;
+  color: #212529;
+  outline: none;
+}
+
 .header-container {
   display: grid;
   grid-template-columns: 15% 85%;
@@ -283,6 +303,7 @@
 
 .competition-info-container h2 {
   text-align: left;
+  margin-left: 2.2rem;
 }
 .competition-info-container table a {
   text-decoration: none;
@@ -298,6 +319,56 @@
 }
 .competition-info-container__team-points {
   font-weight: bold;
+}
+.competition-info-container__competition-matches-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.competition-info-container__statistic-table {
+  width: 95%;
+  text-align: left;
+  font-size: 1.1rem;
+}
+.competition-info-container__statistic-table th {
+  text-align: center;
+}
+.competition-info-container__statistic-table td a {
+  display: flex;
+  align-items: center;
+}
+.competition-info-container__statistic-table td a img {
+  max-width: 2.3rem;
+}
+.competition-info-container__statistic-table td span {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  justify-content: center;
+  justify-items: center;
+}
+.competition-info-container__statistic-table__player-photo {
+  border-radius: 3rem;
+}
+.competition-info-container__competition-teams__team-data {
+  text-decoration: none;
+  border: 1.5px solid var(--bs-gray-200);
+  border-bottom: none;
+  color: black;
+  transition: background-color 0.2s ease;
+}
+.competition-info-container__competition-teams__team-data:last-child {
+  border-bottom: 1.5px solid var(--bs-gray-200);
+}
+.competition-info-container__competition-teams__team-data img {
+  max-width: 3.5rem;
+  max-width: 3.5rem;
+  object-fit: cover;
+}
+.competition-info-container__competition-teams__team-data h6 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
 }
 
 .match-card-container {
@@ -583,7 +654,6 @@
   text-decoration: none;
   border: none;
   border-bottom: 1px solid var(--bs-gray-200);
-  color: black;
   transition: background-color 0.2s ease;
 }
 .team-info-container__team-players__player-data img {
