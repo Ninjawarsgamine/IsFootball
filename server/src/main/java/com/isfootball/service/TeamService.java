@@ -3,8 +3,10 @@ package com.isfootball.service;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -230,6 +232,37 @@ public class TeamService {
 			}
 		}
 
+		return null;
+	}
+
+	/**
+	 * Función que devuelve una lista con todas las competiciones que juega un equipo.
+	 * @param ID Es el ID del equipo.
+	 * @return Una lista con todas las competiciones que juega un equipo.
+	 */
+	public List<Competition> getTeamCompetitions(Integer teamId){
+		List<Competition>teamCompetitions=new ArrayList<>();
+
+		List<Match>teamMatches=getTeamMatches(teamId);
+
+		Map<Integer,Competition>teamCompetitionsMap=new HashMap<>();
+		try{
+			for(Match match:teamMatches){
+				Competition competition=match.getCompetition();
+				Integer competitionId=competition.getId();
+
+				if(!teamCompetitionsMap.containsKey(competitionId)){
+					teamCompetitionsMap.put(competitionId, competition);
+				}
+				//Si el ID de la competición no está en el "teamCompetitionsMap", entonces añade
+				//la competición.
+			}
+			teamCompetitions.addAll(teamCompetitionsMap.values());
+			System.out.println(teamCompetitions);
+			return teamCompetitions;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return null;
 	}
 

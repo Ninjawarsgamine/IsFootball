@@ -19,7 +19,8 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="statistics-tab" data-bs-toggle="tab" 
-                data-bs-target="#statistics" type="button" role="tab" aria-selected="true">
+                data-bs-target="#statistics" type="button" role="tab" aria-selected="true"
+                @click="getTeamsCompetitions()">
                     Estadísticas
                 </button>
             </li>
@@ -91,7 +92,7 @@
                             <h6>{{ teamCoach.name }}</h6>
                         </div>
                     </div>
-                    
+
                     <h3>Jugadores</h3>
                     <router-link v-for="player in teamPlayers" :key="player.id" 
                     class="team-info-container__team-players__player-data list-group-item-action 
@@ -141,14 +142,27 @@
     }
     //Esta función obtiene una lista de todos los partidos que ha jugado un equipo.
 
+    const teamCompetitions=ref([]);
+
+    const getTeamsCompetitions=async()=>{
+        const {data,error}=await useFetch(`/api/teamsCompetitions/${teamId}`);
+        if(error){
+            console.log("No se han encontrado las competiciones disputadas por el equipo con ID: "
+            +teamId);
+        }
+        teamCompetitions.value=data.value;
+    }
+
+
     const teamCoach=ref([]);
     const getTeamCoach=async()=>{
         const{data,error}=await useFetch(`/api/teamCoach/${teamId}`);
         if(error){
-            console.log("No se han encontrado el entrenador del equipo con ID: "+teamId)
+            console.log("No se ha encontrado el entrenador del equipo con ID: "+teamId)
         }
         teamCoach.value=data.value;
     }
+    //Esta función obtiene el entrenador de un equipo. 
 
     const teamPlayers=ref([]);
 
