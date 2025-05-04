@@ -72,7 +72,7 @@ public class TeamController {
 	 * la búsqueda.
 	 * @return Lista de competiciones que disputa el equipo con un ID especificado.
 	 */
-	@GetMapping("/api/teamsCompetitions/{id}")
+	@GetMapping("/api/teamCompetitions/{id}")
 	List<Competition> getTeamCompetitions(@PathVariable String id){
 		return teamService.getTeamCompetitions(Integer.valueOf(id));
 	}

@@ -23,6 +23,7 @@
 }
 
 select.form-select {
+  font-size: 1.2rem;
   width: 30%;
   border: 1px solid #ced4da;
   background-color: #f8f9fa;
@@ -526,6 +527,9 @@ select.form-select:focus {
   text-decoration: none;
 }
 
+.team-info-container {
+  padding: 1rem;
+}
 .team-info-container__team-basic-data {
   background-color: white;
   padding: 2rem;
@@ -644,6 +648,20 @@ select.form-select:focus {
 }
 .team-info-container__team-info-venue__item:hover {
   background-color: var(--bs-light) !important;
+}
+.team-info-container__team-statistics h4, .team-info-container__team-statistics h6 {
+  margin-top: 1rem;
+  text-align: left;
+  margin-left: 0.3rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.team-info-container__team-statistics h6 {
+  margin-left: 0.4rem;
+}
+.team-info-container__team-statistics > div table tr td:first-of-type {
+  font-weight: 700;
+  background-color: #f8f9fa !important;
 }
 .team-info-container__team-players h3 {
   text-align: left;

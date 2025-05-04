@@ -43,7 +43,7 @@ public class Goal implements Serializable{
         this.minutes = minutes;
     }
     
-    public Map<String, UnderOver> getUnderCover() {
+    public Map<String, UnderOver> getUnderOver() {
         return underOver;
     }
     

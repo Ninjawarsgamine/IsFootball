@@ -1,12 +1,9 @@
 package com.isfootball.service;
 
-import java.lang.reflect.Array;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -278,7 +275,7 @@ public class TeamService {
 		return null;
 	}
 
-
+	@Cacheable("teamCompetitionStatistics")
 	public TeamCompetitionStatistics getTeamCompetitionStatistics(Integer teamId, Integer competitionId) {
 	
 		TeamCompetitionStatistics teamCompetitionStatistics=new TeamCompetitionStatistics();
@@ -415,7 +412,7 @@ public class TeamService {
 
 			JsonNode linupsInfo=responseData.path("lineups");
 			//Información de las "lineups".
-			
+
 			List<Lineup>lineups=new ArrayList<>();
 
 			for(JsonNode lineupInfo:linupsInfo){

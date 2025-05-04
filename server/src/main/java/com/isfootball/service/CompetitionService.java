@@ -74,7 +74,6 @@ public class CompetitionService {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	//Convertimos  la respuesta en un objeto de Java.	
 	    	JsonNode responseData=responseBody.path("response");
-	    	System.out.println(responseBody);
 	    	return responseData;
 	    	
 	    }catch(Exception e) {
@@ -159,21 +158,24 @@ public class CompetitionService {
 							competitionTeamStatistics.setMatchesLost(matchesLost);
 							
 							Goal goalsFor=new Goal();
+
 							HomeAwayTotalStats goalsForDistribution=new HomeAwayTotalStats();
+
 							goalsForDistribution.setTotal(competitionTeamMatchesInfo.
 							path("goals").path("for").asText());
+							goalsFor.setDistribution(goalsForDistribution);
+
 							competitionTeamStatistics.setGoalsFor(goalsFor);
-
+						
 							Goal goalsAgainst=new Goal();
-							
+
 							HomeAwayTotalStats goalsAgainstDistribution=new HomeAwayTotalStats();
-							goalsForDistribution.setTotal(competitionTeamMatchesInfo.
-							path("goals").path("for").asText());
+							goalsAgainstDistribution.setTotal(competitionTeamMatchesInfo.
+							path("goals").path("against").asText());
 
-							goalsAgainstDistribution.setTotal(competitionTeamMatchesInfo
-							.path("goals").path("against").asText());
+							goalsAgainst.setDistribution(goalsAgainstDistribution);
 							competitionTeamStatistics.setGoalsAgainst(goalsAgainst);
-
+						
 							competitionTeamsStatistics.add(competitionTeamStatistics);
 							
 						}

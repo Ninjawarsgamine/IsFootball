@@ -20,7 +20,7 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="statistics-tab" data-bs-toggle="tab" 
                 data-bs-target="#statistics" type="button" role="tab" aria-selected="true"
-                @click="getTeamsCompetitionStatistics(teamCompetitions[0].id)">
+                @click="getTeamCompetitions()">
                     Estadísticas
                 </button>
             </li>
@@ -82,12 +82,159 @@
             <div class="tab-pane fade show" id="statistics" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Estadísticas</h1>
                 <select v-model="competitionSelected" name="team-competition" 
-                class="team-info-container__select form-select">
+                class="team-info-container__select form-select" 
+                @change="async()=>await getTeamCompetitionStatistics(competitionSelected)">
                     <option :value="competition.id" v-for="competition in teamCompetitions" 
                     :key="competition.id">
                       {{ competition.name }}
                     </option>
                 </select>
+
+                <div class="team-info-container__team-statistics" v-if="teamCompetitionStatistics">
+                    <h4>Matches</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover mb-0 ">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Home</th>
+                                    <th scope="col">Away</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Played</td>
+                                    <td v-for="type in teamCompetitionStatistics.matchesPlayed" 
+                                    :key="type">{{ type }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Won</td>
+                                    <td v-for="type in teamCompetitionStatistics.matchesWon" 
+                                    :key="type">{{ type }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Drawn</td>
+                                    <td v-for="type in teamCompetitionStatistics.matchesDrawn" 
+                                    :key="type">{{ type }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lost</td>
+                                    <td v-for="type in teamCompetitionStatistics.matchesLost" 
+                                    :key="type">{{ type }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <GoalsStatisticsComponent :title="'Goals scored'"
+                    :goalsData="teamCompetitionStatistics.goalsFor"/>
+                    <GoalsStatisticsComponent :title="'Goals against'"
+                    :goals-data="teamCompetitionStatistics.goalsAgainst"/>
+
+                    <h4 class="fw-bold mt-4">Biggest Results</h4>
+                    <table class="table table-bordered text-center align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th></th>
+                                <th>Home</th>
+                                <th>Away</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold bg-white">Biggest Win</td>
+                                <td v-for="type in teamCompetitionStatistics.biggestWins" 
+                                :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold bg-white">Biggest Loss</td>
+                                <td v-for="type in teamCompetitionStatistics.biggestLoses" 
+                                :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold bg-white">Most Goals Scored</td>
+                                <td v-for="type in teamCompetitionStatistics.biggestGoalsFor" 
+                                :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold bg-white">Most Goals Conceded</td>
+                                <td v-for="type in teamCompetitionStatistics.biggestGoalsAgainst" 
+                                :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 class="fw-bold mt-4">Clean Sheets & Failed to Score</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th></th>
+                                    <th>Home</th>
+                                    <th>Away</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold bg-white">Clean Sheets</td>
+                                    <td v-for="type in teamCompetitionStatistics.cleanSheet" 
+                                    :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold bg-white">Failed to Score</td>
+                                    <td v-for="type in teamCompetitionStatistics.failedToScore" 
+                                    :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="fw-bold mt-4">Penalties</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold bg-white">Scored</td>
+                                    <td v-for="data in teamCompetitionStatistics.penaltiesScored" 
+                                    :key="data">{{ data!==null && data!=="null"?data:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold bg-white">Missed</td>
+                                    <td v-for="data in teamCompetitionStatistics.penaltiesMissed" 
+                                    :key="data">{{ data!==null && data!=="null"?data:"-" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Lineups Used</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Formation</th>
+                                    <th>Matches Played</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="lineup in teamCompetitionStatistics.lineups" 
+                                :key="lineup.formation">
+                                    <td>{{ lineup.formation }}</td>
+                                    <td>{{ lineup.matchesPlayed }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -131,6 +278,7 @@
     import { useRoute } from 'vue-router';
     import ComponentHeader from '@/components/ComponentHeader.vue';
     import MatchCardComponent from '@/components/MatchCardComponent.vue';
+    import GoalsStatisticsComponent from '@/components/GoalsStatisticsComponent.vue';
 
     const route=useRoute();
     const teamId=route.params.id;
@@ -157,8 +305,8 @@
 
     const teamCompetitions=ref([]);
 
-    const getTeamsCompetitions=async()=>{
-        const {data,error}=await useFetch(`/api/teamsCompetitions/${teamId}`);
+    const getTeamCompetitions=async()=>{
+        const {data,error}=await useFetch(`/api/teamCompetitions/${teamId}`);
         console.log("Competiciones: "+data.value);
         
         if(error){
@@ -168,23 +316,33 @@
         teamCompetitions.value=data.value;
     }
 
-    const competitionSelected=ref("");
-    watch(teamCompetitions, (newCompetitions)=>{
-        if(newCompetitions.length>0 && !competitionSelected.value){
-            competitionSelected.value=newCompetitions[0];
-        }
-    });
+    const teamCompetitionStatistics=ref(null);
 
-    const teamsCompetitionStatistics=ref(null);
-
-    const getTeamsCompetitionStatistics=async(competitionId)=>{
+    const getTeamCompetitionStatistics=async(competitionId)=>{
         const {data,error}=await useFetch(`/api/teamCompetitionStatistics/${teamId}/${competitionId}`);
         if(error){
             console.log("No se han encontrado las estadísticas de la competición");
-            teamsCompetitionStatistics.value=data.value;
         }
+        teamCompetitionStatistics.value=data.value;
     }
-       
+    //Esta función obtiene las estadísticas de un equipo en una competición con un ID especificado.
+    
+    const competitionSelected=ref("");
+
+    
+    watch(teamCompetitions, async(newCompetitions)=>{
+        if(newCompetitions.length>0 && !competitionSelected.value){
+            competitionSelected.value=newCompetitions[0].id;
+            await getTeamCompetitionStatistics(competitionSelected.value);
+        }
+    });
+    //Cuando se obtengan las competiciones del equipo, cambiamos el valor del "select".
+    
+   watch(competitionSelected,async(newCompetitionId)=>{
+        await getTeamCompetitionStatistics(newCompetitionId);
+    });
+    //Esta función obtiene las estadísticas para la nueva competición seleccionada.
+
     const teamCoach=ref([]);
     const getTeamCoach=async()=>{
         const{data,error}=await useFetch(`/api/teamCoach/${teamId}`);
@@ -225,6 +383,5 @@
     
     onMounted(async()=>{
          await getTeamInfo();
-         await getTeamsCompetitions();
     });
 </script>
