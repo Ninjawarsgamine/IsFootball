@@ -69,17 +69,13 @@ public class TeamService {
 		HttpHeaders headers=new HttpHeaders();
 		headers.set("x-rapidapi-key", apiKey);
 	    headers.set("x-rapidapi-host", apiHost);
-	    //Añadimos los headers.
 	    
 	    HttpEntity<String> entity = new HttpEntity<>(headers);
-	    //"HttpEntity" encapsula tanto los encabezados HTTP como el cuerpo
-	    //de una solicitud o respuesta.
 	    ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-	    //Hacemos la solicitud usando "restTemplate".
+
 	    String jsonResponse=response.getBody();
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
-	    	//Convertimos la respuesta en un objeto de Java.	
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
 	    	
@@ -275,6 +271,13 @@ public class TeamService {
 		return null;
 	}
 
+	/**
+	 * Función que saca todas las estadísticas de un equipo en una competición con 
+	 * un ID especificado.
+	 * @param teamId Es el ID del equipo.
+	 * @param competitionId Es el ID de la competición.
+	 * @return Las estadísticas de un equipo en una competición con un ID especificado.
+	 */
 	@Cacheable("teamCompetitionStatistics")
 	public TeamCompetitionStatistics getTeamCompetitionStatistics(Integer teamId, Integer competitionId) {
 	

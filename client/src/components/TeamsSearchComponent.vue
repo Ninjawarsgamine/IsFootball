@@ -67,9 +67,9 @@
          loading.setLoading(false);
          return;
       }
- 
+      
       hasSearched.value=true;
-      const teamNameEncoded=encodeURI(teamName.value.trim());
+      const teamNameEncoded=encodeURI(removeAccents(teamName.value.trim()));
       const {data,error}=await useFetch(`/api/teams/${teamNameEncoded}`);
       if(error){
          console.log("Error al obtener competiciones con la cadena: '"+teamName.value+"'.")

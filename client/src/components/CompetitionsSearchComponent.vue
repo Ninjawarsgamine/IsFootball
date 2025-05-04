@@ -52,6 +52,7 @@
 <script setup>
    import { useFetch } from "@/composables/useFetch";
    import { useLoadingStore } from "@/stores/useLoadingStore";
+   import { removeAccents } from "@/utils/utils";
    import { ref } from "vue";
    
    const competitionName = ref("");
@@ -70,7 +71,8 @@
       //Si no hay ningún nombre no se hace nada.
 
       hasSearched.value=true;
-      const competitionNameEncoded=encodeURI(competitionName.value.trim());
+   
+      const competitionNameEncoded=encodeURI(removeAccents(competitionName.value.trim()));
       const {data,error}=await useFetch(`/api/competitions/${competitionNameEncoded}`);
       if(error){
          console.log("Error al obtener competiciones con la cadena: '"+competitionName.value+"'.")

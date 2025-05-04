@@ -1,0 +1,40 @@
+package com.isfootball.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.isfootball.model.Player;
+import com.isfootball.service.PlayerService;
+
+@RestController
+public class PlayerController {
+
+    	private final PlayerService playerService;
+	
+    /**
+     * Constructor del controlador donde Spring inyecta automáticamente el servicio.
+     * 
+     * @param competitionService Es el servicio.
+     */
+    @Autowired
+	public PlayerController(PlayerService playerService) {
+	        this.playerService = playerService;
+	}
+
+    /**
+	 * Endpoint REST para obtener una lista de jugadores que coincidan con un
+	 * nombre/apellido especificado.
+	 * 
+	 * @param name El nombre/apellido del jugador que se va a utilizar para realizar 
+	 * la búsqueda.
+	 * @return Lista de jugadores que coincidan con un nombre/apellido especificado.
+	 */
+	@GetMapping("/api/playersSearch/{name}")
+	public List<Player> getPlayersByName(@PathVariable String name) {
+		return playerService.getPlayersByName(name);
+	}
+}

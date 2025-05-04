@@ -1,6 +1,7 @@
 package com.isfootball.model;
 
 import java.io.Serializable;
+
 /**
  * Clase que almacena los datos de un jugador.
  */

@@ -5,6 +5,7 @@ import CompetitionComponent from '@/components/CompetitionComponent.vue';
 import RouteErrorComponent from '@/components/RouteErrorComponent.vue';
 import TeamsSearchComponent from '@/components/TeamsSearchComponent.vue';
 import TeamComponent from '@/components/TeamComponent.vue';
+import PlayersSearchComponent from '@/components/PlayersSearchComponent.vue';
 
 const routes = [
   { path: '/', component: WelcomeComponent }, 
@@ -12,6 +13,7 @@ const routes = [
   { path: '/competitions/:id',component: CompetitionComponent },
   { path:'/teams', component:TeamsSearchComponent },
   { path: '/teams/:name/:id',component: TeamComponent },
+  { path:'/players',component: PlayersSearchComponent },
   { path:'/:pathMatch(.*)*',component: RouteErrorComponent }
 ];
 //Aquí están las rutas de la aplicación. 
