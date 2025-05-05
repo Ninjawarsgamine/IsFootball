@@ -21,7 +21,7 @@ public class Player implements Serializable {
 	private String lastname;
 
 	private String position;
-	private Team team;
+	private Team playerTeam;
 
 	private Country nationality;
 	private Integer age;

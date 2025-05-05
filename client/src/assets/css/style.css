@@ -693,6 +693,52 @@ select.form-select:focus {
   gap: 2px;
 }
 
+.player-info-container__player-basic-info {
+  max-width: 100rem;
+  margin: 30px auto;
+  text-align: center;
+}
+@media only screen and (max-width: 800px) {
+  .player-info-container__player-basic-info {
+    grid-template-columns: 1fr;
+  }
+}
+.player-info-container__player-basic-info .card-body {
+  padding: 1.5rem;
+}
+@media only screen and (max-width: 800px) {
+  .player-info-container__player-basic-info .card-body {
+    grid-template-columns: 1fr;
+  }
+}
+.player-info-container__player-basic-info__item {
+  margin-bottom: 1rem;
+}
+.player-info-container__player-basic-info__item__label {
+  display: block;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 0.25rem;
+}
+.player-info-container__player-basic-info__item__value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222;
+}
+.player-info-container__player-basic-info__item div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.player-info-container__player-basic-info__item div img {
+  max-height: 2.5rem;
+  max-width: 2.5rem;
+  object-fit: contain;
+}
+.player-info-container__player-basic-info__item div span {
+  margin-left: 0.3rem;
+}
+
 .loading-container {
   position: fixed;
   top: 50%;

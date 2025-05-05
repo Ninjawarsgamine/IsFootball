@@ -1,0 +1,50 @@
+.player-info-container {
+  &__player-basic-info {
+    max-width: 100rem;
+    margin: 30px auto;
+    text-align: center;
+    @media only screen and (max-width: $max-width) {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+      @media only screen and (max-width: $max-width) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__item {
+      margin-bottom: 1rem;
+
+      &__label {
+        display: block;
+        font-weight: 700;
+        color: #555;
+        margin-bottom: 0.25rem;
+      }
+
+      &__value {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #222;
+      }
+
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          max-height: 2.5rem;
+          max-width: 2.5rem;
+          object-fit: contain;
+        }
+
+        span {
+          margin-left: 0.3rem;
+        }
+      }
+    }
+  }
+}

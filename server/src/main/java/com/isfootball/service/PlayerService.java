@@ -121,7 +121,7 @@ public class PlayerService {
                 playerTeam.setId(playerTeamInfo.path("id").asInt());
                 playerTeam.setName(playerTeamInfo.path("name").asText());
                 playerTeam.setLogo(playerTeamInfo.path("logo").asText());
-                player.setTeam(playerTeam);
+                player.setPlayerTeam(playerTeam);
                 
                 return player;
             }catch(Exception e) {
