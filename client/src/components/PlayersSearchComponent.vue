@@ -30,7 +30,7 @@
                    :key="player.id" custom v-slot="{navigate}">
                       <tr :key="player.id" @click="navigate">
                         <td class="text-center">
-                            <span>{{player.nationality.name }}</span>
+                            <span>{{player.nationality }}</span>
                          </td>
                          <td><img :src="player.photo" class="rounded-circle img-fluid"> {{ player.name }}</td>
 

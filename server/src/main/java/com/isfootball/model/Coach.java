@@ -2,9 +2,14 @@ package com.isfootball.model;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Clase que representa la información de un entrenador de un equipo.
  */
+@Getter
+@Setter
 public class Coach implements Serializable {
 
     private static final long serialVersionUID = -2826680478285504605L;
@@ -13,38 +18,4 @@ public class Coach implements Serializable {
     private String name;
     private String photo;
     private Country nationality;
-    
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public Country getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(Country nationality) {
-        this.nationality = nationality;
-    }
-
-
 }

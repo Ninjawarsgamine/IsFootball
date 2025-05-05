@@ -3,9 +3,14 @@ package com.isfootball.model;
 import java.io.Serializable;
 
 import java.util.Map;
+
+import lombok.Getter;
+import lombok.Setter;
 /**
  * Clase que representa la información sobre los goles de un equipo.
  */
+@Getter
+@Setter
 public class Goal implements Serializable{
 
     private static final long serialVersionUID = 4990606117528824808L;
@@ -17,37 +22,4 @@ public class Goal implements Serializable{
     private Map<String,Stat> minutes;
 
     private Map<String, UnderOver> underOver;
-
-
-    public HomeAwayTotalStats getDistribution() {
-        return distribution;
-    }
-    
-    public void setDistribution(HomeAwayTotalStats distribution) {
-        this.distribution = distribution;
-    }
-    
-    public HomeAwayTotalStats getAverage() {
-        return average;
-    }
-    
-    public void setAverage(HomeAwayTotalStats average) {
-        this.average = average;
-    }
-    
-    public Map<String, Stat> getMinutes() {
-        return minutes;
-    }
-    
-    public void setMinutes(Map<String, Stat> minutes) {
-        this.minutes = minutes;
-    }
-    
-    public Map<String, UnderOver> getUnderOver() {
-        return underOver;
-    }
-    
-    public void setUnderOver(Map<String, UnderOver> underOver) {
-        this.underOver = underOver;
-    }
 }

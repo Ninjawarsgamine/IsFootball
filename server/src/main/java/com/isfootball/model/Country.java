@@ -2,9 +2,14 @@ package com.isfootball.model;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Esta clase contiene toda la información sobre un país.
  */
+@Getter
+@Setter
 public class Country implements Serializable {
 
 	private static final long serialVersionUID = -3961331635464484795L;

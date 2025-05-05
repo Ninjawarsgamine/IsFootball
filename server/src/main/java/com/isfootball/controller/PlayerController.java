@@ -25,6 +25,17 @@ public class PlayerController {
 	        this.playerService = playerService;
 	}
 
+	   /**
+	 * Endpoint REST para obtener la información de un jugador con un ID especificado.
+	 * 
+	 * @param id El id del jugador que se va a utilizar para realizar la búsqueda.
+	 * @return Un objeto "Player" con toda la información de un jugador.
+	 */
+	@GetMapping("/api/players/{id}")
+	public Player getPlayerById(@PathVariable String id){
+		return playerService.getPlayerById(Integer.valueOf(id));
+	}
+
     /**
 	 * Endpoint REST para obtener una lista de jugadores que coincidan con un
 	 * nombre/apellido especificado.
