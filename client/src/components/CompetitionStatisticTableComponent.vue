@@ -22,13 +22,13 @@
                         <router-link :to="`players/${player.player.id}`">
                             <img 
                             class="competition-info-container__statistic-table__player-photo 
-                            img-fluid" :src="player.player.photo">
+                            img-fluid" v-lazy="player.player.photo">
                            {{player.player.name}}
                         </router-link>
                     </td>
                     <td>
                         <router-link :to="`/teams/${player.team.name}/${player.team.id}`">
-                            <img class="img-fluid" :src="player.team.logo"/>
+                            <img class="img-fluid" v-lazy="player.team.logo"/>
                             {{ player.team.name }}
                         </router-link>
                     </td>

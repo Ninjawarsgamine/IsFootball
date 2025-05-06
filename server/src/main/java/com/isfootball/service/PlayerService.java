@@ -16,8 +16,10 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
 import com.isfootball.model.Player;
+import com.isfootball.model.PlayerCompetitionStatistics;
 import com.isfootball.model.Team;
 import com.isfootball.utils.Utils;
 
@@ -123,6 +125,34 @@ public class PlayerService {
                 playerTeam.setLogo(playerTeamInfo.path("logo").asText());
                 player.setPlayerTeam(playerTeam);
                 
+                JsonNode playerCompetitionsStatisticsInfo=playerAllInfo.path("statistics");
+                List<PlayerCompetitionStatistics>playerCompetitionsStatistics=new ArrayList<>();
+                
+                for(JsonNode playerCompetitionStatisicsInfo: playerCompetitionsStatisticsInfo ){
+
+                    PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+
+                    Team team=new Team();
+                    
+                    JsonNode teamInfo=playerCompetitionStatisicsInfo.path("team");
+                    team.setId(teamInfo.path("id").asInt());
+                    team.setName(teamInfo.path("name").asText());
+                    team.setLogo(teamInfo.path("logo").asText());
+                    playerCompetitionStatistics.setTeam(team);
+                    
+                    Competition competition=new Competition();
+                    JsonNode competitionInfo=playerCompetitionStatisicsInfo.path("league");
+                    competition.setId(competitionInfo.path("id").asInt());
+                    competition.setName(competitionInfo.path("name").asText());
+                    competition.setLogo(competitionInfo.path("logo").asText());
+                    playerCompetitionStatistics.setCompetition(competition);
+
+                    JsonNode gamesInfo=playerCompetitionStatisicsInfo.path("games");
+
+                    playerCompetitionsStatistics.add(playerCompetitionStatistics);
+                }
+
+
                 return player;
             }catch(Exception e) {
                 e.printStackTrace();

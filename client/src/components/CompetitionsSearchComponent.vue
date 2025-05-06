@@ -34,7 +34,7 @@
                         </td>
                         <td v-else>-</td>
                         <td class="text-center">
-                           <img :src="competition.logo" class="img-fluid">
+                           <img v-lazy="competition.logo" class="img-fluid">
                         </td>
                         <td>{{ competition.name }}</td>
                      </tr>

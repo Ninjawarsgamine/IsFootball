@@ -29,6 +29,7 @@ import com.isfootball.model.PlayerCompetitionStatistics;
 import com.isfootball.model.Team;
 import com.isfootball.model.TeamCompetitionStatistics;
 import com.isfootball.utils.Utils;
+
 @Service
 public class CompetitionService {
 	@Value("${api.key}")

@@ -1,6 +1,8 @@
 package com.isfootball.model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,5 +32,7 @@ public class Player implements Serializable {
 	private String weight;
 	private String photo;
 	private Boolean isInjured;
+
+	private List<PlayerCompetitionStatistics>playerCompetitionStatistics;
 
 }
