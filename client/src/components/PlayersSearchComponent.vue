@@ -32,7 +32,7 @@
                         <td class="text-center">
                             <span>{{player.nationality.name }}</span>
                          </td>
-                         <td><img :src="player.photo" class="rounded-circle img-fluid"> {{ player.name }}</td>
+                         <td><img v-lazy="player.photo" class="rounded-circle img-fluid"> {{ player.name }}</td>
 
                          <td>{{ player.position }}</td>
                       </tr>

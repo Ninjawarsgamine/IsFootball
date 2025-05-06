@@ -3,7 +3,7 @@
     <div class="match-card-container__header d-flex justify-content-between align-items-start mb-3">
       <div class="match-card-container__competition d-flex align-items-center">
         <router-link :to="`/competitions/${match.competition.id}`">
-          <img :src="match.competition.logo" 
+          <img v-lazy="match.competition.logo" 
           class="match-card-container__competition__logo me-2">
           <span class="match-card-container__competition__name">
             {{ match.competition.name }}
@@ -24,7 +24,7 @@
     <div class="match-card-container__teams">
       <router-link :to="`/teams/${match.teamHome.name}/${match.teamHome.id}`" 
       class="match-card-container__teams__team me-4">
-        <img :src="match.teamHome.logo"
+        <img v-lazy="match.teamHome.logo"
         class="match-card-container__teams__team__logo me-2">
         <span class="match-card-container__teams__team__name me-2">
           {{ match.teamHome.name }}
@@ -49,7 +49,7 @@
         <span class="match-card-container__teams__team__name me-2">
           {{ match.teamAway.name }}
         </span>
-        <img :src="match.teamAway.logo"
+        <img v-lazy="match.teamAway.logo"
              class="match-card-container__teams__team__logo">
       </router-link>
     </div>

@@ -45,7 +45,7 @@
                                     {{ field.label }}:
                                 </span>
                                 <div>
-                                    <img :src="field.teamLogo">
+                                    <img v-lazy="field.teamLogo">
                                     <span class="player-info-container__player-basic-info__item__value">
                                         {{field.teamName}}
                                     </span>

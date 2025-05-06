@@ -45,7 +45,7 @@
                             <div 
                             class="team-info-container__team-basic-data__team-info-content__team-info-general__team-info-data">
                                 <div><strong>Country:</strong>
-                                    <img class="img-fluid" :src="team?.country?.flag" 
+                                    <img class="img-fluid" v-lazy="team?.country?.flag" 
                                     alt="Bandera del país"/>
                                 </div>
                                 <div><strong>Founded:</strong> {{ team.founded }}</div>
@@ -55,7 +55,7 @@
                         <div class="team-info-container__team-info-venue">
                             <h2 class="">Venue</h2>
                             <div class="team-info-container__team-info-venue__team-info-venue-data">
-                                <img :src="team.venue.image" alt="Imagen del estadio"/>
+                                <img v-lazy="team.venue.image" alt="Imagen del estadio"/>
                                 <div>
                                     <div><strong>Name:</strong> {{ team.venue.name }}</div>
                                     <div><strong>Capacity:</strong>{{ team.venue.capacity }} personas</div>
@@ -246,7 +246,7 @@
                     <h3>Coach</h3>
                     <div class="team-info-container__team-players__player-data list-group-item-action 
                     d-flex align-items-center p-3">
-                        <img class="rounded-circle flex-shrink-0 me-3" :src="teamCoach?.photo"
+                        <img class="rounded-circle flex-shrink-0 me-3" v-lazy="teamCoach?.photo"
                         :alt="'Foto de ' + teamCoach.name"/>
                         <div class="team-info-container__team-players__player-data__player-info">
                             <h6>{{ teamCoach.name }}</h6>
@@ -257,7 +257,7 @@
                     <router-link v-for="player in teamPlayers" :key="player.id" 
                     class="team-info-container__team-players__player-data list-group-item-action 
                     d-flex align-items-center p-3" :to="`/players/${player.id}`">
-                        <img class="rounded-circle flex-shrink-0 me-3" :src="player.photo"
+                        <img class="rounded-circle flex-shrink-0 me-3" v-lazy="player.photo"
                         :alt="'Foto de ' + player.name"/>
                         <div class="team-info-container__team-players__player-data__player-info">
                             <h6>{{ player.name }}</h6>

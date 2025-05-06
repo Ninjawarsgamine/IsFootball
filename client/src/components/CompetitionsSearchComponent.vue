@@ -30,7 +30,7 @@
                   :key="competition.id" custom v-slot="{navigate}">
                      <tr :key="competition.id" @click="navigate">
                         <td class="text-center" v-if="competition.country.flag!=='null'">
-                           <img :src="competition.country.flag" class="img-fluid">
+                           <img v-lazy="competition.country.flag" class="img-fluid">
                         </td>
                         <td v-else>-</td>
                         <td class="text-center">

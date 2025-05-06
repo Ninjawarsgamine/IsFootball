@@ -10,7 +10,7 @@
                 <div class="welcome-container__main-competitions-container__competitions__competition" 
                 v-for="competition in mainCompetitions" :key="competition.id">
                 <router-link :to="`/competitions/${competition.id}`">
-                    <img class="img-fluid" :src="competition.logo"/>
+                    <img class="img-fluid" v-lazy="competition.logo"/>
                 </router-link>
                 </div>
             </div>
