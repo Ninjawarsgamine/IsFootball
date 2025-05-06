@@ -21,7 +21,7 @@ public class PlayerCompetitionStatistics implements Serializable {
 
 	private Team team;
 	
-	private Integer gamesAppearances;
+	private Integer gamesAppearences;
 	private Integer gamesLineups;
 	private Integer gamesMinutes;
 	private Integer position;

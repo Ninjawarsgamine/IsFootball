@@ -305,6 +305,16 @@ select.form-select:focus {
   text-align: left;
   margin-left: 2.2rem;
 }
+@media only screen and (max-width: 800px) {
+  .competition-info-container table {
+    font-size: 100%;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .competition-info-container table th:last-of-type, .competition-info-container table td:last-of-type {
+    display: none;
+  }
+}
 .competition-info-container table a {
   text-decoration: none;
   color: inherit;
@@ -312,6 +322,16 @@ select.form-select:focus {
   display: flex;
   column-gap: 0.25rem;
   align-items: center;
+}
+@media only screen and (max-width: 800px) {
+  .competition-info-container table a {
+    flex-direction: column;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .competition-info-container table a span {
+    display: none;
+  }
 }
 .competition-info-container__team-logo {
   max-height: 2.5rem;
@@ -326,7 +346,6 @@ select.form-select:focus {
   align-items: center;
 }
 .competition-info-container__statistic-table {
-  width: 95%;
   text-align: left;
   font-size: 1.1rem;
 }

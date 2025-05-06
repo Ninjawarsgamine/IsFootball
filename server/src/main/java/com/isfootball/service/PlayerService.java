@@ -128,30 +128,83 @@ public class PlayerService {
                 JsonNode playerCompetitionsStatisticsInfo=playerAllInfo.path("statistics");
                 List<PlayerCompetitionStatistics>playerCompetitionsStatistics=new ArrayList<>();
                 
-                for(JsonNode playerCompetitionStatisicsInfo: playerCompetitionsStatisticsInfo ){
+                for(JsonNode playerCompetitionStatisticsInfo: playerCompetitionsStatisticsInfo ){
 
                     PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
 
                     Team team=new Team();
                     
-                    JsonNode teamInfo=playerCompetitionStatisicsInfo.path("team");
+                    JsonNode teamInfo=playerCompetitionStatisticsInfo.path("team");
                     team.setId(teamInfo.path("id").asInt());
                     team.setName(teamInfo.path("name").asText());
                     team.setLogo(teamInfo.path("logo").asText());
                     playerCompetitionStatistics.setTeam(team);
                     
                     Competition competition=new Competition();
-                    JsonNode competitionInfo=playerCompetitionStatisicsInfo.path("league");
+                    JsonNode competitionInfo=playerCompetitionStatisticsInfo.path("league");
                     competition.setId(competitionInfo.path("id").asInt());
                     competition.setName(competitionInfo.path("name").asText());
                     competition.setLogo(competitionInfo.path("logo").asText());
                     playerCompetitionStatistics.setCompetition(competition);
 
-                    JsonNode gamesInfo=playerCompetitionStatisicsInfo.path("games");
+                    JsonNode gamesInfo=playerCompetitionStatisticsInfo.path("games");
+                    playerCompetitionStatistics.setGamesAppearences(gamesInfo.path("appearences").asInt());
+                    playerCompetitionStatistics.setGamesLineups(gamesInfo.path("lineups").asInt());
+                    playerCompetitionStatistics.setGamesMinutes(gamesInfo.path("minutes").asInt());
+                    playerCompetitionStatistics.setGamesRating(gamesInfo.path("rating").asDouble());
+                    
+                    JsonNode substitutesInfo=playerCompetitionStatisticsInfo.path("substitutes");
+                    playerCompetitionStatistics.setSubstitutesIn(substitutesInfo.path("in").asInt());
+                    playerCompetitionStatistics.setSubstitutesOut(substitutesInfo.path("out").asInt());
+                    playerCompetitionStatistics.setSubstitutesBench(substitutesInfo.path("bench").asInt());
+
+                    JsonNode shotsInfo=playerCompetitionStatisticsInfo.path("shots");
+                    playerCompetitionStatistics.setTotalShots(shotsInfo.path("total").asInt());
+                    playerCompetitionStatistics.setShotsOn(shotsInfo.path("on").asInt());
+                    
+                    JsonNode goalsInfo=playerCompetitionStatisticsInfo.path("goals");
+                    playerCompetitionStatistics.setTotalGoals(goalsInfo.path("total").asInt());
+                    playerCompetitionStatistics.setConcededGoals(goalsInfo.path("conceded").asInt());
+                    playerCompetitionStatistics.setAssists(goalsInfo.path("assists").asInt());
+                    playerCompetitionStatistics.setSaves(goalsInfo.path("saves").asInt());
+
+                    JsonNode passesInfo=playerCompetitionStatisticsInfo.path("passes");
+                    playerCompetitionStatistics.setTotalPasses(passesInfo.path("total").asInt());
+                    playerCompetitionStatistics.setKeyPasses(passesInfo.path("key").asInt());
+                    playerCompetitionStatistics.setAccuracyPasses(passesInfo.path("accuracy").asInt());
+                    
+                    JsonNode tacklesInfo=playerCompetitionStatisticsInfo.path("tackles");
+                    playerCompetitionStatistics.setTotalTackles(tacklesInfo.path("total").asInt());
+                    playerCompetitionStatistics.setBlocksTackles(tacklesInfo.path("blocks").asInt());
+                    playerCompetitionStatistics.setInterceptionsTackles(tacklesInfo.path("interceptions").asInt());
+
+                    JsonNode duelsInfo=playerCompetitionStatisticsInfo.path("duels");
+                    playerCompetitionStatistics.setTotalDuels(duelsInfo.path("total").asInt());
+                    playerCompetitionStatistics.setDuelsWon(duelsInfo.path("won").asInt());
+
+                    JsonNode dribblesInfo=playerCompetitionStatisticsInfo.path("dribbles");
+                    playerCompetitionStatistics.setDribblesAttempts(dribblesInfo.path("attempts").asInt());
+                    playerCompetitionStatistics.setDribblesSuccess(dribblesInfo.path("success").asInt());
+
+                    JsonNode foulsInfo=playerCompetitionStatisticsInfo.path("fouls");
+                    playerCompetitionStatistics.setFoulsCommitted(foulsInfo.path("committed").asInt());
+                    playerCompetitionStatistics.setFoulsDrawn(foulsInfo.path("drawn").asInt());
+
+                    JsonNode cardsInfo=playerCompetitionStatisticsInfo.path("cards");
+                    playerCompetitionStatistics.setYellowCards(cardsInfo.path("yellow").asInt());
+                    playerCompetitionStatistics.setYellowRedCards(cardsInfo.path("yellowred").asInt());
+                    playerCompetitionStatistics.setRedCards(cardsInfo.path("red").asInt());
+
+                    JsonNode penaltiesInfo=playerCompetitionStatisticsInfo.path("penalty");
+                    playerCompetitionStatistics.setPenaltiesWon(penaltiesInfo.path("won").asInt());
+                    playerCompetitionStatistics.setPenaltiesCommited(penaltiesInfo.path("committed").asInt());
+                    playerCompetitionStatistics.setPenaltiesScored(penaltiesInfo.path("scored").asInt());
+                    playerCompetitionStatistics.setPenaltiesMissed(penaltiesInfo.path("missed").asInt());
+                    playerCompetitionStatistics.setPenaltiesSaved(penaltiesInfo.path("saved").asInt());
 
                     playerCompetitionsStatistics.add(playerCompetitionStatistics);
                 }
-
+                player.setPlayerCompetitionStatistics(playerCompetitionsStatistics);
 
                 return player;
             }catch(Exception e) {

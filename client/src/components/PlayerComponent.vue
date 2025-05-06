@@ -87,7 +87,7 @@
         
         return [
             { label: 'Position', value: player.value.position },
-            { label: 'Nickname', value: playerName },
+            { label: 'Full name', value: playerName },
             { label: 'Birthday', value: player.value.birthday },
             { label: 'Age', value: player.value.age },
             { label: 'Height', value: player.value.height },

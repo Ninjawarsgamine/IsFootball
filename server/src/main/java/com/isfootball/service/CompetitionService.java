@@ -366,7 +366,7 @@ public class CompetitionService {
 					playerTeam.setLogo(playerTeamData.path("logo").asText());;
 					playerCompetitionStatistics.setTeam(playerTeam);
 	
-					playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
 					playerCompetitionStatistics.setTotalGoals(playerAllStatistics.path("goals").path("total").asInt());
 					competitionPlayersStatistics.add(playerCompetitionStatistics);
 				}
@@ -411,7 +411,7 @@ public class CompetitionService {
 					playerTeam.setLogo(playerTeamData.path("logo").asText());;
 					playerCompetitionStatistics.setTeam(playerTeam);
 	
-					playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
 					playerCompetitionStatistics.setAssists(playerAllStatistics.path("goals").path("assists").asInt());
 					competitionPlayersStatistics.add(playerCompetitionStatistics);
 				}
@@ -456,7 +456,7 @@ public class CompetitionService {
 					playerTeam.setLogo(playerTeamData.path("logo").asText());;
 					playerCompetitionStatistics.setTeam(playerTeam);
 	
-					playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
 					playerCompetitionStatistics.setYellowCards(playerAllStatistics.path("cards").path("yellow").asInt());
 					competitionPlayersStatistics.add(playerCompetitionStatistics);
 				}
@@ -501,7 +501,7 @@ public class CompetitionService {
 					playerTeam.setLogo(playerTeamData.path("logo").asText());;
 					playerCompetitionStatistics.setTeam(playerTeam);
 	
-					playerCompetitionStatistics.setGamesAppearances(playerAllStatistics.path("games").path("appearences").asInt());
+					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
 					playerCompetitionStatistics.setRedCards(playerAllStatistics.path("cards").path("red").asInt());
 					competitionPlayersStatistics.add(playerCompetitionStatistics);
 				}

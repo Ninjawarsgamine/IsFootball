@@ -8,7 +8,7 @@
             <li class="nav-item" role="presentation" v-if="competition.type=='League' || competition.teamsCompetitionStatistics">
                 <button class="nav-link active" id="table-tab" data-bs-toggle="tab" 
                 data-bs-target="#classification" type="button" role="tab" aria-selected="true">
-                    Clasificación
+                    Classification
                 </button>
             </li>
 
@@ -16,7 +16,7 @@
                 <button class="nav-link" id="matches-tab" data-bs-toggle="tab" 
                 data-bs-target="#matches" type="button" role="tab" aria-selected="true"
                 @click="getcompetitionRoundMatches(competitionRounds[0]);">
-                    Partidos
+                    Matches
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -24,14 +24,14 @@
                 data-bs-target="#statistics" type="button" role="tab" aria-selected="true" 
                 @click="getCompetitionTopScorers(); getCompetitionTopAssistsProviders();
                 getCompetitionTopYellowCards(); getCompetitionTopRedCards();">
-                    Estadísticas
+                    Statistics
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="teams-tab" data-bs-toggle="tab" 
                 data-bs-target="#teams" type="button" role="tab"
                 aria-selected="true" @click="getTeamsOrdered();">
-                    Equipos
+                   Teams
                 </button>
             </li>
         </ul>
@@ -40,7 +40,7 @@
             <div class="tab-pane fade show active" id="classification" role="tabpanel" aria-labelledby="table-tab"
             v-if="competition.teamsCompetitionStatistics">
                 <div v-if="competition.type=='League'">
-                    <h1>Clasificación</h1>
+                    <h1>Classification</h1>
                     <CompetitionTableComponent 
                     :competitionTeams="competition.teamsCompetitionStatistics"/>
                 </div>
@@ -56,7 +56,7 @@
         </div>
         <div class="tab-content" id="competitionMatches">
             <div class="tab-pane fade show" id="matches" role="tabpanel" aria-labelledby="table-tab">
-                <h1>Partidos</h1>
+                <h1>Matches</h1>
                 <select v-model="roundSelected" name="matches-round" 
                 class="competition-info-container__match-round-select form-select"
                 @change="getcompetitionRoundMatches(roundSelected)">
@@ -86,7 +86,7 @@
         
         <div class="tab-content" id="competitionTeams">
             <div class="tab-pane fade show" id="teams" role="tabpanel" aria-labelledby="table-tab">
-                <h1>Equipos</h1>
+                <h1>Teams</h1>
                 <div class="competition-info-container__competition-teams table-responsive">
                     <router-link v-for="team in teamsOrdered" :key="team.id" 
                     class="competition-info-container__competition-teams__team-data list-group-item-action 

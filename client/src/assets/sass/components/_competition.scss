@@ -3,19 +3,39 @@
       text-align: left;
       margin-left:2.2rem;
   }
-  
-  table a{
+  table{
+    @media only screen and (max-width: $max-width){
+      font-size: 100%;
+    }
+
+    th:last-of-type, td:last-of-type{
+      @media only screen and (max-width: $max-width){
+        display: none;
+      }
+    }
+
+    a{
       text-decoration: none;  
       color: inherit; 
       width:100%;
       display: flex;
       column-gap: 0.25rem;
       align-items: center;   
+      @media only screen and (max-width: $max-width){
+        flex-direction: column;
+      }
+      span{
+        @media only screen and (max-width: $max-width){
+         display: none;
+        }
+      }
+    }
   }
 
   &__team-logo{
       max-height: 2.5rem;
       max-width:  2.5rem;
+
   }
 
   &__team-points{
@@ -29,7 +49,7 @@
   }
 
   &__statistic-table{
-    width:95%;
+
     text-align: left;
     font-size: 1.1rem;
 
@@ -41,8 +61,7 @@
         a{
             display: flex;
             align-items: center;
-        
-           
+
             img{
                 max-width: 2.3rem;
             }
