@@ -3,7 +3,7 @@
        <div class="search-widget__form">
           <form method="GET" id="team-search-form" @submit.prevent="getTeams">
              <input type="text" name="name"  id="teamName" v-model="teamName"
-             placeholder="Busca tu equipo aquí" autocomplete="off"/>
+             placeholder="Search for your team here" autocomplete="off"/>
              <button type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                 fill="none"  viewBox="0 0 24 24"  stroke="currentColor" stroke-width="2">
@@ -21,7 +21,7 @@
                    <tr>
                       <th scope="col" class="text-center">🏳️</th>
                       <th scope="col" class="text-center">🏆</th>
-                      <th scope="col">Equipo</th>
+                      <th scope="col">Team</th>
                    </tr>
                 </thead>
                 <tbody>
@@ -43,7 +43,7 @@
              </table>
           </div>
           <div class="search-widget__results__empty" v-else-if="hasSearched && !loading.isLoading">
-            <p>No se han encontrado resultados</p>
+            <p>No results found</p>
           </div>
        </div>
     </div>

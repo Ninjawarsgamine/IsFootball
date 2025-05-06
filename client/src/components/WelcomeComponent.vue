@@ -1,11 +1,11 @@
 <template>
     <div class="welcome-container">
         <div class="welcome-container__app-description-container">
-            <span>Bienvenido a IsFootball, el mejor lugar para descubrir estadísticas de equipos, jugadores, competiciones y partidos. </span>
-            <span>Nuestro objetivo es proporcionarte toda la información actualizada para que puedas disfrutar del fútbol de manera más detallada.</span>
+            <span>Welcome to IsFootball, the best place to discover statistics on teams, players, competitions, and matches.</span>
+            <span>Our goal is to provide you with all the updated information so you can enjoy football in more detail.</span>
         </div>
         <div class="welcome-container__main-competitions-container">
-            <h3>Estas son las competiciones más populares</h3>
+            <h3>These are the most popular competitions</h3>
             <div class="welcome-container__main-competitions-container__competitions" >
                 <div class="welcome-container__main-competitions-container__competitions__competition" 
                 v-for="competition in mainCompetitions" :key="competition.id">

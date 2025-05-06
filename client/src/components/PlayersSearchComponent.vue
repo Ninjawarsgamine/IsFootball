@@ -3,7 +3,7 @@
        <div class="search-widget__form">
           <form method="GET" id="player-search-form" @submit.prevent="getPlayers()">
              <input type="text" name="name"  id="playerName" v-model="playerName"
-             placeholder="Busca a tu jugador favorito aquí" autocomplete="off"/>
+             placeholder="Search for your favorite player here" autocomplete="off"/>
              <button type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                 fill="none"  viewBox="0 0 24 24"  stroke="currentColor" stroke-width="2">

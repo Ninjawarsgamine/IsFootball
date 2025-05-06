@@ -5,22 +5,22 @@
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
           <h5 class="text-uppercase fw-bold mb-3 custom-font">Info</h5>
           <div class="d-flex flex-column gap-2">
-            <a href="/nosotros">Quiénes somos</a>
-            <a href="/contact">Contacto</a>
+            <a href="/nosotros">About us</a>
+            <a href="/contact">Contact</a>
             <a href="/faq">FAQ</a>
-            <a href="/trabaja-con-nosotros">Trabaja con nosotros</a>
+            <a href="/trabaja-con-nosotros">Careers</a>
           </div>
         </div>
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
           <h5 class="text-uppercase fw-bold mb-3 custom-font">Legal</h5>
           <div class="d-flex flex-column gap-2">
-            <a href="/privacity">Privacidad</a>
-            <a href="/terms">Términos</a>
+            <a href="/privacity">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
             <a href="/cookies">Cookies</a>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-3 mt-3 d-flex flex-column align-items-center">
-          <h5 class="text-uppercase fw-bold mb-3">Síguenos</h5>
+          <h5 class="text-uppercase fw-bold mb-3">Follow us</h5>
           <div class="d-flex gap-3 flex-wrap align-items-center">
             <a href="https://instagram.com" class="social-icon" target="_blank" rel="noopener">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="icon-sm" fill="white">
@@ -61,7 +61,7 @@
           <img :src="require('@/assets/logo.png')" class="img-fluid align-self-start vh-10" 
           alt="Logo de IsFootball">
         </div>
-        <p class="mb-0 fs-6">©{{ currentYear }} IsFootball. Todos los derechos reservados.</p>
+        <p class="mb-0 fs-6">©{{ currentYear }} IsFootball. All rights reserved.</p>
       </div>
     </div>
   </div>

@@ -6,12 +6,12 @@
             <thead class="table-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Jugador</th>
-                    <th scope="col">Equipo</th>
-                    <th scope="col" v-if="players[0].totalGoals">Goles</th>
-                    <th scope="col" v-if="players[0].assists">Asistencias</th>
+                    <th scope="col">Player</th>
+                    <th scope="col">Team</th>
+                    <th scope="col" v-if="players[0].totalGoals">Goals</th>
+                    <th scope="col" v-if="players[0].assists">Assists</th>
                     <th scope="col" v-if="players[0].yellowCards || players[0].redCards">
-                        Número de tarjetas
+                        Number of Cards
                     </th>
                 </tr>
             </thead>

@@ -5,10 +5,10 @@
         alt="Logo de IsFootball"/>
     </router-link>
     <ul class="header-container__menu-options">
-      <router-link to="/competitions"><li>Competiciones</li></router-link>
-      <router-link to="/teams"><li>Equipos</li></router-link>
-      <router-link to="/players"><li>Jugadores</li></router-link>
-      <router-link to="/matches"><li>Partidos</li></router-link>
+      <router-link to="/competitions"><li>Competitions</li></router-link>
+      <router-link to="/teams"><li>Teams</li></router-link>
+      <router-link to="/players"><li>Players</li></router-link>
+      <router-link to="/matches"><li>Matches</li></router-link>
     </ul>
   </div>
 </template>

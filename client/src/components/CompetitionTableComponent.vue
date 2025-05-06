@@ -4,16 +4,16 @@
             <thead class="table-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col" class="text-start">Equipo</th>
-                    <th scope="col">PJ</th>
-                    <th scope="col">G</th>
-                    <th scope="col">E</th>
-                    <th scope="col">P</th>
+                    <th scope="col" class="text-start">Team</th>
+                    <th scope="col">MP</th>
+                    <th scope="col">W</th>
+                    <th scope="col">D</th>
+                    <th scope="col">L</th>
                     <th scope="col">GF</th>
-                    <th scope="col">GC</th>
-                    <th scope="col">DG</th>
+                    <th scope="col">GA</th>
+                    <th scope="col">GD</th>
                     <th scope="col">Pts</th>
-                    <th scope="col">Forma</th>
+                    <th scope="col">Form</th>
                 </tr>
             </thead>
             <tbody>

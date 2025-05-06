@@ -72,14 +72,14 @@
         </div>
         <div class="tab-content" id="competitionStatistics">
             <div class="tab-pane fade show" id="statistics" role="tabpanel" aria-labelledby="table-tab">
-                <h1>Estadísticas</h1>
-                <CompetitionStatisticTableComponent title="Máximos goleadores"
+                <h1>Statistics</h1>
+                <CompetitionStatisticTableComponent title="Top scorers"
                  :players="competitionTopScorers"/>
-                <CompetitionStatisticTableComponent title="Máximos asistidores"
+                <CompetitionStatisticTableComponent title="Top assists providers"
                 :players="competitionTopAssistsProviders" />
-                <CompetitionStatisticTableComponent title="Más tarjetas amarillas"
+                <CompetitionStatisticTableComponent title="Top yellow cards"
                 :players="competitionTopYellowCards"/>
-                <CompetitionStatisticTableComponent title="Más tarjetas rojas"
+                <CompetitionStatisticTableComponent title="Top red cards"
                 :players="competitionTopRedCards"/>
             </div>
         </div>

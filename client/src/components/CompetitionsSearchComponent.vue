@@ -3,7 +3,7 @@
       <div class="search-widget__form">
          <form method="GET" id="competition-search-form" @submit.prevent="getCompetitions">
             <input type="text" name="name"  id="competitionName" v-model="competitionName"
-            placeholder="Busca tu competición aquí" autocomplete="off"/>
+            placeholder="Search for your competition here" autocomplete="off"/>
             <button type="submit">
                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                fill="none"  viewBox="0 0 24 24"  stroke="currentColor" stroke-width="2">
@@ -21,7 +21,7 @@
                   <tr>
                      <th scope="col" class="text-center">🏳️</th>
                      <th scope="col" class="text-center">🏆</th>
-                     <th scope="col">Competición</th>
+                     <th scope="col">Competition</th>
                   </tr>
                </thead>
                <tbody>
