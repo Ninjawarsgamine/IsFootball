@@ -1,7 +1,7 @@
 <template>
+     <ComponentHeader :componentName="player.name" :componentLogo="player.photo"
+     v-if="player && playerName"/>
     <div class="player-info-container" v-if="player && playerName && infoFields.length>0">
-        <ComponentHeader :componentName="player.name" :componentLogo="player.photo"/>
-
         <ul class="nav nav-underline mb-3" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="table-tab" data-bs-toggle="tab" 
@@ -12,7 +12,8 @@
 
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="statistics-tab" data-bs-toggle="tab" 
-                data-bs-target="#statistics" type="button" role="tab" aria-selected="true">
+                data-bs-target="#statistics" type="button" role="tab" aria-selected="true"
+                @click="getPlayerCompetitions()">
                     Statistics
                 </button>
             </li>
@@ -44,25 +45,68 @@
                                 <span class="player-info-container__player-basic-info__item__label">
                                     {{ field.label }}:
                                 </span>
-                                <div>
+                                <router-link :to="`/teams/${field.teamName}/${field.teamId}`">
                                     <img v-lazy="field.teamLogo">
                                     <span class="player-info-container__player-basic-info__item__value">
                                         {{field.teamName}}
                                     </span>
-                                </div>
+                                </router-link>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+        <div class="tab-content p-1" id="StatisticsTabsContent">
+            <div class="tab-pane fade show player-info-container__player-competition-statistics"
+            id="statistics" role="tabpanel" aria-labelledby="table-tab">
+                <h1>Statistics</h1>
+                <select class="form-select" name="player-competition-name"
+                v-model="competitionSelected">
+                    <option v-for="competition in playerCompetitions" :key="competition[0]"
+                    :value="competition[0]">
+                        {{ competition[1] }}
+                    </option>
+                </select>
+                <div class="player-info-container__statistics mt-5">
+                    <div class="player-info-container__statistics__team-info mb-4">
+                        <router-link :to="`/teams/${playerCompetitionStatistics.team.name}/${playerCompetitionStatistics.team.id}`"
+                         class="player-info-container__statistics__team-info__team-brand">
+                            <img v-lazy="playerCompetitionStatistics.team.logo" 
+                            class="player-info-container__statistics__team-info__team-logo" />
+                            <h4 class="player-info-container__statistics__team-info__team-name mb-0">
+                            {{ playerCompetitionStatistics.team.name }}
+                            </h4>
+                        </router-link>
+                        <router-link :to="`/competitions/${playerCompetitionStatistics.competition.id}`" 
+                        class="player-info-container__statistics__team-info__competition-brand">
+                            <h5 class="player-info-container__statistics__team-info__competition-name mb-0">
+                            {{ playerCompetitionStatistics.competition.name }}
+                            </h5>
+                            <img v-lazy="playerCompetitionStatistics.competition.logo" 
+                            class="player-info-container__statistics__team-info__competition-logo" />
+                        </router-link>
+                    </div>
+                    <section class="player-info-container__statistics__stats-section mb-4"
+                    v-for="section in playerCompetitionStatisticsSections" :key="section">
+                        <h5 class="player-info-container__statistics__stats-section__section-title">{{section.title}}</h5>
+                        <div class="player-info-container__statistics__stats-section__row g-3">
+                            <div class="col-md-3 player-info-container__stat-item"  
+                            v-for="stats in section.fields" :key="stats">
+                               {{stats.label}}: <span>{{stats.value}}</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
     import { useFetch } from '@/composables/useFetch';
-    import { ref, onMounted,computed } from 'vue';
+    import { ref, onMounted, computed, watch } from 'vue';
     import ComponentHeader from '@/components/ComponentHeader.vue';
     import { useRoute } from 'vue-router';
 
@@ -77,7 +121,7 @@
             console.log("No se ha encontrado ningún jugador con ID: "+playerId);
         }
         player.value=data.value;
-        playerName.value=player.value.firstname+" "+player.value.lastname;
+        playerName.value=player.value?.firstname+" "+player.value?.lastname;
     }
 
     const infoFields = computed(() => {
@@ -101,13 +145,149 @@
         if (!player.value) {
             return [];
         }
+        return [
+            { label: 'Team', teamId: player.value.playerTeam.id, 
+            teamName: player.value.playerTeam.name, teamLogo:player.value.playerTeam.logo },
+
+            { label: 'Nationality', teamId: player.value.playerTeam.id, 
+            teamName: player.value.nationality.name, teamLogo:player.value.nationality.flag},
+        ];
+    });
+
+    const playerCompetitions=ref([]);
+    const getPlayerCompetitions=()=>{
+        const competitions=new Map();
+        player.value.playerCompetitionStatistics.forEach(competition=>{
+            const competitionId=competition.competition.id;
+            const competitionName=competition.competition.name;
+
+            if(!competitions.has(competitionId)){
+                competitions.set(competitionId,competitionName)
+            }
+            
+            playerCompetitions.value=Array.from(competitions.entries());
+        });
+    }
+    //Función para sacar los nombres de todas las competiciones.
+
+    const playerCompetitionStatistics=ref();
+    const competitionSelected=ref("");
+    
+    const getPlayerCompetitionStatistics=(id)=>{
+        const competitionStatistics=player.value.playerCompetitionStatistics
+        .find((competition)=>competition.competition.id==id);
+
+        if(competitionStatistics){
+            playerCompetitionStatistics.value=competitionStatistics;
+        }
+    };
+    //Esta función saca las estadísticas de un jugador de una sola de las competiciones que juega.
+
+    watch(player, ()=>{
+        if(player.value && !competitionSelected.value){
+
+            competitionSelected.value=player.value.playerCompetitionStatistics[0].competition.id;
+            getPlayerCompetitionStatistics(competitionSelected.value);
+
+            console.log(playerCompetitionStatistics)
+        }
+    });
+    //Cuando cambie el valor de "player", le asignará uno "por defecto" a "competitionSelected".
+
+    const playerCompetitionStatisticsSections = computed(() => {
+        const playerStats = playerCompetitionStatistics.value;
+        if (!playerStats) return [];
 
         return [
-            { label: 'Team', teamName: player.value.playerTeam.name, 
-            teamLogo:player.value.playerTeam.logo },
-
-            { label: 'Nationality', teamName: player.value.nationality.name,
-            teamLogo:player.value.nationality.flag},
+            {
+            title: "Games",
+            fields: [
+                { label: "Appearances", value: playerStats.gamesAppearences },
+                { label: "Lineups", value: playerStats.gamesLineups },
+                { label: "Minutes", value: playerStats.gamesMinutes },
+                { label: "Rating", value: playerStats.gamesRating.toFixed(2) }
+            ]
+            },
+            {
+            title: "Substitutes",
+            fields: [
+                { label: "Substitutes In", value: playerStats.substitutesIn },
+                { label: "Substitutes Out", value: playerStats.substitutesOut },
+                { label: "Bench", value: playerStats.substitutesBench }
+            ]
+            },
+            {
+            title: "Shooting",
+            fields: [
+                { label: "Total Shots", value: playerStats.totalShots },
+                { label: "Shots on Target", value: playerStats.shotsOn },
+                { label: "Goals", value: playerStats.totalGoals },
+                { label: "Assists", value: playerStats.assists }
+            ]
+            },
+            {
+            title: "Passing",
+            fields: [
+                { label: "Total Passes", value: playerStats.totalPasses },
+                { label: "Key Passes", value: playerStats.keyPasses },
+                { label: "Accuracy", value: `${playerStats.accuracyPasses}%` }
+            ]
+            },
+            {
+            title: "Defense & Duels",
+            fields: [
+                { label: "Tackles", value: playerStats.totalTackles },
+                { label: "Blocks", value: playerStats.blocksTackles },
+                { label: "Interceptions", value: playerStats.interceptionsTackles },
+                { label: "Duels", value: playerStats.totalDuels },
+                { label: "Duels Won", value: playerStats.duelsWon }
+            ]
+            },
+            {
+            title: "Goalkeeping",
+            fields: [
+                { label: "Goals Conceded", value: playerStats.concededGoals },
+                { label: "Saves", value: playerStats.saves }
+            ]
+            },
+            {
+            title: "Dribbles",
+            fields: [
+                { label: "Attempts", value: playerStats.dribblesAttempts },
+                { label: "Success", value: playerStats.dribblesSuccess }
+            ]
+            },
+            {
+            title: "Fouls",
+            fields: [
+                { label: "Fouls Drawn", value: playerStats.foulsDrawn },
+                { label: "Fouls Committed", value: playerStats.foulsCommitted }
+            ]
+            },
+            {
+            title: "Cards",
+            fields: [
+                { label: "Yellow Cards", value: playerStats.yellowCards },
+                { label: "Yellow-Red Cards", value: playerStats.yellowRedCards },
+                { label: "Red Cards", value: playerStats.redCards }
+            ]
+            },
+            {
+            title: "Penalties",
+            fields: [
+                { label: "Penalties Won", value: playerStats.penaltiesWon },
+                { label: "Penalties Committed", value: playerStats.penaltiesCommited },
+                { label: "Penalties Scored", value: playerStats.penaltiesScored },
+                { label: "Penalties Missed", value: playerStats.penaltiesMissed },
+                { label: "Penalties Saved", value: playerStats.penaltiesSaved }
+            ]
+            },
+            {
+            title: "Captain",
+            fields: [
+                { label: "Is Captain", value: playerStats.captain ? 'Yes' : 'No' }
+            ]
+            }
         ];
     });
 

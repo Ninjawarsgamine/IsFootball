@@ -20,7 +20,7 @@
       &__label {
         display: block;
         font-weight: 700;
-        color: #555;
+        color: $color-grey-dark;
         margin-bottom: 0.25rem;
       }
 
@@ -29,22 +29,100 @@
         font-weight: 500;
         color: #222;
       }
+    }
+  }
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color:$color-primary;
+    @media only screen and (max-width: $max-width) {
+     flex-direction: column;
+    }
+    
+    img {
+      max-height: 2.5rem;
+      max-width: 2.5rem;
+      object-fit: contain;
+    }
 
-      div {
+    span {
+      margin-left: 0.3rem;
+    }
+  }
+
+  &__statistics {
+
+    font-family: 'Segoe UI', sans-serif;
+  
+
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+    h5{
+      text-align: left;
+    }
+    &__team-info {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 1rem;
+      
+      &-brand {
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 0.5rem;
+      }
+  
+      &__team-brand, &__competition-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-        img {
-          max-height: 2.5rem;
-          max-width: 2.5rem;
-          object-fit: contain;
-        }
-
+      &__team-name,
+      &__competition-name {
+        margin: 0;
+      }
+    }
+  
+    &__stats-section {
+      margin-bottom: 1rem;
+  
+      &__section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #333;
+        border-left: 4px solid #007bff;
+        padding-left: 0.5rem;
+      }
+  
+      &__row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+      }
+  
+      & .player-info-container__stat-item {
+        background: #e9ecef;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+  
         span {
-          margin-left: 0.3rem;
+          display: block;
+          font-weight: bold;
+          font-size: 1.1rem;
+          margin-top: 0.25rem;
+          color: #212529;
         }
       }
     }
   }
+  
 }
