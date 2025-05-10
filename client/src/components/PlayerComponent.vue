@@ -58,7 +58,6 @@
                                         {{field.teamName}}
                                     </span>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -98,7 +97,9 @@
                     </div>
                     <section class="player-info-container__statistics__stats-section mb-4"
                     v-for="section in playerCompetitionStatisticsSections" :key="section">
-                        <h5 class="player-info-container__statistics__stats-section__section-title">{{section.title}}</h5>
+                        <h5 class="player-info-container__statistics__stats-section__section-title">
+                            {{section.title}}
+                        </h5>
                         <div class="player-info-container__statistics__stats-section__row g-3">
                             <div class="col-md-3 player-info-container__stat-item"  
                             v-for="stats in section.fields" :key="stats">
@@ -115,14 +116,13 @@
             <div class="tab-pane fade show player-info-container__player-career"
             id="career" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Career</h1>
-                <div class="player-info-container__player-career__row row row-cols-1 row-cols-md-2 
-                row-cols-lg-3 g-4" v-if="playerTeamsCareer">
+                <div class="player-info-container__player-career__row row" v-if="playerTeamsCareer">
                     <div class="player-info-container__player-career__row__col col" 
                     v-for="team in playerTeamsCareer" :key="team">
-                        <div class="player-info-container__player-career__row__col__career-item card h-100">
+                        <div class="player-info-container__player-career__row__col__career-item row card h-100">
                             <router-link :to="`/teams/${team.team.name}/${team.team.id}`" 
                             class="card-body d-flex align-items-center">
-                                <img v-lazy="team.team.logo" class="team-logo me-3">
+                                <img v-lazy="team.team.logo" class="me-3">
                                 <div>
                                     <h5 class="mb-1">{{team.team.name}}</h5>
                                     <p class="seasons mb-0" v-if="team.seasons && team.seasons.length>0">

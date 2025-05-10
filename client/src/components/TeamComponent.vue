@@ -3,7 +3,7 @@
         <ComponentHeader :componentLogo="team.logo" :component-name="team.name"/>
         <div class="team-info-container">
             <ul class="nav nav-underline mb-3" role="tablist">
-                <li class="nav-item" role="presentation">
+                <li class="nav-item" role="presentation" v-if="team.founded">
                     <button class="nav-link active" id="basic-data-tab" data-bs-toggle="tab" 
                     data-bs-target="#basicData" type="button" role="tab" aria-selected="true">
                         Basic data

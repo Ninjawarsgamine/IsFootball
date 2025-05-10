@@ -105,7 +105,7 @@
     }
   }
 
-  &__player-basic-info__item img, a img{
+  &__player-basic-info__item img{
     max-height: 2.5rem;
     max-width: 2.5rem;
     object-fit: contain;
@@ -136,7 +136,8 @@
       &__row {
         display: flex;
         flex-direction: column;
-
+        gap:1rem;
+        
         &__col {
           flex: 1 0 100%;
           width:100%;

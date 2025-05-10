@@ -9,6 +9,11 @@
         background-color: $color-whitesmoke;
         font-size: 1.2rem;
         font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        span{
+          @media only screen and (max-width: $max-width-lower) {
+            font-size: 1rem;
+          }
+        }
     }
 
     &__main-competitions-container{
@@ -19,6 +24,9 @@
         h3{
             text-transform: uppercase;
             margin-bottom: 0.3rem;
+            @media only screen and (max-width: $max-width-lower) {
+              font-size: 1.2rem;
+            }
         }
 
         &__competitions{

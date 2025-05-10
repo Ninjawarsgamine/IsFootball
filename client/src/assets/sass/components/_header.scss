@@ -8,15 +8,15 @@
     box-shadow: 2px 2px 10px blue;
     transition: all 0.5s ease;
     align-items: center;
-    @media only screen and (max-width: $max-width) {
+    @media only screen and (max-width: $max-width-lower) {
         grid-template-columns: 1fr;
     }
 
     &__logo{
-        @media only screen and (max-width: $max-width){
+        @media only screen and (max-width: $max-width-lower){
             align-self: center;
-            max-width:25vh;
-            max-height: 25vh;
+            max-width:20vh;
+            max-height: 20vh;
         }
     }
 
@@ -26,15 +26,19 @@
         align-items:center;
         justify-content: center;
         list-style: none;
+        @media only screen and (max-width: $max-width-lower) {
+            margin:0 auto;
+        }
 
         a{
             text-decoration: none;
             color:$color-whitesmoke;
+            padding:0.5rem;
             &:hover{
                 border-bottom: 2px $color-whitesmoke solid;
             }
-
-            li{
+            
+            span{
                 font-weight: bold; 
                 text-transform: uppercase;
                 padding:1rem;

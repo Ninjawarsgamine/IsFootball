@@ -1,69 +1,94 @@
-.search-widget{
-    padding: 2rem;
-    width: 100%;
-  
-    &__form{
-      margin: 0 auto;
-      max-width: 50rem;
-  
-      form{
-        display: flex;
-        align-items: center;
-        background-color: $color-white;
-        border-radius: 0.5rem;
-        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-        padding: 0.5rem 1rem;
-        gap: 0.5rem;
-        transition: all 0.3s ease;
-        
-        input[type^="text"]{
-          flex: 1;
-          height: 2.8125rem;
-          padding: 0 1.25rem;
-          font-size: 1rem;
-          border: none;
-          border-radius: 0.3rem;
-          outline: none;
-          color: $color-primary;
-          &::placeholder{
-            text-transform: uppercase;
+.search-widget {
+  padding: 2rem;
+  width: 100%;
+
+  &__form {
+    margin: 0 auto;
+    max-width: 50rem;
+
+    form {
+      display: flex;
+      align-items: center;
+      background-color: $color-white;
+      border-radius: 0.5rem;
+      box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+      padding: 0.5rem 1rem;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+
+      @media only screen and (max-width: $max-width-mobile) {
+      
+        gap: 0.75rem;
+        padding: 0;
+      }
+
+      input[type^="text"] {
+        flex: 1;
+        height: 2.8125rem;
+        padding: 0 1.25rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 0.3rem;
+        outline: none;
+        color: $color-primary;
+
+        &::placeholder {
+          text-transform: uppercase;
+
+          @media only screen and (max-width: $max-width-lower) {
+            font-size:0.65rem;
           }
         }
-  
-        button{
-          background-color: transparent;
-          border: none;
-          border-radius: 0.3rem;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
 
-          svg{
-            width: 2rem;
-            height: 2rem;
-            stroke: $color-primary;
-            transition: all 0.3s ease;
-            &:hover{
-              transform: translateY(-0.2rem);
-            }
-          }
+        @media only screen and (max-width: $max-width-lower) {
+          width: 100%;
+          font-size: 0.95rem;
         }
       }
-    }
-  
-    &__results{
-      margin-top: 2rem;
-      margin-bottom: 10rem;
 
-      &__result table tbody{
-        cursor:pointer;
+      button {
+        background-color: transparent;
+        border: none;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        tr td img{
-          max-width:2.5rem;
-          max-height: 2.5rem;
+        svg {
+          width: 2rem;
+          height: 2rem;
+          stroke: $color-primary;
+          transition: all 0.3s ease;
+
+          &:hover {
+            transform: translateY(-0.2rem);
+          }
+
+          @media only screen and (max-width: $max-width-lower) {
+            width: 1.25rem;
+            height: 1.25rem;
+          }
         }
       }
     }
   }
-  
+
+  &__results {
+    margin-top: 2rem;
+    margin-bottom: 10rem;
+
+    &__result {
+      table {
+        tbody {
+          cursor: pointer;
+
+          tr td img {
+            max-width: 2.5rem;
+            max-height: 2.5rem;
+          }
+        }
+      }
+    }
+  }
+}
