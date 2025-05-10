@@ -12,7 +12,8 @@
 
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="statistics-tab" data-bs-toggle="tab" 
-                data-bs-target="#statistics" type="button" role="tab" aria-selected="true">
+                data-bs-target="#statistics" type="button" role="tab" aria-selected="true"
+                @click="getPlayerCompetitions()">
                     Statistics
                 </button>
             </li>
@@ -44,12 +45,20 @@
                                 <span class="player-info-container__player-basic-info__item__label">
                                     {{ field.label }}:
                                 </span>
-                                <router-link :to="`/teams/${field.teamName}/${field.teamId}`">
+                                <router-link :to="`/teams/${field.teamName}/${field.teamId}`" 
+                                v-if="index<infoWithImage.length-1">
                                     <img v-lazy="field.teamLogo">
                                     <span class="player-info-container__player-basic-info__item__value">
                                         {{field.teamName}}
                                     </span>
                                 </router-link>
+                                <div v-else>
+                                    <img v-lazy="field.teamLogo">
+                                    <span class="player-info-container__player-basic-info__item__value">
+                                        {{field.teamName}}
+                                    </span>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -99,6 +108,35 @@
                     </section>
                 </div>
 
+            </div>
+        </div>
+
+        <div class="tab-content p-1" id="CareerTabsContent">
+            <div class="tab-pane fade show player-info-container__player-career"
+            id="career" role="tabpanel" aria-labelledby="table-tab">
+                <h1>Career</h1>
+                <div class="player-info-container__player-career__row row row-cols-1 row-cols-md-2 
+                row-cols-lg-3 g-4" v-if="playerTeamsCareer">
+                    <div class="player-info-container__player-career__row__col col" 
+                    v-for="team in playerTeamsCareer" :key="team">
+                        <div class="player-info-container__player-career__row__col__career-item card h-100">
+                            <router-link :to="`/teams/${team.team.name}/${team.team.id}`" 
+                            class="card-body d-flex align-items-center">
+                                <img v-lazy="team.team.logo" class="team-logo me-3">
+                                <div>
+                                    <h5 class="mb-1">{{team.team.name}}</h5>
+                                    <p class="seasons mb-0" v-if="team.seasons && team.seasons.length>0">
+                                        <span v-for="(season,index) in team.seasons" :key="season">
+                                            {{ season }}
+                                            <span v-if="index<team.seasons.length-1">, </span>
+                                        </span>
+                                    </p>
+                                    <p class="seasons mb-0" v-else>No hay información disponible</p>
+                                </div>
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -291,6 +329,23 @@
             }
         ];
     });
+
+    const playerTeamsCareer=ref([]);
+    const getPlayerTeamsCareer=async()=>{
+        const {data, error}=await useFetch(`/api/playerCareer/${playerId}`);
+        if(error){
+            console.log("No se han encontrado los equipos del jugador con ID: "+playerId);
+        }
+        playerTeamsCareer.value=data.value;
+        playerTeamsCareer.value.map((team)=>{
+            if(!team.seasons){
+                return;
+            }
+            return team.seasons.sort((a,b)=>a-b);
+        });
+        //Ordenamos los temporadas.
+    }
+    //Función que saca todos los equipos en los que ha estado un jugador con un ID especificado.
 
     onMounted(async()=>{
         await getPlayerById();

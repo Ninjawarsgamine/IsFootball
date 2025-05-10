@@ -16,7 +16,6 @@
 
     &__item {
       margin-bottom: 1rem;
-
       &__label {
         display: block;
         font-weight: 700;
@@ -30,39 +29,20 @@
         color: #222;
       }
     }
-  }
-  a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color:$color-primary;
-    @media only screen and (max-width: $max-width) {
-     flex-direction: column;
-    }
-    
-    img {
-      max-height: 2.5rem;
-      max-width: 2.5rem;
-      object-fit: contain;
-    }
 
-    span {
-      margin-left: 0.3rem;
-    }
+  
   }
 
   &__statistics {
-
     font-family: 'Segoe UI', sans-serif;
-  
-
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+
     h5{
       text-align: left;
     }
+
     &__team-info {
       width: 100%;
       display: flex;
@@ -113,7 +93,7 @@
         border-radius: 0.5rem;
         font-size: 0.95rem;
         font-weight: 500;
-  
+        
         span {
           display: block;
           font-weight: bold;
@@ -124,5 +104,81 @@
       }
     }
   }
-  
+
+  &__player-basic-info__item img, a img{
+    max-height: 2.5rem;
+    max-width: 2.5rem;
+    object-fit: contain;
+  }
+
+  &__player-basic-info a, &__statistics a, &__player-basic-info__item div{
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:$color-primary;
+    @media only screen and (max-width: $max-width) {
+      flex-direction: column;
+    }
+
+    span {
+      margin-left: 0.3rem;
+    }
+  }
+
+  a{
+    text-decoration: none;
+  }
+
+  &__player-career{
+      width:100%;
+
+      &__row {
+        display: flex;
+        flex-direction: column;
+
+        &__col {
+          flex: 1 0 100%;
+          width:100%;
+          flex-direction: column;
+          align-items: center;
+           &__career-item {
+            margin-left: 0.5rem;
+            background: $color-white;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform .3s, box-shadow 0.3s;
+            border:1px $color-whitesmoke solid;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform .3s, box-shadow 0.3s;
+            border:1px whitesmoke solid;
+            cursor: pointer;
+            
+            &:hover {
+              transform: translateY(-4px);
+              box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+            }
+    
+            img {
+              max-width:4rem;
+              align-self: flex-start;
+              object-fit: contain;
+            }
+        
+            h5 {
+              font-size: 1.125rem;
+              color: $color-charcoal;
+              margin-bottom: 0.25rem;
+            }
+        
+            &__seasons {
+              font-size: 0.875rem;
+              color: $color-gray-blue-dark; 
+            }
+          }
+        }
+      }
+    
+  }
 }

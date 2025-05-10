@@ -752,26 +752,6 @@ select.form-select:focus {
   font-weight: 500;
   color: #222;
 }
-.player-info-container a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: black;
-}
-@media only screen and (max-width: 800px) {
-  .player-info-container a {
-    flex-direction: column;
-  }
-}
-.player-info-container a img {
-  max-height: 2.5rem;
-  max-width: 2.5rem;
-  object-fit: contain;
-}
-.player-info-container a span {
-  margin-left: 0.3rem;
-}
 .player-info-container__statistics {
   font-family: "Segoe UI", sans-serif;
   padding: 2rem;
@@ -831,6 +811,72 @@ select.form-select:focus {
   font-size: 1.1rem;
   margin-top: 0.25rem;
   color: #212529;
+}
+.player-info-container__player-basic-info__item img, .player-info-container a img {
+  max-height: 2.5rem;
+  max-width: 2.5rem;
+  object-fit: contain;
+}
+.player-info-container__player-basic-info a, .player-info-container__statistics a, .player-info-container__player-basic-info__item div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
+@media only screen and (max-width: 800px) {
+  .player-info-container__player-basic-info a, .player-info-container__statistics a, .player-info-container__player-basic-info__item div {
+    flex-direction: column;
+  }
+}
+.player-info-container__player-basic-info a span, .player-info-container__statistics a span, .player-info-container__player-basic-info__item div span {
+  margin-left: 0.3rem;
+}
+.player-info-container a {
+  text-decoration: none;
+}
+.player-info-container__player-career {
+  width: 100%;
+}
+.player-info-container__player-career__row {
+  display: flex;
+  flex-direction: column;
+}
+.player-info-container__player-career__row__col {
+  flex: 1 0 100%;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+.player-info-container__player-career__row__col__career-item {
+  margin-left: 0.5rem;
+  background: white;
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px whitesmoke solid;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px whitesmoke solid;
+  cursor: pointer;
+}
+.player-info-container__player-career__row__col__career-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+.player-info-container__player-career__row__col__career-item img {
+  max-width: 4rem;
+  align-self: flex-start;
+  object-fit: contain;
+}
+.player-info-container__player-career__row__col__career-item h5 {
+  font-size: 1.125rem;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+.player-info-container__player-career__row__col__career-item__seasons {
+  font-size: 0.875rem;
+  color: #4b5563;
 }
 
 .loading-container {

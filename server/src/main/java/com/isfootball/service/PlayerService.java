@@ -287,6 +287,7 @@ public class PlayerService {
      * un ID especificado, teniendo cada uno una lista con las temporadas que el jugador ha estado
      * en cada equipo.
      */
+    @Cacheable("playerCareer")
     public List<TeamPlayerCareerDTO> getPlayerCareer(Integer playerId){
         List<TeamPlayerCareer>teamsPlayerCareer=new ArrayList<>();
         String url="https://"+apiHost+"/players/teams?player="+playerId;
