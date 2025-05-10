@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
@@ -19,6 +20,16 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.isfootball.dto.CompetitionDTO;
+import com.isfootball.dto.CompetitionSimpleDTO;
+import com.isfootball.dto.MatchDTO;
+import com.isfootball.dto.PlayerCompetitionStatisticsBasicDTO;
+
+import com.isfootball.mapper.CompetitionMapper;
+import com.isfootball.mapper.MatchMapper;
+import com.isfootball.mapper.PlayerCompetitionStatisticsMapper;
+
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
 import com.isfootball.model.Goal;
@@ -42,15 +53,25 @@ public class CompetitionService {
 	private String season;
 	
 	private final RestTemplate restTemplate;
-	private final ObjectMapper objectMapper;
-	// Sirve para convertir objetos JSON en objetos Java.
 
+	private final ObjectMapper objectMapper;
+
+	private final CompetitionMapper competitionMapper;  
+	private final PlayerCompetitionStatisticsMapper playerCompetitionStatisticsMapper;
+	private final MatchMapper matchMapper;
+	
 	/**
 	 * Es el constructor de "CompetitionService".
+	 * @param competitionMapper 
 	 */
-	public CompetitionService() {
-		this.restTemplate = new RestTemplate();
-		this.objectMapper = new ObjectMapper();
+	@Autowired
+	public CompetitionService(RestTemplate restTemplate, ObjectMapper objectMapper, CompetitionMapper competitionMapper,
+	PlayerCompetitionStatisticsMapper playerCompetitionStatisticsMapper, MatchMapper matchMapper) {
+		this.restTemplate =restTemplate;
+		this.objectMapper = objectMapper;
+		this.competitionMapper=competitionMapper;
+		this.playerCompetitionStatisticsMapper=playerCompetitionStatisticsMapper;
+		this.matchMapper=matchMapper;
 	}
 	
 	/**
@@ -89,7 +110,7 @@ public class CompetitionService {
 	 * @return Los datos de la competición con el ID especificado.
 	 */
 	@Cacheable("competitionAllDataById")
-	public Competition getCompetitionAllDataById(Integer competitionId){
+	public CompetitionDTO getCompetitionAllDataById(Integer competitionId){
 		Competition competition=new Competition();
 		String urlCompetitionBasicData="https://"+apiHost+"/leagues?id="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(urlCompetitionBasicData);
@@ -112,17 +133,13 @@ public class CompetitionService {
 				country.setCode(competitionCountry.path("code").asText());
 				country.setFlag(competitionCountry.path("flag").asText());
 				competition.setCountry(country);
-	
-				JsonNode competitionSeason=competitionBasicData.path("seasons");
-				competition.setSeason(competitionSeason.get(0).path("year").asInt());
-	
+				
 				String url="https://"+apiHost+"/standings?league="+competitionId+"&season="+season;
 				JsonNode competitionAllData=doRequest(url);
 				if(competitionAllData!=null && !competitionAllData.isEmpty()){
 					JsonNode competitionData=competitionAllData.get(0).path("league");
 					
 					List<TeamCompetitionStatistics> competitionTeamsStatistics=new ArrayList<>();
-					
 					for(JsonNode group: competitionData.path("standings")) {
 						for(JsonNode competitionTeamStatisticsData: group){
 							TeamCompetitionStatistics competitionTeamStatistics=new TeamCompetitionStatistics();
@@ -130,6 +147,7 @@ public class CompetitionService {
 							competitionTeamStatistics.setRank(competitionTeamStatisticsData.path("rank").asInt());
 							
 							Team team=new Team();
+							//TeamBasicDTO.
 							team.setId(competitionTeamStatisticsData.path("team").path("id").asInt());
 							team.setName(competitionTeamStatisticsData.path("team").path("name").asText());
 							team.setLogo(competitionTeamStatisticsData.path("team").path("logo").asText());
@@ -141,7 +159,7 @@ public class CompetitionService {
 							competitionTeamStatistics.setForm(competitionTeamStatisticsData.path("form").asText());
 							
 							JsonNode competitionTeamMatchesInfo=competitionTeamStatisticsData.path("all");
-			
+							
 							HomeAwayTotalStats matchesPlayed=new HomeAwayTotalStats();
 							matchesPlayed.setTotal(competitionTeamMatchesInfo.path("played").asText());
 							competitionTeamStatistics.setMatchesPlayed(matchesPlayed);
@@ -184,7 +202,7 @@ public class CompetitionService {
 					}	
 				}
 			}
-			return competition;
+			return competitionMapper.toCompetitionDTO(competition);
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
@@ -198,18 +216,16 @@ public class CompetitionService {
 	 * deseada.
 	 */
 	@Cacheable ("competitionByName")
-	public Competition getCompetitionByName(String competitionName) {
+	public CompetitionSimpleDTO getCompetitionByName(String competitionName) {
 		competitionName=Utils.decodeSpaces(competitionName);
-
+		//CompetitionSimpleDTO
 		String url="https://"+apiHost+"/leagues?name="+competitionName+"&season="+season;
 		JsonNode responseData=doRequest(url);
 	    
 	    try {
 			JsonNode competitionData=responseData.get(0);
-			//Sacamos el primer resultado.
 
 			Competition competition=new Competition();
-			//Objeto "Competition" que vamos a devolver.
 
 			JsonNode competitionInfo=competitionData.path("league");
 			competition.setId(competitionInfo.get("id").asInt());
@@ -224,10 +240,7 @@ public class CompetitionService {
 			country.setFlag(competitionCountry.path("flag").asText());
 			competition.setCountry(country);
 			
-			JsonNode competitionSeason=competitionData.path("seasons");
-			competition.setSeason(competitionSeason.path("year").asInt());
-			
-	    	return competition;
+	    	return competitionMapper.toCompetitionSimpleDTO(competition);
 	    }catch(Exception e) {
 			e.printStackTrace();
 	    	return null;
@@ -240,8 +253,9 @@ public class CompetitionService {
 	 * la búsqueda.
 	 * @return Lista de competiciones coincidentes con el nombre especificado.
 	 */
+	//CompetitionSimpleDTO
 	@Cacheable ("competitionsByName")
-	public List<Competition> getCompetitionsByName(String competitionName){
+	public List<CompetitionSimpleDTO> getCompetitionsByName(String competitionName){
 		List<Competition> competitions=new ArrayList<>();
 		competitionName=Utils.decodeSpaces(competitionName);
 		if(competitionName.length()<3) {
@@ -270,7 +284,6 @@ public class CompetitionService {
 				
 				for(JsonNode s: competitionSeason) {
 					if(s.path("year").asText().equals(season)) {
-						competition.setSeason(competitionSeason.path("year").asInt());
 						competitions.add(competition);
 						break;
 					}
@@ -278,7 +291,7 @@ public class CompetitionService {
 				}
 			}
 			
-			return competitions;
+			return competitionMapper.toCompetitionSimpleDTOList(competitions);
 	    }catch(Exception e) {
 			e.printStackTrace();
 	    	return null;
@@ -292,7 +305,7 @@ public class CompetitionService {
 	 * @return Una lista de competiciones que coinciden con los IDs proporcionados.
 	 */
 	@Cacheable("competitionsListByIds")
-	public List<Competition> getListCompetitionsByIds(Integer[]ids){
+	public List<CompetitionSimpleDTO> getListCompetitionsByIds(Integer[]ids){
 		List<Competition> competitions=new ArrayList<>();
 		String url="https://"+apiHost+"/leagues?season="+season;
 		JsonNode allCompetitions= doRequest(url);
@@ -317,8 +330,6 @@ public class CompetitionService {
 						country.setFlag(competitionCountry.path("flag").asText());
 						competition.setCountry(country);
 						
-						JsonNode competitionSeason=c.path("seasons");
-						competition.setSeason(competitionSeason.path("year").asInt());
 						competitions.add(competition);
 					}
 	
@@ -331,7 +342,7 @@ public class CompetitionService {
 	    		return null;
 	    	}
 		}
-		return competitions;
+		return competitionMapper.toCompetitionSimpleDTOList(competitions);
 	}
 
 	/**
@@ -341,10 +352,11 @@ public class CompetitionService {
 	 * @return Una lista de jugadores con sus estadísticas en una competición especificada.
 	 */
 	@Cacheable("playerCompetitionTopScorers")
-	public List<PlayerCompetitionStatistics> getCompetitionTopScorers(Integer competitionId){
+	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopScorers(Integer competitionId){
 		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
 		String url="https://"+apiHost+"/players/topscorers?league="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(url);
+		//PlayerCompetitionStatisticsBasicDTO
 		if(responseData!=null && responseData.isArray()) {
 			try {
 				for(JsonNode playersTotalInfo: responseData){
@@ -356,7 +368,7 @@ public class CompetitionService {
 					player.setName(playerBasicInfo.path("name").asText());
 					player.setPhoto(playerBasicInfo.path("photo").asText());
 					playerCompetitionStatistics.setPlayer(player);
-					
+					//PlayerBasicDTO
 					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
 					
 					JsonNode playerTeamData=playerAllStatistics.path("team");
@@ -365,12 +377,12 @@ public class CompetitionService {
 					playerTeam.setName(playerTeamData.path("name").asText());
 					playerTeam.setLogo(playerTeamData.path("logo").asText());;
 					playerCompetitionStatistics.setTeam(playerTeam);
-	
+					//TeamBasicDTO
 					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
 					playerCompetitionStatistics.setTotalGoals(playerAllStatistics.path("goals").path("total").asInt());
 					competitionPlayersStatistics.add(playerCompetitionStatistics);
 				}
-				return competitionPlayersStatistics;
+				return playerCompetitionStatisticsMapper.toPlayerCompetitionStatisticsBasicDTOList(competitionPlayersStatistics);
 			}catch(Exception e) {
 				e.printStackTrace();
 				return null;
@@ -386,7 +398,7 @@ public class CompetitionService {
 	 * @return Una lista de jugadores con sus estadísticas en una competición especificada.
 	 */
 	@Cacheable("playerCompetitionTopAssistsProviders")
-	public List<PlayerCompetitionStatistics> getCompetitionTopAssistsProviders(Integer competitionId){
+	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopAssistsProviders(Integer competitionId){
 		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
 		String url="https://"+apiHost+"/players/topassists?league="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(url);
@@ -394,9 +406,10 @@ public class CompetitionService {
 			try{
 				for(JsonNode playersTotalInfo: responseData){
 					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
-		
+					//PlayerCompetitionStatisticsBasicDTO
 					JsonNode playerBasicInfo=playersTotalInfo.path("player");
 					Player player=new Player();
+					//PlayerBasicDTO
 					player.setId(playerBasicInfo.path("id").asInt());
 					player.setName(playerBasicInfo.path("name").asText());
 					player.setPhoto(playerBasicInfo.path("photo").asText());
@@ -415,7 +428,7 @@ public class CompetitionService {
 					playerCompetitionStatistics.setAssists(playerAllStatistics.path("goals").path("assists").asInt());
 					competitionPlayersStatistics.add(playerCompetitionStatistics);
 				}
-				return competitionPlayersStatistics;
+				return playerCompetitionStatisticsMapper.toPlayerCompetitionStatisticsBasicDTOList(competitionPlayersStatistics);
 			}catch(Exception e) {
 				e.printStackTrace();
 				return null;
@@ -431,7 +444,7 @@ public class CompetitionService {
 	 * @return Una lista de jugadores con sus estadísticas en una competición especificada.
 	 */
 	@Cacheable("playerCompetitionTopYellowCards")
-	public List<PlayerCompetitionStatistics> getCompetitionTopYellowCards(Integer competitionId){
+	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopYellowCards(Integer competitionId){
 		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
 		String url="https://"+apiHost+"/players/topyellowcards?league="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(url);
@@ -460,7 +473,7 @@ public class CompetitionService {
 					playerCompetitionStatistics.setYellowCards(playerAllStatistics.path("cards").path("yellow").asInt());
 					competitionPlayersStatistics.add(playerCompetitionStatistics);
 				}
-				return competitionPlayersStatistics;
+				return playerCompetitionStatisticsMapper.toPlayerCompetitionStatisticsBasicDTOList(competitionPlayersStatistics);
 			}catch(Exception e) {
 				e.printStackTrace();
 				return null;
@@ -476,7 +489,7 @@ public class CompetitionService {
 	 * @return Una lista de jugadores con sus estadísticas en una competición especificada.
 	 */
 	@Cacheable("playerCompetitionTopRedCards")
-	public List<PlayerCompetitionStatistics> getCompetitionTopRedCards(Integer competitionId){
+	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopRedCards(Integer competitionId){
 		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
 		String url="https://"+apiHost+"/players/topredcards?league="+competitionId+"&season="+season;
 		JsonNode responseData=doRequest(url);
@@ -505,7 +518,7 @@ public class CompetitionService {
 					playerCompetitionStatistics.setRedCards(playerAllStatistics.path("cards").path("red").asInt());
 					competitionPlayersStatistics.add(playerCompetitionStatistics);
 				}
-				return competitionPlayersStatistics;
+				return playerCompetitionStatisticsMapper.toPlayerCompetitionStatisticsBasicDTOList(competitionPlayersStatistics);
 			
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -541,7 +554,7 @@ public class CompetitionService {
 	}
 
 	@Cacheable("competitionRoundMatchesSummary")
-	public List<Match>getCompetitionRoundMatchesSummary(Integer competitionId, String round){
+	public List<MatchDTO>getCompetitionRoundMatchesSummary(Integer competitionId, String round){
 		List<Match> competitionRoundMatches=new ArrayList<>();
 		TimeZone timeZone=TimeZone.getDefault(); 
 		String timeZoneId=timeZone.getID();
@@ -591,7 +604,7 @@ public class CompetitionService {
 	
 					competitionRoundMatches.add(match);
 				}
-				return competitionRoundMatches;
+				return matchMapper.toMatchDTOList(competitionRoundMatches);
 			}catch(Exception e) {
 				e.printStackTrace();
 				return null;

@@ -1,7 +1,9 @@
 <template>
     <div class="search-widget">
        <div class="search-widget__form">
-          <form method="GET" id="player-search-form" @submit.prevent="getPlayers()">
+          <form method="GET" id="player-search-form" @submit.prevent="async()=>{
+            await getPlayers();
+          }">
              <input type="text" name="name"  id="playerName" v-model="playerName"
              placeholder="Search for your favorite player here" autocomplete="off"/>
              <button type="submit">

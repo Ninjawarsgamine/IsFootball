@@ -1,6 +1,5 @@
 package com.isfootball.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import lombok.Getter;
@@ -11,9 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Team implements Serializable  {
-
-	private static final long serialVersionUID = 8487498115745206707L;
+public class Team {
 	
 	private Integer id;
 	private String name;

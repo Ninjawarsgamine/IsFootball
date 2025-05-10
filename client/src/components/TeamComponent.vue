@@ -26,8 +26,11 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="squad-tab" data-bs-toggle="tab" 
-                data-bs-target="#squads" type="button" role="tab"
-                aria-selected="true" @click="getTeamCoach(); getTeamPlayersOrderedByPosition()">
+                data-bs-target="#squad" type="button" role="tab"
+                aria-selected="true" @click="async()=>{
+                   await getTeamSquad(); 
+                    getTeamPlayersOrderedByPosition();
+                }">
                     Squad
                 </button>
             </li>
@@ -241,28 +244,27 @@
         <div class="tab-content" id="teamSquad">
             <div class="tab-pane fade show" id="squad" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Squad</h1>  
-
-                <div class="team-info-container__team-players list-group">
+                <div class="team-info-container__team-players list-group" 
+                v-if="teamSquad && teamSquad.coach && teamSquad.players">
                     <h3>Coach</h3>
                     <div class="team-info-container__team-players__player-data list-group-item-action 
                     d-flex align-items-center p-3">
-                        <img class="rounded-circle flex-shrink-0 me-3" v-lazy="teamCoach?.photo"
-                        :alt="'Foto de ' + teamCoach.name"/>
+                        <img class="rounded-circle flex-shrink-0 me-3" v-lazy="teamSquad.coach.photo"
+                        />
                         <div class="team-info-container__team-players__player-data__player-info">
-                            <h6>{{ teamCoach.name }}</h6>
+                            <h6>{{ teamSquad.coach.name }}</h6>
                         </div>
                     </div>
 
                     <h3>Players</h3>
-                    <router-link v-for="player in teamPlayers" :key="player.id" 
+                    <router-link v-for="player in teamSquad.players" :key="player" 
                     class="team-info-container__team-players__player-data list-group-item-action 
                     d-flex align-items-center p-3" :to="`/players/${player.id}`">
-                        <img class="rounded-circle flex-shrink-0 me-3" v-lazy="player.photo"
-                        :alt="'Foto de ' + player.name"/>
+                        <img class="rounded-circle flex-shrink-0 me-3" v-lazy="player.photo"/>
                         <div class="team-info-container__team-players__player-data__player-info">
-                            <h6>{{ player.name }}</h6>
+                            <h6>{{player.name}}</h6>
                             <div>
-                                <span>{{ player.position }}</span>
+                                <span>{{player.position}}</span>
                             </div>
                         </div>
                     </router-link>
@@ -343,32 +345,23 @@
     });
     //Esta función obtiene las estadísticas para la nueva competición seleccionada.
 
-    const teamCoach=ref([]);
-    const getTeamCoach=async()=>{
-        const{data,error}=await useFetch(`/api/teamCoach/${teamId}`);
+    const teamSquad=ref();
+    const getTeamSquad=async()=>{
+        const {data,error}=await useFetch(`/api/teamSquad/${teamId}`);
         if(error){
-            console.log("No se ha encontrado el entrenador del equipo con ID: "+teamId)
+            console.log("No se ha podido obtener la plantilla del equipo con ID: "+teamId)
         }
-        teamCoach.value=data.value;
+        teamSquad.value=data.value;
     }
-    //Esta función obtiene el entrenador de un equipo. 
-
-    const teamPlayers=ref([]);
-
-    const getTeamPlayers=async()=>{
-        const {data,error}=await useFetch(`/api/teamPlayers/${teamId}`);
-        if(error){
-            console.log("No se han encontrado los jugadores para el equipo con ID: "+teamId)
-        }
-        teamPlayers.value=data.value;
-    }
-    //Esta función obtiene una lista de los jugadores de un equipo.
 
     const teamPositions=['Goalkeeper', 'Defender', 'Midfielder', 'Attacker'];
 
-    const getTeamPlayersOrderedByPosition=async()=>{
-        await getTeamPlayers();
-        teamPlayers.value.sort((a, b) => {
+    const getTeamPlayersOrderedByPosition=()=>{
+        if(!teamSquad.value.players){
+            console.log("No se han encontrado los jugadores en la plantilla del equipo con ID "+teamId)
+            return;
+        }
+        teamSquad.value.players.sort((a, b) => {
             const indexA = teamPositions.indexOf(a.position);
             const indexB = teamPositions.indexOf(b.position);
             

@@ -1,14 +1,10 @@
 package com.isfootball.model;
 
-import java.io.Serializable;
-
 import lombok.Getter;
 import lombok.Setter;
 @Getter
 @Setter
-public class Match implements Serializable{
-
-    private static final long serialVersionUID = 4404468095495224185L;
+public class Match {
 	private Integer id;
     private String referee;
     private String date;

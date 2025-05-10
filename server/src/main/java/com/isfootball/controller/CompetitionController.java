@@ -7,15 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.isfootball.model.Competition;
-import com.isfootball.model.Match;
-import com.isfootball.model.PlayerCompetitionStatistics;
+import com.isfootball.dto.CompetitionDTO;
+import com.isfootball.dto.CompetitionSimpleDTO;
+import com.isfootball.dto.MatchDTO;
+import com.isfootball.dto.PlayerCompetitionStatisticsBasicDTO;
 import com.isfootball.service.CompetitionService;
 
 @RestController
+@RequestMapping("/api")
 public class CompetitionController {
 	
 	private final CompetitionService competitionService;
@@ -34,10 +37,10 @@ public class CompetitionController {
 	 * Endpoint REST para obtener todos los datos de una competición por su id.
 	 * 
 	 * @param id El id de la competición.
-	 * @return Un objeto "Competition" con los datos de cada competición.
+	 * @return Un objeto "CompetitionSimpleDTO" con los datos de cada competición.
 	 */
-	@GetMapping("/api/competitionAllData/{id}")
-	public Competition getCompetitionAllDataById(@PathVariable String id) {
+	@GetMapping("/competitionAllData/{id}")
+	public CompetitionDTO getCompetitionAllDataById(@PathVariable String id) {
 		return competitionService.getCompetitionAllDataById(Integer.valueOf(id));
 	}	
     
@@ -45,10 +48,10 @@ public class CompetitionController {
 	 * Endpoint REST para obtener los datos básicos de una competición por su nombre.
 	 * 
 	 * @param name El nombre de la competición.
-	 * @return Un objeto "Competition" con los datos básicos de cada competición.
+	 * @return Un objeto "CompetitionSimpleDTO" con los datos básicos de cada competición.
 	 */
-	@GetMapping("/api/competitionByName/{name}")
-	public Competition getCompetitionByName(@PathVariable String name) {
+	@GetMapping("/competitionByName/{name}")
+	public CompetitionSimpleDTO getCompetitionByName(@PathVariable String name) {
 		return competitionService.getCompetitionByName(name);
 	}
 	
@@ -61,8 +64,8 @@ public class CompetitionController {
 	 * @return Lista de competiciones que coincidan con un nombre de 
 	 * competición especificado.
 	 */
-	@GetMapping("/api/competitions/{name}")
-	public List<Competition> getCompetitionsByName(@PathVariable String name) {
+	@GetMapping("/competitions/{name}")
+	public List<CompetitionSimpleDTO> getCompetitionsByName(@PathVariable String name) {
 		return competitionService.getCompetitionsByName(name);
 	}
 	
@@ -72,8 +75,8 @@ public class CompetitionController {
      * @param ids Un array de IDs de competiciones.
      * @return Una lista de competiciones correspondientes a esos IDs.
      */
-	@PostMapping("/api/competitions/by-ids")
-	public List<Competition> getListCompetitionsByIds(@RequestBody Integer[]ids){
+	@PostMapping("/competitions/by-ids")
+	public List<CompetitionSimpleDTO> getListCompetitionsByIds(@RequestBody Integer[]ids){
 		return competitionService.getListCompetitionsByIds(ids);
 	}
 
@@ -85,8 +88,8 @@ public class CompetitionController {
 	 * @return Lista de jugadores que sean los máximos goleadores de la competición especificada 
 	 * junto a sus estadísticas.
 	 */
-	@GetMapping("/api/competitions/{competitionId}/top-scorers")
-	public List<PlayerCompetitionStatistics> getCompetitionTopScorers(@PathVariable String competitionId){
+	@GetMapping("/competitions/{competitionId}/top-scorers")
+	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopScorers(@PathVariable String competitionId){
 		return competitionService.getCompetitionTopScorers(Integer.valueOf(competitionId));
 	}
 	
@@ -94,12 +97,12 @@ public class CompetitionController {
 	 * Endpoint REST para obtener una lista de jugadores que sean los máximos asistentes de una
 	 * competición especificada junto a sus estadísticas.
 	 * 
-	 * @param id Es el ID de la comeptición de la que se van a sacar los máximos asistentes
+	 * @param id Es el ID de la competición de la que se van a sacar los máximos asistentes
 	 * @return Lista de jugadores que sean los máximos asistentes de la competición especificada 
 	 * junto a sus estadísticas.
 	 */
-	@GetMapping("/api/competitions/{competitionId}/top-assists-providers")
-	public List<PlayerCompetitionStatistics> getCompetitionTopAssistsProviders(@PathVariable Integer competitionId){
+	@GetMapping("/competitions/{competitionId}/top-assists-providers")
+	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopAssistsProviders(@PathVariable Integer competitionId){
 		return competitionService.getCompetitionTopAssistsProviders(Integer.valueOf(competitionId));
 	}
 
@@ -112,8 +115,8 @@ public class CompetitionController {
 	 * @return Lista de jugadores los jugadores que jugadores que más tarjetas amarillas hayan 
 	 * recibido en la competición especificada junto a sus estadísticas.
 	 */
-	@GetMapping("/api/competitions/{competitionId}/top-yellow-cards")
-	public List<PlayerCompetitionStatistics> getCompetitionTopYellowCards(@PathVariable Integer competitionId){
+	@GetMapping("/competitions/{competitionId}/top-yellow-cards")
+	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopYellowCards(@PathVariable Integer competitionId){
 		return competitionService.getCompetitionTopYellowCards(Integer.valueOf(competitionId));
 	}
 	
@@ -126,8 +129,8 @@ public class CompetitionController {
 	 * @return Lista de jugadores los jugadores que jugadores que más tarjetas rojas hayan 
 	 * recibido en la competición especificada junto a sus estadísticas.
 	 */
-	@GetMapping("/api/competitions/{competitionId}/top-red-cards")
-	public List<PlayerCompetitionStatistics> getCompetitionTopRedCards(@PathVariable Integer competitionId){
+	@GetMapping("/competitions/{competitionId}/top-red-cards")
+	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopRedCards(@PathVariable Integer competitionId){
 		return competitionService.getCompetitionTopRedCards(Integer.valueOf(competitionId));
 	}
 
@@ -137,7 +140,7 @@ public class CompetitionController {
 	 * @param competitionId Es el ID de la competición de la que se van a sacar lss rondas.
 	 * @return Lista de rondas de las que se compone una competición.
 	 */
-	@GetMapping("/api/competitions/{competitionId}/rounds")
+	@GetMapping("/competitions/{competitionId}/rounds")
 	public List<String>getCompetitionAllRounds(@PathVariable Integer competitionId){
 		return competitionService.getCompetitionAllRounds(Integer.valueOf(competitionId));
 	}
@@ -150,8 +153,8 @@ public class CompetitionController {
 	 * @return Una lista de los partidos de una ronda de una competición  especificada junto a los
 	 * datos del sumario de los partidos.
 	 */
-	@GetMapping("/api/competitions/{competitionId}/round-matches-summary")
-	public List<Match>getCompetitionRoundMatchesSummary( @PathVariable Integer competitionId, @RequestParam String round){
+	@GetMapping("/competitions/{competitionId}/round-matches-summary")
+	public List<MatchDTO>getCompetitionRoundMatchesSummary( @PathVariable Integer competitionId, @RequestParam String round){
 		return competitionService.getCompetitionRoundMatchesSummary(competitionId, round);
 	}
 }

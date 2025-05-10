@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.isfootball.model.Player;
+import com.isfootball.dto.PlayerDTO;
+import com.isfootball.dto.PlayerSimpleDTO;
 import com.isfootball.service.PlayerService;
 
 @RestController
+@RequestMapping("/api")
 public class PlayerController {
 
     	private final PlayerService playerService;
@@ -31,8 +34,8 @@ public class PlayerController {
 	 * @param id El id del jugador que se va a utilizar para realizar la búsqueda.
 	 * @return Un objeto "Player" con toda la información de un jugador.
 	 */
-	@GetMapping("/api/players/{id}")
-	public Player getPlayerById(@PathVariable String id){
+	@GetMapping("/players/{id}")
+	public PlayerDTO getPlayerById(@PathVariable String id){
 		return playerService.getPlayerById(Integer.valueOf(id));
 	}
 
@@ -44,8 +47,8 @@ public class PlayerController {
 	 * la búsqueda.
 	 * @return Lista de jugadores que coincidan con un nombre/apellido especificado.
 	 */
-	@GetMapping("/api/playersSearch/{name}")
-	public List<Player> getPlayersByName(@PathVariable String name) {
+	@GetMapping("/playersSearch/{name}")
+	public List<PlayerSimpleDTO> getPlayersByName(@PathVariable String name) {
 		return playerService.getPlayersByName(name);
 	}
 }

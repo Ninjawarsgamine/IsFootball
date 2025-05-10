@@ -1,30 +1,27 @@
-package com.isfootball.model;
+package com.isfootball.dto;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import com.isfootball.model.Goal;
+import com.isfootball.model.HomeAwayStats;
+import com.isfootball.model.HomeAwayTotalStats;
+import com.isfootball.model.Lineup;
+import com.isfootball.model.Stat;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Esta clase representa las estadísticas de un equipo dentro de una competición específica,
- * como una liga o un torneo tipo copa.
- */
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class TeamCompetitionStatistics {
-	
-	private Team team;
+public class TeamCompetitionStatisticsDTO implements Serializable{
 
-	private Integer rank;
-
-	private Integer points;
-
-	private Integer goalsDiff;
-
-	private String group;
-
-	private String form;
+	private static final long serialVersionUID = 433973492947696804L;
 
 	private  HomeAwayTotalStats matchesPlayed;
 	
@@ -60,4 +57,3 @@ public class TeamCompetitionStatistics {
 
 	private Map<String, Stat> cardsRed;
 }
-

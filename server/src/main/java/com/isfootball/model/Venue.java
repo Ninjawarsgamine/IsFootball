@@ -13,6 +13,7 @@ import lombok.Setter;
 public class Venue implements Serializable {
     
     private static final long serialVersionUID = -5261183434233293290L;
+    
 	private Integer id;
     private String name;
     private String image;

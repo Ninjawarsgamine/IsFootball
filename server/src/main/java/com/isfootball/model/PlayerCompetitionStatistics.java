@@ -1,7 +1,5 @@
 package com.isfootball.model;
 
-import java.io.Serializable;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,12 +8,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PlayerCompetitionStatistics implements Serializable {
-
-	private static final long serialVersionUID = 1465999267560170169L;
+public class PlayerCompetitionStatistics {
 
 	private Player player;
-	//Es necesario para poder usarla en "Competition".
 
 	private Competition competition;
 

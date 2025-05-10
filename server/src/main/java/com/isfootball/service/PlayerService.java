@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
@@ -16,11 +17,17 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.isfootball.dto.PlayerDTO;
+import com.isfootball.dto.PlayerSimpleDTO;
+import com.isfootball.mapper.PlayerBasicMapper;
+import com.isfootball.mapper.PlayerMapper;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
 import com.isfootball.model.Player;
 import com.isfootball.model.PlayerCompetitionStatistics;
 import com.isfootball.model.Team;
+
 import com.isfootball.utils.Utils;
 
 @Service
@@ -36,13 +43,17 @@ public class PlayerService {
 	
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
+    private final PlayerMapper playerMapper;
 
 	/**
 	 * Es el constructor de "PlayerService".
 	 */
-	public PlayerService() {
-		this.restTemplate = new RestTemplate();
-		this.objectMapper = new ObjectMapper();
+    @Autowired
+	public PlayerService(RestTemplate restTemplate, ObjectMapper objectMapper, PlayerMapper playerMapper,
+    PlayerBasicMapper playerBasicMapper) {
+		this.restTemplate = restTemplate;
+		this.objectMapper = objectMapper;
+        this.playerMapper = playerMapper;
 	}
 	
 	/**
@@ -63,6 +74,7 @@ public class PlayerService {
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	JsonNode responseData=responseBody.path("response");
+            System.out.println(responseBody);
 	    	return responseData;
 	    	
 	    }catch(Exception e) {
@@ -77,11 +89,11 @@ public class PlayerService {
      * @return Un objeto "Player" con toda la información de un jugador con un ID especificado.
      */
     @Cacheable("playerById")
-    public Player getPlayerById(Integer playerId){
+    public PlayerDTO getPlayerById(Integer playerId){
         Player player=new Player();
         String url="https://"+apiHost+"/players?id="+playerId+"&season="+season;
         JsonNode responseData=doRequest(url);
-        
+        //PlayerDTO
         if(responseData!=null && responseData.isArray()){
             try {
                 JsonNode playerAllInfo=responseData.get(0);
@@ -124,10 +136,10 @@ public class PlayerService {
                 playerTeam.setName(playerTeamInfo.path("name").asText());
                 playerTeam.setLogo(playerTeamInfo.path("logo").asText());
                 player.setPlayerTeam(playerTeam);
-                
+                //TeamBasicDTO
                 JsonNode playerCompetitionsStatisticsInfo=playerAllInfo.path("statistics");
                 List<PlayerCompetitionStatistics>playerCompetitionsStatistics=new ArrayList<>();
-                
+                //PlayerCompetitionStatisticsDTO 
                 for(JsonNode playerCompetitionStatisticsInfo: playerCompetitionsStatisticsInfo ){
 
                     PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
@@ -138,6 +150,7 @@ public class PlayerService {
                     team.setId(teamInfo.path("id").asInt());
                     team.setName(teamInfo.path("name").asText());
                     team.setLogo(teamInfo.path("logo").asText());
+                    //TeamBasicDTO
                     playerCompetitionStatistics.setTeam(team);
                     
                     Competition competition=new Competition();
@@ -146,6 +159,7 @@ public class PlayerService {
                     competition.setName(competitionInfo.path("name").asText());
                     competition.setLogo(competitionInfo.path("logo").asText());
                     playerCompetitionStatistics.setCompetition(competition);
+                    //CompetitionBasicDTO
 
                     JsonNode gamesInfo=playerCompetitionStatisticsInfo.path("games");
                     playerCompetitionStatistics.setGamesAppearences(gamesInfo.path("appearences").asInt());
@@ -206,7 +220,7 @@ public class PlayerService {
                 }
                 player.setPlayerCompetitionStatistics(playerCompetitionsStatistics);
 
-                return player;
+                return playerMapper.toPlayerDTO(player);
             }catch(Exception e) {
                 e.printStackTrace();
             }
@@ -222,8 +236,9 @@ public class PlayerService {
      * @param playerName Es el nombre/apellido que se va a utilizar para la búsqueda.
      * @return Una lista de jugadores cuyo nombre/apellido coincida con el especificado.
      */
+    //PlayerBasicDTO
     @Cacheable("playersByName")
-    public List<Player>getPlayersByName(String playerName){
+    public List<PlayerSimpleDTO> getPlayersByName(String playerName){
         List<Player>players=new ArrayList<>();
 
         playerName=Utils.decodeSpaces(playerName);
@@ -251,7 +266,7 @@ public class PlayerService {
 
                     players.add(player);
                 }
-                return players;
+                return playerMapper.toPlayerSimpleDTOList(players);
             }catch(Exception e) {
                 e.printStackTrace();
             }

@@ -22,7 +22,7 @@
                     <td class="competition-info-container__team">
                         <router-link :to="`/teams/${team.team.name}/${team.team.id}`">
                             <img class="competition-info-container__team-logo img-fluid" 
-                            :src="team.team.logo" >
+                            v-lazy="team.team.logo" >
                             <span>{{ team.team.name }}</span>
                         </router-link>  
                     </td>

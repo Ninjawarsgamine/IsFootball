@@ -1,6 +1,6 @@
 <template>
     <div class="competition-info-container" 
-    v-if="competition.country">
+    v-if="competition.country && competition.name && competition.logo">
         <ComponentHeader :componentLogo="competition.logo" :componentName="competition.name"
         :componentCountry="competition.country"/>
 
@@ -91,7 +91,7 @@
                     <router-link v-for="team in teamsOrdered" :key="team.id" 
                     class="competition-info-container__competition-teams__team-data list-group-item-action 
                     d-flex align-items-center p-3" :to="`/players/${team.id}`">
-                        <img class="flex-shrink-0 me-3" :lazy-load="team.logo"
+                        <img class="flex-shrink-0 me-3" v-lazy="team.logo"
                         :alt="'Foto de ' + team.name"/>
                         <h6>{{ team.name }}</h6>
                     </router-link>
