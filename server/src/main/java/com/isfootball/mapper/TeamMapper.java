@@ -49,9 +49,9 @@ public interface TeamMapper {
     @Mapping(source = "name",      target = "name")
     @Mapping(source = "logo",      target = "logo")
     @Mapping(source = "code",      target = "code")
-    @Mapping(source = "country",   target = "country") // Usamos el CountryMapper
+    @Mapping(source = "country",   target = "country")
     @Mapping(source = "founded",   target = "founded")
-    @Mapping(source = "venue",     target = "venue")  // Venue se mapea automáticamente
+    @Mapping(source = "venue",     target = "venue")  
     TeamDTO toTeamDTO(Team team);
 
     /**
@@ -60,8 +60,8 @@ public interface TeamMapper {
      * @param team la entidad Team.
      * @return TeamSquadDTO que contiene el coach y la lista de jugadores.
      */
-    @Mapping(source = "coach",     target = "coach")  // El coach se mapea directamente
-    @Mapping(source = "players",   target = "players") // Usamos el PlayerBasicMapper para mapear la lista de jugadores
+    @Mapping(source = "coach",     target = "coach")  
+    @Mapping(source = "players",   target = "players")
     TeamSquadDTO toTeamSquadDTO(Team team);
 
     /**

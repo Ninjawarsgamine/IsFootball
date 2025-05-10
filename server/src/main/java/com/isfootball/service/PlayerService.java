@@ -20,14 +20,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.isfootball.dto.PlayerDTO;
 import com.isfootball.dto.PlayerSimpleDTO;
+import com.isfootball.dto.TeamPlayerCareerDTO;
 import com.isfootball.mapper.PlayerBasicMapper;
 import com.isfootball.mapper.PlayerMapper;
+import com.isfootball.mapper.TeamPlayerCareerMapper;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
 import com.isfootball.model.Player;
 import com.isfootball.model.PlayerCompetitionStatistics;
 import com.isfootball.model.Team;
-
+import com.isfootball.model.TeamPlayerCareer;
 import com.isfootball.utils.Utils;
 
 @Service
@@ -44,16 +46,18 @@ public class PlayerService {
 	private final RestTemplate restTemplate;
 	private final ObjectMapper objectMapper;
     private final PlayerMapper playerMapper;
+    private final TeamPlayerCareerMapper teamPlayerCareerMapper;
 
 	/**
 	 * Es el constructor de "PlayerService".
 	 */
     @Autowired
 	public PlayerService(RestTemplate restTemplate, ObjectMapper objectMapper, PlayerMapper playerMapper,
-    PlayerBasicMapper playerBasicMapper) {
+    PlayerBasicMapper playerBasicMapper, TeamPlayerCareerMapper teamPlayerCareerMapper) {
 		this.restTemplate = restTemplate;
 		this.objectMapper = objectMapper;
         this.playerMapper = playerMapper;
+        this.teamPlayerCareerMapper=teamPlayerCareerMapper;
 	}
 	
 	/**
@@ -74,7 +78,6 @@ public class PlayerService {
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	JsonNode responseData=responseBody.path("response");
-            System.out.println(responseBody);
 	    	return responseData;
 	    	
 	    }catch(Exception e) {
@@ -247,7 +250,7 @@ public class PlayerService {
 		}
 
         String url="https://"+apiHost+"/players/profiles?search="+playerName;
-        JsonNode responseData=doRequest(url);;
+        JsonNode responseData=doRequest(url);
         if(responseData!=null && responseData.isArray()){
             try {
                 for(JsonNode playerData: responseData) {
@@ -272,6 +275,55 @@ public class PlayerService {
             }
     
         }
+        return null;
+    }
+
+    /**
+     * Función que devuelve una lista con todos los equipos en los que ha estado un jugador con 
+     * un ID especificado, teniendo cada uno una lista con las temporadas que el jugador ha estado
+     * en cada equipo.
+     * @param playerId Es el ID del jugdor.
+     * @return Una lista con todos los equipos en los que ha estado un jugador con 
+     * un ID especificado, teniendo cada uno una lista con las temporadas que el jugador ha estado
+     * en cada equipo.
+     */
+    public List<TeamPlayerCareerDTO> getPlayerCareer(Integer playerId){
+        List<TeamPlayerCareer>teamsPlayerCareer=new ArrayList<>();
+        String url="https://"+apiHost+"/players/teams?player="+playerId;
+        JsonNode responseData=doRequest(url);
+        try{
+            if(responseData!=null && responseData.isArray()){
+                for(JsonNode teamPlayerCareerInfo: responseData){
+                    TeamPlayerCareer teamPlayerCareer=new TeamPlayerCareer();
+
+                    Team team=new Team();
+                    JsonNode teamInfo=teamPlayerCareerInfo.path("team");
+                    team.setId(teamInfo.path("id").asInt());
+                    team.setName(teamInfo.path("name").asText());
+                    team.setLogo(teamInfo.path("logo").asText());
+                    teamPlayerCareer.setTeam(team);
+
+                    List<Integer>seasons=new ArrayList<>();
+
+                    for(JsonNode seasonInfo: teamPlayerCareerInfo.path("seasons")){
+                        if(seasonInfo.asInt()<=Integer.valueOf(season)+1){
+                            seasons.add(seasonInfo.asInt());
+                        }
+                        //Solo añadimos las temporadas que estén por debajo de la variable
+                        //de entorno "season".
+                    }   
+
+                    teamPlayerCareer.setSeasons(seasons);
+
+                    teamsPlayerCareer.add(teamPlayerCareer);
+                }
+
+                return teamPlayerCareerMapper.toTeamPlayerCareerDTOList(teamsPlayerCareer);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

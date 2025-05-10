@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isfootball.dto.PlayerDTO;
 import com.isfootball.dto.PlayerSimpleDTO;
+import com.isfootball.dto.TeamPlayerCareerDTO;
 import com.isfootball.service.PlayerService;
 
 @RestController
@@ -50,5 +51,17 @@ public class PlayerController {
 	@GetMapping("/playersSearch/{name}")
 	public List<PlayerSimpleDTO> getPlayersByName(@PathVariable String name) {
 		return playerService.getPlayersByName(name);
+	}
+
+	/**
+	 * Endpoint REST para obtener una lista de equipos en los que haya estado un jugador
+	 * con un ID especificado.
+	 * 
+	 * @param id Es el ID del jugador.
+	 * @return Una lista de equipos en los que haya estado un jugador con un ID especificado.
+	 */
+	@GetMapping("/playerCareer/{id}")
+	public List<TeamPlayerCareerDTO> getPlayerCareer(@PathVariable String id){
+		return playerService.getPlayerCareer(Integer.valueOf(id));
 	}
 }

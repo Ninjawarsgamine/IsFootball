@@ -25,11 +25,11 @@ public interface MatchMapper {
         @Mapping(source = "id", target = "id"),
         @Mapping(source = "referee", target = "referee"),
         @Mapping(source = "date", target = "date"),
-        @Mapping(source = "competition", target = "competition"), // Mapeo de competition usando CompetitionMapper
+        @Mapping(source = "competition", target = "competition"),
         @Mapping(source = "competitionRound", target = "competitionRound"),
         @Mapping(source = "timeZoneId", target = "timeZoneId"),
-        @Mapping(source = "teamHome", target = "teamHome"), // Mapeo de teamHome usando TeamMapper
-        @Mapping(source = "teamAway", target = "teamAway"), // Mapeo de teamAway usando TeamMapper
+        @Mapping(source = "teamHome", target = "teamHome"),
+        @Mapping(source = "teamAway", target = "teamAway"),
         @Mapping(source = "goalsHome", target = "goalsHome"),
         @Mapping(source = "goalsAway", target = "goalsAway"),
         @Mapping(source = "matchLong", target = "matchLong"),

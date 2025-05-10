@@ -12,16 +12,15 @@
 
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="statistics-tab" data-bs-toggle="tab" 
-                data-bs-target="#statistics" type="button" role="tab" aria-selected="true"
-                @click="getPlayerCompetitions()">
+                data-bs-target="#statistics" type="button" role="tab" aria-selected="true">
                     Statistics
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="transfers-tab" data-bs-toggle="tab" 
-                data-bs-target="#transfers" type="button" role="tab"
-                aria-selected="true">
-                   Transfer history
+                data-bs-target="#career" type="button" role="tab"
+                aria-selected="true" @click="getPlayerTeamsCareer()">
+                    Career
                 </button>
             </li>
         </ul>
@@ -62,7 +61,8 @@
             id="statistics" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Statistics</h1>
                 <select class="form-select" name="player-competition-name"
-                v-model="competitionSelected">
+                v-model="competitionSelected" 
+                @click="getPlayerCompetitionStatistics(competitionSelected)">
                     <option v-for="competition in playerCompetitions" :key="competition[0]"
                     :value="competition[0]">
                         {{ competition[1] }}
@@ -194,6 +194,7 @@
     });
     //Cuando cambie el valor de "player", le asignará uno "por defecto" a "competitionSelected".
 
+    
     const playerCompetitionStatisticsSections = computed(() => {
         const playerStats = playerCompetitionStatistics.value;
         if (!playerStats) return [];

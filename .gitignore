@@ -1,2 +1,5 @@
-### VS Code ###
+# VS Code
 .vscode/
+
+# Eclipse
+.project

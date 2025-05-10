@@ -28,7 +28,7 @@ public interface PlayerMapper {
     @Mapping(source = "name",         target = "name")
     @Mapping(source = "position",     target = "position")
     @Mapping(source = "photo",        target = "photo")
-    @Mapping(source = "nationality",  target = "nationality") // Country → CountryDTO
+    @Mapping(source = "nationality",  target = "nationality")
     PlayerSimpleDTO toPlayerSimpleDTO(Player player);
 
     /**
@@ -39,8 +39,8 @@ public interface PlayerMapper {
     @Mapping(source = "firstname",                   target = "firstname")
     @Mapping(source = "lastname",                    target = "lastname")
     @Mapping(source = "position",                    target = "position")
-    @Mapping(source = "playerTeam",                  target = "playerTeam")        // Team → TeamBasicDTO
-    @Mapping(source = "nationality",                 target = "nationality")       // Country → CountryDTO
+    @Mapping(source = "playerTeam",                  target = "playerTeam")    
+    @Mapping(source = "nationality",                 target = "nationality")
     @Mapping(source = "age",                         target = "age")
     @Mapping(source = "birthday",                    target = "birthday")
     @Mapping(source = "height",                      target = "height")
