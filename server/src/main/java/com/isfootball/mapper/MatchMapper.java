@@ -17,29 +17,27 @@ public interface MatchMapper {
 
     /**
      * Mapea Match a MatchDTO.
-     *zz
+     *
      * @param match La entidad Match que contiene la información del partido.
      * @return MatchDTO con los datos del partido.
      */
     @Mappings({
         @Mapping(source = "id", target = "id"),
-        @Mapping(source = "referee", target = "referee"),
         @Mapping(source = "date", target = "date"),
         @Mapping(source = "competition", target = "competition"),
         @Mapping(source = "competitionRound", target = "competitionRound"),
-        @Mapping(source = "timeZoneId", target = "timeZoneId"),
         @Mapping(source = "teamHome", target = "teamHome"),
         @Mapping(source = "teamAway", target = "teamAway"),
         @Mapping(source = "goalsHome", target = "goalsHome"),
         @Mapping(source = "goalsAway", target = "goalsAway"),
+        @Mapping(source = "penaltiesHome", target = "penaltiesHome"),
+        @Mapping(source = "penaltiesAway", target = "penaltiesAway"),
         @Mapping(source = "matchLong", target = "matchLong"),
-        @Mapping(source = "elapsed", target = "elapsed"),
-        @Mapping(source = "matchShort", target = "matchShort"),
-        @Mapping(source = "venue", target = "venue")
+        @Mapping(source = "elapsed", target = "elapsed")
     })
     MatchDTO toMatchDTO(Match match);
 
-     /**
+    /**
      * Mapea una lista de Match a una lista de MatchDTO.
      *
      * @param matches la lista de entidades Match

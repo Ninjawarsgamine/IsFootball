@@ -1,11 +1,8 @@
 package com.isfootball.service;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -564,44 +561,7 @@ public class CompetitionService {
 		if(responseData!=null && responseData.isArray()){
 			try{
 				for(JsonNode matchData: responseData){
-					Match match=new Match();
-					JsonNode matchInfo=matchData.path("fixture");
-					match.setId(matchInfo.path("id").asInt());
-	
-					String matchDate=matchInfo.path("date").asText();
-					ZonedDateTime dateTime = ZonedDateTime.parse(matchDate);
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy · HH:mm", Locale.getDefault());
-					//La fecha se transforma en un formato adaptado según el idioma del equipo.
-					String matchDateWithFormat = dateTime.format(formatter);
-					match.setDate(matchDateWithFormat);
-	
-					JsonNode competitionInfo=matchData.path("league");
-					Competition competition=new Competition();
-					competition.setId(competitionInfo.path("id").asInt());
-					competition.setName(competitionInfo.path("name").asText());
-					competition.setLogo(competitionInfo.path("logo").asText());
-					match.setCompetition(competition);
-					
-					match.setCompetitionRound(competitionInfo.path("round").asText());
-
-					JsonNode teamHomeInfo=matchData.path("teams").path("home");
-					Team teamHome=new Team();
-					teamHome.setId(teamHomeInfo.path("id").asInt());
-					teamHome.setName(teamHomeInfo.path("name").asText());
-					teamHome.setLogo(teamHomeInfo.path("logo").asText());
-					match.setTeamHome(teamHome);
-	
-					JsonNode teamAwayInfo=matchData.path("teams").path("away");
-					Team teamAway=new Team();
-					teamAway.setId(teamAwayInfo.path("id").asInt());
-					teamAway.setName(teamAwayInfo.path("name").asText());
-					teamAway.setLogo(teamAwayInfo.path("logo").asText());
-					match.setTeamAway(teamAway);
-	
-					JsonNode goalsInfo=matchData.path("goals");
-					match.setGoalsHome(goalsInfo.path("home").asInt());
-					match.setGoalsAway(goalsInfo.path("away").asInt());
-	
+					Match match=Utils.parseMatch(matchData);
 					competitionRoundMatches.add(match);
 				}
 				return matchMapper.toMatchDTOList(competitionRoundMatches);

@@ -506,10 +506,64 @@ select.form-select:focus {
     font-size: 0.8rem;
   }
 }
+.match-card-container__meta__status {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  color: #374151;
+}
 .match-card-container__teams {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.match-card-container__teams__score-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.match-card-container__teams__score-container__score {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__score-container__score {
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .match-card-container__teams__score-container__score {
+    font-size: 0.8rem;
+  }
+}
+.match-card-container__teams__score-container__score__value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__score-container__score__value {
+    font-size: 1.5rem;
+  }
+}
+.match-card-container__teams__score-container__score__sep {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #6c757d;
+}
+@media only screen and (max-width: 800px) {
+  .match-card-container__teams__score-container__score__sep {
+    font-size: 1.5rem;
+  }
+}
+.match-card-container__teams__score-container__score__margin {
+  margin-top: 1.25rem;
+}
+.match-card-container__teams__score-container__penalty {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+  min-height: 1rem;
 }
 .match-card-container__teams__team {
   display: flex;
@@ -554,40 +608,6 @@ select.form-select:focus {
 }
 .match-card-container__teams__team:last-child {
   margin-left: 2rem;
-}
-.match-card-container__teams__score {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-@media only screen and (max-width: 800px) {
-  .match-card-container__teams__score {
-    font-size: 1rem;
-  }
-}
-@media only screen and (max-width: 600px) {
-  .match-card-container__teams__score {
-    font-size: 0.8rem;
-  }
-}
-.match-card-container__teams__score__value {
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1;
-}
-@media only screen and (max-width: 800px) {
-  .match-card-container__teams__score__value {
-    font-size: 1.5rem;
-  }
-}
-.match-card-container__teams__score__sep {
-  font-size: 1.5rem;
-  line-height: 1;
-  color: #6c757d;
-}
-@media only screen and (max-width: 800px) {
-  .match-card-container__teams__score__sep {
-    font-size: 1.5rem;
-  }
 }
 .match-card-container a {
   text-decoration: none;

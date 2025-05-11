@@ -5,22 +5,23 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Match {
+
 	private Integer id;
-    private String referee;
+
     private String date;
+    
     private Competition competition;
     private String competitionRound;
-    private String timeZoneId;
-    
+
     private Team teamHome;
-    private Team TeamAway;
+    private Team teamAway;
 
     private Integer goalsHome;
     private Integer goalsAway;
 
+    private Integer penaltiesHome;
+    private Integer penaltiesAway;
+
     private String matchLong;
     private Integer elapsed;
-    private String matchShort;
-
-    private Venue venue;
 }

@@ -1,11 +1,8 @@
 package com.isfootball.service;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -36,7 +33,7 @@ import com.isfootball.mapper.TeamCompetitionStatisticsMapper;
 import com.isfootball.mapper.TeamMapper;
 
 import com.isfootball.model.Coach;
-import com.isfootball.model.Competition;
+
 import com.isfootball.model.Country;
 import com.isfootball.model.Goal;
 import com.isfootball.model.HomeAwayStats;
@@ -201,53 +198,18 @@ public class TeamService {
 	@Cacheable("teamMatches")
 	public List<MatchDTO>getTeamMatches(Integer teamId){
 		List<Match> teamMatches=new ArrayList<>();
-		//Match no va a tener DTO
+
 		TimeZone timeZone=TimeZone.getDefault(); 
 		String timeZoneId=timeZone.getID();
 		String url="https://"+apiHost+"/fixtures?season="+season+"&team="+teamId+
 		"&timezone="+timeZoneId;
 		JsonNode responseData=doRequest(url);
+
 		if(responseData!=null && responseData.isArray()){
 			try{
 				for(JsonNode matchData: responseData){
-					Match match=new Match();
-					JsonNode matchInfo=matchData.path("fixture");
-					match.setId(matchInfo.path("id").asInt());
-	
-					String matchDate=matchInfo.path("date").asText();
-					ZonedDateTime dateTime = ZonedDateTime.parse(matchDate);
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy · HH:mm", Locale.getDefault());
-
-					String matchDateWithFormat = dateTime.format(formatter);
-					match.setDate(matchDateWithFormat);
-	
-					JsonNode competitionInfo=matchData.path("league");
-					Competition competition=new Competition();
-					competition.setId(competitionInfo.path("id").asInt());
-					competition.setName(competitionInfo.path("name").asText());
-					competition.setLogo(competitionInfo.path("logo").asText());
-					match.setCompetition(competition);
+					Match match=Utils.parseMatch(matchData);
 					
-					match.setCompetitionRound(competitionInfo.path("round").asText());
-
-					JsonNode teamHomeInfo=matchData.path("teams").path("home");
-					Team teamHome=new Team();
-					teamHome.setId(teamHomeInfo.path("id").asInt());
-					teamHome.setName(teamHomeInfo.path("name").asText());
-					teamHome.setLogo(teamHomeInfo.path("logo").asText());
-					match.setTeamHome(teamHome);
-	
-					JsonNode teamAwayInfo=matchData.path("teams").path("away");
-					Team teamAway=new Team();
-					teamAway.setId(teamAwayInfo.path("id").asInt());
-					teamAway.setName(teamAwayInfo.path("name").asText());
-					teamAway.setLogo(teamAwayInfo.path("logo").asText());
-					match.setTeamAway(teamAway);
-	
-					JsonNode goalsInfo=matchData.path("goals");
-					match.setGoalsHome(goalsInfo.path("home").asInt());
-					match.setGoalsAway(goalsInfo.path("away").asInt());
-	
 					teamMatches.add(match);
 				}
 				return matchMapper.toMatchDTOList(teamMatches);
