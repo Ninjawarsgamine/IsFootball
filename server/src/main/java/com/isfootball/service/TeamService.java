@@ -125,7 +125,6 @@ public class TeamService {
 	 */
 	@Cacheable("teamsByName")
 	public List<TeamDTO> getTeamsByName(String teamName) {
-		// TeamDTO
 		List<Team> teams = new ArrayList<>();
 		if (teamName.length() < 3) {
 			return null;
@@ -477,7 +476,6 @@ public class TeamService {
 
 						teamPlayers.add(player);
 					}
-					;
 					teamSquad.setPlayers(teamPlayers);
 				}
 			}

@@ -54,7 +54,6 @@ public class Utils {
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
 	    	JsonNode responseData=responseBody.path("response");
-            System.out.println(responseBody);
 	    	return responseData;
 	    	
 	    }catch(Exception e) {
