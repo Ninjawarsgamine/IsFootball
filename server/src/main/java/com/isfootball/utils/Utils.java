@@ -6,7 +6,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isfootball.config.AppConfig;
 import com.isfootball.model.Competition;
 import com.isfootball.model.Country;
 import com.isfootball.model.HomeAwayStats;
@@ -16,6 +25,43 @@ import com.isfootball.model.Player;
 import com.isfootball.model.Team;
 
 public class Utils {
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+    private final AppConfig appConfig;
+
+    @Autowired
+    public Utils(RestTemplate restTemplate, ObjectMapper objectMapper, AppConfig appConfig) {
+        this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
+        this.appConfig = appConfig;
+    }
+    
+    /**
+	 * Función que sirve para realizar una petición a la API externa.
+	 * 
+	 * @param url La URL con la que se va a hacer la petición.
+	 * @return El resultado de la petición en un objeto Java.
+	 */
+	public JsonNode doRequest(String url) {
+		HttpHeaders headers=new HttpHeaders();
+		headers.set("x-rapidapi-key", appConfig.getApiKey());
+	    headers.set("x-rapidapi-host", appConfig.getApiHost());
+	    
+	    HttpEntity<String> entity = new HttpEntity<>(headers);
+	    ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+	    String jsonResponse=response.getBody();
+	    try {
+	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
+	    	JsonNode responseData=responseBody.path("response");
+            System.out.println(responseBody);
+	    	return responseData;
+	    	
+	    }catch(Exception e) {
+	    	e.printStackTrace();
+	    	return null;
+	    }
+	}
 
 	/**
 	 * Función que adapta textos de una URL a un texto normal oconvirtiendo "%20" en espacios normales
@@ -24,7 +70,7 @@ public class Utils {
 	 * @param text El texto codificado desde una URL que vamos a adaptar
 	 * @return "text" pero con los "%20" cambiados por " " y los espacios laterales recortados.
 	 */
-	public static String decodeSpaces(String text) {
+	public String decodeSpaces(String text) {
 		if(text==null) {
 			return null;
 		}
@@ -39,7 +85,7 @@ public class Utils {
      * una competición.
      * @return Un objeto "Competition" con la información básica de una competición.
      */
-    public static Competition parseCompetitionBasic(JsonNode competitionInfo){
+    public Competition parseCompetitionBasic(JsonNode competitionInfo){
         Competition competition=new Competition();
         competition.setId(competitionInfo.get("id").asInt());
         competition.setName(competitionInfo.get("name").asText());
@@ -55,7 +101,7 @@ public class Utils {
      * una competición.
      * @return Un objeto "Competition" con la información básica de una competición.
      */
-    public static Competition parseCompetitionSimple(JsonNode competitionInfo){
+    public Competition parseCompetitionSimple(JsonNode competitionInfo){
         Competition competition=new Competition();
         competition.setId(competitionInfo.get("id").asInt());
         competition.setName(competitionInfo.get("name").asText());
@@ -71,7 +117,7 @@ public class Utils {
      * @param countryInfo Es la parte de un JSON que tiene la información de un "Country".
      * @return Un objeto "Country" con la información básica de un país.
      */
-    public static Country parseCountry(JsonNode countryInfo){
+    public Country parseCountry(JsonNode countryInfo){
         Country country=new Country();
         country.setName(countryInfo.path("name").asText());
         country.setCode(countryInfo.path("code").asText());
@@ -86,7 +132,7 @@ public class Utils {
      * @param teamInfo Es la parte de un JSON que tiene la información básica de un equipo.
      * @return Un objeto "Team" con la información básica de un equipo.
      */
-    public static Team parseTeamBasic(JsonNode teamInfo){
+    public Team parseTeamBasic(JsonNode teamInfo){
         Team team=new Team();
         team.setId(teamInfo.path("id").asInt());
         team.setName(teamInfo.path("name").asText());
@@ -101,7 +147,7 @@ public class Utils {
      * @param teamInfo Es la parte de un JSON que tiene la información sencilla de un equipo.
      * @return Un objeto "Team" con la información sencilla de un equipo.
      */
-    public static Team parseTeamSimple(JsonNode teamInfo){
+    public Team parseTeamSimple(JsonNode teamInfo){
         Team team=new Team();
         team.setId(teamInfo.path("id").asInt());
         team.setName(teamInfo.path("name").asText());
@@ -121,7 +167,7 @@ public class Utils {
      * @param playerInfo Es la parte de un JSON que tiene la información básica de un jugador.
      * @return Un objeto "Player" con la información básica de un jugador.
      */
-    public static Player parsePlayerBasic(JsonNode playerInfo){
+    public Player parsePlayerBasic(JsonNode playerInfo){
         Player player=new Player();
         player.setId(playerInfo.path("id").asInt());
         player.setName(playerInfo.path("name").asText());
@@ -136,7 +182,7 @@ public class Utils {
      * "home", "away" y "total".
      * @return Un objeto "HomeAwayTotalStats" con los datos de un JSON.
      */
-    public static HomeAwayTotalStats parseHomeAwayTotalStats(JsonNode matchesInfo){
+    public HomeAwayTotalStats parseHomeAwayTotalStats(JsonNode matchesInfo){
         HomeAwayTotalStats homeAwayTotalStats=new HomeAwayTotalStats();
         homeAwayTotalStats.setHome(matchesInfo.path("home").asText());
         homeAwayTotalStats.setAway(matchesInfo.path("away").asText());
@@ -151,7 +197,7 @@ public class Utils {
      * "home" y "away".
      * @return Un objeto "HomeAwayStats" con los datos de un JSON.
      */
-    public static HomeAwayStats parseHomeAwayStats(JsonNode matchesInfo){
+    public HomeAwayStats parseHomeAwayStats(JsonNode matchesInfo){
         HomeAwayStats homeAwayStats=new HomeAwayStats();
         homeAwayStats.setHome(matchesInfo.path("home").asText());
         homeAwayStats.setAway(matchesInfo.path("away").asText());
@@ -165,7 +211,7 @@ public class Utils {
      * 
      * @return Un objeto "Match" con los datos de un JSON.
      */
-    public static Match parseMatch(JsonNode matchData){
+    public Match parseMatch(JsonNode matchData){
         Match match=new Match();
 
         JsonNode matchInfo=matchData.path("fixture");

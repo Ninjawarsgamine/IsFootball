@@ -6,18 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.isfootball.config.AppConfig;
 import com.isfootball.dto.PlayerDTO;
 import com.isfootball.dto.PlayerSimpleDTO;
 import com.isfootball.dto.TeamPlayerCareerDTO;
@@ -34,56 +27,23 @@ import com.isfootball.utils.Utils;
 
 @Service
 public class PlayerService {
-     @Value("${api.key}")
-	private String apiKey;
 	
-	@Value("${api.host}")
-	private String apiHost;
-	
-	@Value("${season}")
-	private String season;
-	
-	private final RestTemplate restTemplate;
-	private final ObjectMapper objectMapper;
+    private final AppConfig appConfig;
     private final PlayerMapper playerMapper;
     private final TeamPlayerCareerMapper teamPlayerCareerMapper;
+    private final Utils utils;
 
 	/**
 	 * Es el constructor de "PlayerService".
 	 */
     @Autowired
-	public PlayerService(RestTemplate restTemplate, ObjectMapper objectMapper, PlayerMapper playerMapper,
-    PlayerBasicMapper playerBasicMapper, TeamPlayerCareerMapper teamPlayerCareerMapper) {
-		this.restTemplate = restTemplate;
-		this.objectMapper = objectMapper;
+	public PlayerService(AppConfig appConfig,ObjectMapper objectMapper, 
+    PlayerMapper playerMapper, PlayerBasicMapper playerBasicMapper, 
+    TeamPlayerCareerMapper teamPlayerCareerMapper, Utils utils) {
+		this.appConfig = appConfig;
         this.playerMapper = playerMapper;
         this.teamPlayerCareerMapper=teamPlayerCareerMapper;
-	}
-	
-	/**
-	 * Función que sirve para realizar una petición a la API externa.
-	 * 
-	 * @param url La URL con la que se va a hacer la petición.
-	 * @return El resultado de la petición en un objeto Java.
-	 */
-	private JsonNode doRequest(String url) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.set("x-rapidapi-key", apiKey);
-	    headers.set("x-rapidapi-host", apiHost);
-	
-	    HttpEntity<String> entity = new HttpEntity<>(headers);
-	    ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-	    
-	    String jsonResponse=response.getBody();
-	    try {
-	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
-	    	JsonNode responseData=responseBody.path("response");
-	    	return responseData;
-	    	
-	    }catch(Exception e) {
-	    	e.printStackTrace();
-	    	return null;
-	    }
+        this.utils=utils;
 	}
 
     /**
@@ -94,8 +54,8 @@ public class PlayerService {
     @Cacheable("playerById")
     public PlayerDTO getPlayerById(Integer playerId){
         Player player=new Player();
-        String url="https://"+apiHost+"/players?id="+playerId+"&season="+season;
-        JsonNode responseData=doRequest(url);
+        String url="https://"+appConfig.getApiHost()+"/players?id="+playerId+"&season="+appConfig.getSeason();
+        JsonNode responseData=utils.doRequest(url);
         //PlayerDTO
         if(responseData!=null && responseData.isArray()){
             try {
@@ -120,8 +80,8 @@ public class PlayerService {
                 player.setBirthday(birthdayDate.format(formatter));
                 
                 Country nationality=new Country();
-                String urlCountry="https://"+apiHost+"/countries?name="+playerInfo.get("nationality").asText();
-                JsonNode countryInfo=doRequest(urlCountry);
+                String urlCountry="https://"+appConfig.getApiHost()+"/countries?name="+playerInfo.get("nationality").asText();
+                JsonNode countryInfo=utils.doRequest(urlCountry);
                 nationality.setName(countryInfo.get(0).path("name").asText());
                 nationality.setFlag(countryInfo.get(0).path("flag").asText());
                 player.setNationality(nationality);
@@ -134,7 +94,7 @@ public class PlayerService {
                 JsonNode playerTeamInfo=playerAllInfo.path("statistics").get(0).
                 path("team");
 
-                Team playerTeam=Utils.parseTeamBasic(playerTeamInfo);
+                Team playerTeam=utils.parseTeamBasic(playerTeamInfo);
                 player.setPlayerTeam(playerTeam);
 
                 JsonNode playerCompetitionsStatisticsInfo=playerAllInfo.path("statistics");
@@ -145,11 +105,11 @@ public class PlayerService {
                     PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
                     
                     JsonNode teamInfo=playerCompetitionStatisticsInfo.path("team");
-                    Team team=Utils.parseTeamBasic(teamInfo);
+                    Team team=utils.parseTeamBasic(teamInfo);
                     playerCompetitionStatistics.setTeam(team);
             
                     JsonNode competitionInfo=playerCompetitionStatisticsInfo.path("league");
-                    Competition competition=Utils.parseCompetitionBasic(competitionInfo);
+                    Competition competition=utils.parseCompetitionBasic(competitionInfo);
                     playerCompetitionStatistics.setCompetition(competition);
              
 
@@ -232,19 +192,19 @@ public class PlayerService {
     public List<PlayerSimpleDTO> getPlayersByName(String playerName){
         List<Player>players=new ArrayList<>();
 
-        playerName=Utils.decodeSpaces(playerName);
+        playerName=utils.decodeSpaces(playerName);
 		if(playerName.length()<3) {
 			return null;
 		}
 
-        String url="https://"+apiHost+"/players/profiles?search="+playerName;
-        JsonNode responseData=doRequest(url);
+        String url="https://"+appConfig.getApiHost()+"/players/profiles?search="+playerName;
+        JsonNode responseData=utils.doRequest(url);
         if(responseData!=null && responseData.isArray()){
             try {
                 for(JsonNode playerData: responseData) {
                     
                     JsonNode playerInfo=playerData.path("player");
-                    Player player=Utils.parsePlayerBasic(playerInfo);
+                    Player player=utils.parsePlayerBasic(playerInfo);
                     Country nationality=new Country();
                     nationality.setName(playerInfo.get("nationality").asText());
                     player.setNationality(nationality);
@@ -271,22 +231,22 @@ public class PlayerService {
     @Cacheable("playerCareer")
     public List<TeamPlayerCareerDTO> getPlayerCareer(Integer playerId){
         List<TeamPlayerCareer>teamsPlayerCareer=new ArrayList<>();
-        String url="https://"+apiHost+"/players/teams?player="+playerId;
-        JsonNode responseData=doRequest(url);
+        String url="https://"+appConfig.getApiHost()+"/players/teams?player="+playerId;
+        JsonNode responseData=utils.doRequest(url);
         try{
             if(responseData!=null && responseData.isArray()){
                 for(JsonNode teamPlayerCareerInfo: responseData){
                     TeamPlayerCareer teamPlayerCareer=new TeamPlayerCareer();
 
                     JsonNode teamInfo=teamPlayerCareerInfo.path("team");
-                    Team team=Utils.parseTeamBasic(teamInfo);
+                    Team team=utils.parseTeamBasic(teamInfo);
 
                     teamPlayerCareer.setTeam(team);
 
                     List<Integer>seasons=new ArrayList<>();
 
                     for(JsonNode seasonInfo: teamPlayerCareerInfo.path("seasons")){
-                        if(seasonInfo.asInt()<=Integer.valueOf(season)+1){
+                        if(seasonInfo.asInt()<=Integer.valueOf(appConfig.getSeason())+1){
                             seasons.add(seasonInfo.asInt());
                         }
                         //Solo añadimos las temporadas que estén por debajo de la variable

@@ -6,18 +6,12 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.isfootball.config.AppConfig;
 import com.isfootball.dto.CompetitionDTO;
 import com.isfootball.dto.CompetitionSimpleDTO;
 import com.isfootball.dto.MatchDTO;
@@ -40,65 +34,26 @@ import com.isfootball.utils.Utils;
 
 @Service
 public class CompetitionService {
-	@Value("${api.key}")
-	private String apiKey;
-	
-	@Value("${api.host}")
-	private String apiHost;
-	
-	@Value("${season}")
-	private String season;
-	
-	private final RestTemplate restTemplate;
 
-	private final ObjectMapper objectMapper;
-
+	private AppConfig appConfig;
 	private final CompetitionMapper competitionMapper;  
 	private final PlayerCompetitionStatisticsMapper playerCompetitionStatisticsMapper;
 	private final MatchMapper matchMapper;
+	private final Utils utils;
 	
 	/**
 	 * Es el constructor de "CompetitionService".
 	 * @param competitionMapper 
 	 */
 	@Autowired
-	public CompetitionService(RestTemplate restTemplate, ObjectMapper objectMapper, CompetitionMapper competitionMapper,
-	PlayerCompetitionStatisticsMapper playerCompetitionStatisticsMapper, MatchMapper matchMapper) {
-		this.restTemplate =restTemplate;
-		this.objectMapper = objectMapper;
+	public CompetitionService(AppConfig appConfig, CompetitionMapper competitionMapper,
+	PlayerCompetitionStatisticsMapper playerCompetitionStatisticsMapper, 
+	MatchMapper matchMapper, Utils utils) {
+		this.appConfig=appConfig;
 		this.competitionMapper=competitionMapper;
 		this.playerCompetitionStatisticsMapper=playerCompetitionStatisticsMapper;
 		this.matchMapper=matchMapper;
-	}
-	
-	/**
-	 * Función que sirve para realizar una petición a la API externa.
-	 * 
-	 * @param url La URL con la que se va a hacer la petición.
-	 * @return El resultado de la petición en un objeto Java.
-	 */
-	private JsonNode doRequest(String url) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.set("x-rapidapi-key", apiKey);
-	    headers.set("x-rapidapi-host", apiHost);
-	    //Añadimos los headers.
-	    
-	    HttpEntity<String> entity = new HttpEntity<>(headers);
-	    //"HttpEntity" encapsula tanto los encabezados HTTP como el cuerpo
-	    //de una solicitud o respuesta.
-	    ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-	    //Hacemos la solicitud usando "restTemplate".
-	    String jsonResponse=response.getBody();
-	    try {
-	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
-	    	//Convertimos  la respuesta en un objeto de Java.	
-	    	JsonNode responseData=responseBody.path("response");
-	    	return responseData;
-	    	
-	    }catch(Exception e) {
-	    	e.printStackTrace();
-	    	return null;
-	    }
+		this.utils=utils;
 	}
 
 	/**
@@ -109,8 +64,8 @@ public class CompetitionService {
 	@Cacheable("competitionAllDataById")
 	public CompetitionDTO getCompetitionAllDataById(Integer competitionId){
 		Competition competition=new Competition();
-		String urlCompetitionBasicData="https://"+apiHost+"/leagues?id="+competitionId+"&season="+season;
-		JsonNode responseData=doRequest(urlCompetitionBasicData);
+		String urlCompetitionBasicData="https://"+appConfig.getApiHost()+"/leagues?id="+competitionId+"&season="+appConfig.getSeason();
+		JsonNode responseData=utils.doRequest(urlCompetitionBasicData);
 		//El "type" ("League" o "Cup") solo está disponible en "/leagues", así que necesitamos
 		//esta petición.
 
@@ -119,14 +74,14 @@ public class CompetitionService {
 				JsonNode competitionBasicData=responseData.get(0);
 				
 				JsonNode competitionBasicInfo=competitionBasicData.path("league");
-				competition=Utils.parseCompetitionSimple(competitionBasicInfo);
+				competition=utils.parseCompetitionSimple(competitionBasicInfo);
 
 				JsonNode competitionCountry=competitionBasicData.path("country");
-				Country country=Utils.parseCountry(competitionCountry);
+				Country country=utils.parseCountry(competitionCountry);
 				competition.setCountry(country);
 				
-				String url="https://"+apiHost+"/standings?league="+competitionId+"&season="+season;
-				JsonNode competitionAllData=doRequest(url);
+				String url="https://"+appConfig.getApiHost()+"/standings?league="+competitionId+"&season="+appConfig.getSeason();
+				JsonNode competitionAllData=utils.doRequest(url);
 				if(competitionAllData!=null && !competitionAllData.isEmpty()){
 					JsonNode competitionData=competitionAllData.get(0).path("league");
 					
@@ -137,7 +92,7 @@ public class CompetitionService {
 						
 							competitionTeamStatistics.setRank(competitionTeamStatisticsData.path("rank").asInt());
 							
-							Team team=Utils.parseTeamBasic(competitionTeamStatisticsData.path("team"));
+							Team team=utils.parseTeamBasic(competitionTeamStatisticsData.path("team"));
 							competitionTeamStatistics.setTeam(team);
 			
 							competitionTeamStatistics.setPoints(competitionTeamStatisticsData.path("points").asInt());
@@ -204,19 +159,19 @@ public class CompetitionService {
 	 */
 	@Cacheable ("competitionByName")
 	public CompetitionSimpleDTO getCompetitionByName(String competitionName) {
-		competitionName=Utils.decodeSpaces(competitionName);
+		competitionName=utils.decodeSpaces(competitionName);
 		//CompetitionSimpleDTO
-		String url="https://"+apiHost+"/leagues?name="+competitionName+"&season="+season;
-		JsonNode responseData=doRequest(url);
+		String url="https://"+appConfig.getApiHost()+"/leagues?name="+competitionName+"&season="+appConfig.getSeason();
+		JsonNode responseData=utils.doRequest(url);
 	    
 	    try {
 			JsonNode competitionData=responseData.get(0);
 
 			JsonNode competitionInfo=competitionData.path("league");
-			Competition competition=Utils.parseCompetitionSimple(competitionInfo);
+			Competition competition=utils.parseCompetitionSimple(competitionInfo);
 
 			JsonNode competitionCountry=competitionData.path("country");
-			Country country=Utils.parseCountry(competitionCountry);
+			Country country=utils.parseCountry(competitionCountry);
 			competition.setCountry(country);
 			
 	    	return competitionMapper.toCompetitionSimpleDTO(competition);
@@ -236,28 +191,28 @@ public class CompetitionService {
 	@Cacheable ("competitionsByName")
 	public List<CompetitionSimpleDTO> getCompetitionsByName(String competitionName){
 		List<Competition> competitions=new ArrayList<>();
-		competitionName=Utils.decodeSpaces(competitionName);
+		competitionName=utils.decodeSpaces(competitionName);
 		if(competitionName.length()<3) {
 			return null;
 		}
-		String url="https://"+apiHost+"/leagues?search="+competitionName;
-		JsonNode responseData=doRequest(url);
+		String url="https://"+appConfig.getApiHost()+"/leagues?search="+competitionName;
+		JsonNode responseData=utils.doRequest(url);
 		try {
 			for(JsonNode competitionAllData: responseData) {
 				
 				JsonNode competitionInfo=competitionAllData.path("league");
 				
-				Competition competition=Utils.parseCompetitionBasic(competitionInfo);
+				Competition competition=utils.parseCompetitionBasic(competitionInfo);
 				competition.setType(competitionInfo.get("type").asText());
 
 				JsonNode competitionCountry=competitionAllData.path("country");
-				Country country=Utils.parseCountry(competitionCountry);
+				Country country=utils.parseCountry(competitionCountry);
 				competition.setCountry(country);
 				
 				JsonNode competitionSeason=competitionAllData.path("seasons");
 				
 				for(JsonNode s: competitionSeason) {
-					if(s.path("year").asText().equals(season)) {
+					if(s.path("year").asText().equals(appConfig.getSeason())) {
 						competitions.add(competition);
 						break;
 					}
@@ -281,8 +236,8 @@ public class CompetitionService {
 	@Cacheable("competitionsListByIds")
 	public List<CompetitionSimpleDTO> getListCompetitionsByIds(Integer[]ids){
 		List<Competition> competitions=new ArrayList<>();
-		String url="https://"+apiHost+"/leagues?season="+season;
-		JsonNode allCompetitions= doRequest(url);
+		String url="https://"+appConfig.getApiHost()+"/leagues?season="+appConfig.getSeason();
+		JsonNode allCompetitions= utils.doRequest(url);
 		
 		if(allCompetitions!=null && allCompetitions.isArray()) {
 			List <Integer>idsList=Arrays.asList(ids);
@@ -291,10 +246,10 @@ public class CompetitionService {
 					if(idsList.contains(c.path("league").get("id").asInt())) {
 	
 						JsonNode competitionInfo=c.path("league");
-						Competition competition=Utils.parseCompetitionSimple(competitionInfo);
+						Competition competition=utils.parseCompetitionSimple(competitionInfo);
 	
 						JsonNode competitionCountry=c.path("country");
-						Country country=Utils.parseCountry(competitionCountry);
+						Country country=utils.parseCountry(competitionCountry);
 						competition.setCountry(country);
 						
 						competitions.add(competition);
@@ -321,8 +276,8 @@ public class CompetitionService {
 	@Cacheable("playerCompetitionTopScorers")
 	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopScorers(Integer competitionId){
 		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
-		String url="https://"+apiHost+"/players/topscorers?league="+competitionId+"&season="+season;
-		JsonNode responseData=doRequest(url);
+		String url="https://"+appConfig.getApiHost()+"/players/topscorers?league="+competitionId+"&season="+appConfig.getSeason();
+		JsonNode responseData=utils.doRequest(url);
 
 		if(responseData!=null && responseData.isArray()) {
 			try {
@@ -330,13 +285,13 @@ public class CompetitionService {
 					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
 		
 					JsonNode playerBasicInfo=playersTotalInfo.path("player");
-					Player player=Utils.parsePlayerBasic(playerBasicInfo);
+					Player player=utils.parsePlayerBasic(playerBasicInfo);
 					playerCompetitionStatistics.setPlayer(player);
 
 					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
 					
 					JsonNode playerTeamData=playerAllStatistics.path("team");
-					Team playerTeam=Utils.parseTeamBasic(playerTeamData);
+					Team playerTeam=utils.parseTeamBasic(playerTeamData);
 					playerCompetitionStatistics.setTeam(playerTeam);
 		
 					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
@@ -361,21 +316,21 @@ public class CompetitionService {
 	@Cacheable("playerCompetitionTopAssistsProviders")
 	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopAssistsProviders(Integer competitionId){
 		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
-		String url="https://"+apiHost+"/players/topassists?league="+competitionId+"&season="+season;
-		JsonNode responseData=doRequest(url);
+		String url="https://"+appConfig.getApiHost()+"/players/topassists?league="+competitionId+"&season="+appConfig.getSeason();
+		JsonNode responseData=utils.doRequest(url);
 		if(responseData!=null && responseData.isArray()) {
 			try{
 				for(JsonNode playersTotalInfo: responseData){
 					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
 
 					JsonNode playerBasicInfo=playersTotalInfo.path("player");
-					Player player=Utils.parsePlayerBasic(playerBasicInfo);
+					Player player=utils.parsePlayerBasic(playerBasicInfo);
 					playerCompetitionStatistics.setPlayer(player);
 					
 					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
 					
 					JsonNode playerTeamData=playerAllStatistics.path("team");
-					Team playerTeam=Utils.parseTeamBasic(playerTeamData);
+					Team playerTeam=utils.parseTeamBasic(playerTeamData);
 					playerCompetitionStatistics.setTeam(playerTeam);
 	
 					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
@@ -400,21 +355,21 @@ public class CompetitionService {
 	@Cacheable("playerCompetitionTopYellowCards")
 	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopYellowCards(Integer competitionId){
 		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
-		String url="https://"+apiHost+"/players/topyellowcards?league="+competitionId+"&season="+season;
-		JsonNode responseData=doRequest(url);
+		String url="https://"+appConfig.getApiHost()+"/players/topyellowcards?league="+competitionId+"&season="+appConfig.getSeason();
+		JsonNode responseData=utils.doRequest(url);
 		if(responseData!=null && responseData.isArray()) {
 			try{
 				for(JsonNode playersTotalInfo: responseData){
 					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
 		
 					JsonNode playerBasicInfo=playersTotalInfo.path("player");
-					Player player=Utils.parsePlayerBasic(playerBasicInfo);
+					Player player=utils.parsePlayerBasic(playerBasicInfo);
 					playerCompetitionStatistics.setPlayer(player);
 					
 					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
 					
 					JsonNode playerTeamData=playerAllStatistics.path("team");
-					Team playerTeam=Utils.parseTeamBasic(playerTeamData);
+					Team playerTeam=utils.parseTeamBasic(playerTeamData);
 					playerCompetitionStatistics.setTeam(playerTeam);
 					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
 					playerCompetitionStatistics.setYellowCards(playerAllStatistics.path("cards").path("yellow").asInt());
@@ -438,21 +393,21 @@ public class CompetitionService {
 	@Cacheable("playerCompetitionTopRedCards")
 	public List<PlayerCompetitionStatisticsBasicDTO> getCompetitionTopRedCards(Integer competitionId){
 		List<PlayerCompetitionStatistics>competitionPlayersStatistics=new ArrayList<>();
-		String url="https://"+apiHost+"/players/topredcards?league="+competitionId+"&season="+season;
-		JsonNode responseData=doRequest(url);
+		String url="https://"+appConfig.getApiHost()+"/players/topredcards?league="+competitionId+"&season="+appConfig.getSeason();
+		JsonNode responseData=utils.doRequest(url);
 		if(responseData!=null && responseData.isArray()) {
 			try{
 				for(JsonNode playersTotalInfo: responseData){
 					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
 		
 					JsonNode playerBasicInfo=playersTotalInfo.path("player");
-					Player player=Utils.parsePlayerBasic(playerBasicInfo);
+					Player player=utils.parsePlayerBasic(playerBasicInfo);
 					playerCompetitionStatistics.setPlayer(player);
 					
 					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
 					
 					JsonNode playerTeamData=playerAllStatistics.path("team");
-					Team playerTeam=Utils.parseTeamBasic(playerTeamData);
+					Team playerTeam=utils.parseTeamBasic(playerTeamData);
 					playerCompetitionStatistics.setTeam(playerTeam);
 	
 					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
@@ -478,8 +433,8 @@ public class CompetitionService {
 	@Cacheable("competitionAllRounds")
 	public List<String>getCompetitionAllRounds(Integer competitionId){
 		List<String>competitionRounds=new ArrayList<>();
-		String url="https://"+apiHost+"/fixtures/rounds?league="+competitionId+"&season="+season;
-		JsonNode responseData=doRequest(url);
+		String url="https://"+appConfig.getApiHost()+"/fixtures/rounds?league="+competitionId+"&season="+appConfig.getSeason();
+		JsonNode responseData=utils.doRequest(url);
 		if(responseData!=null && responseData.isArray()){
 			try{
 				for(JsonNode competitionRound:responseData){
@@ -500,12 +455,12 @@ public class CompetitionService {
 		TimeZone timeZone=TimeZone.getDefault(); 
 		String timeZoneId=timeZone.getID();
 		
-		String url="https://"+apiHost+"/fixtures?league="+competitionId+"&season="+season+"&round="+round+"&timezone="+timeZoneId;
-		JsonNode responseData=doRequest(url);
+		String url="https://"+appConfig.getApiHost()+"/fixtures?league="+competitionId+"&season="+appConfig.getSeason()+"&round="+round+"&timezone="+timeZoneId;
+		JsonNode responseData=utils.doRequest(url);
 		if(responseData!=null && responseData.isArray()){
 			try{
 				for(JsonNode matchData: responseData){
-					Match match=Utils.parseMatch(matchData);
+					Match match=utils.parseMatch(matchData);
 					competitionRoundMatches.add(match);
 				}
 				return matchMapper.toMatchDTOList(competitionRoundMatches);
