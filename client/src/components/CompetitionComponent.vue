@@ -90,7 +90,7 @@
                 <div class="competition-info-container__competition-teams table-responsive">
                     <router-link v-for="team in teamsOrdered" :key="team.id" 
                     class="competition-info-container__competition-teams__team-data list-group-item-action 
-                    d-flex align-items-center p-3" :to="`/players/${team.id}`">
+                    d-flex align-items-center p-3" :to="`/teams/${team.name}/${team.id}`">
                         <img class="flex-shrink-0 me-3" v-lazy="team.logo"
                         :alt="'Foto de ' + team.name"/>
                         <h6>{{ team.name }}</h6>

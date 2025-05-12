@@ -8,9 +8,11 @@ import java.util.Locale;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.isfootball.model.Competition;
+import com.isfootball.model.Country;
 import com.isfootball.model.HomeAwayStats;
 import com.isfootball.model.HomeAwayTotalStats;
 import com.isfootball.model.Match;
+import com.isfootball.model.Player;
 import com.isfootball.model.Team;
 
 public class Utils {
@@ -29,7 +31,105 @@ public class Utils {
 		return text.trim().replace("%20", " ");
 	}
 
-	 /**
+    /**
+     * Función que convierte los datos de un JsonNode a un objeto "Competition" pero solo con
+     * los datos básicos.
+     * 
+     * @param competitionInfo Es la parte de un JSON que tiene la información básica de 
+     * una competición.
+     * @return Un objeto "Competition" con la información básica de una competición.
+     */
+    public static Competition parseCompetitionBasic(JsonNode competitionInfo){
+        Competition competition=new Competition();
+        competition.setId(competitionInfo.get("id").asInt());
+        competition.setName(competitionInfo.get("name").asText());
+        competition.setLogo(competitionInfo.get("logo").asText());
+        return competition;
+    }
+
+    /**
+     * Función que convierte los datos de un JsonNode a un objeto "Competition" pero solo con
+     * los datos básicos.
+     * 
+     * @param competitionInfo Es la parte de un JSON que tiene la información básica de 
+     * una competición.
+     * @return Un objeto "Competition" con la información básica de una competición.
+     */
+    public static Competition parseCompetitionSimple(JsonNode competitionInfo){
+        Competition competition=new Competition();
+        competition.setId(competitionInfo.get("id").asInt());
+        competition.setName(competitionInfo.get("name").asText());
+        competition.setType(competitionInfo.get("type").asText());
+        competition.setLogo(competitionInfo.get("logo").asText());
+        
+        return competition;
+    }
+
+    /**
+     * Función que convierte los datos de un JsonNode a un objeto "Country".
+     * 
+     * @param countryInfo Es la parte de un JSON que tiene la información de un "Country".
+     * @return Un objeto "Country" con la información básica de un país.
+     */
+    public static Country parseCountry(JsonNode countryInfo){
+        Country country=new Country();
+        country.setName(countryInfo.path("name").asText());
+        country.setCode(countryInfo.path("code").asText());
+        country.setFlag(countryInfo.path("flag").asText());
+        
+        return country;
+    }
+    /**
+     * Función que convierte los datos de un JsonNode a un objeto "Team" pero solo con
+     * los datos básicos.
+     * 
+     * @param teamInfo Es la parte de un JSON que tiene la información básica de un equipo.
+     * @return Un objeto "Team" con la información básica de un equipo.
+     */
+    public static Team parseTeamBasic(JsonNode teamInfo){
+        Team team=new Team();
+        team.setId(teamInfo.path("id").asInt());
+        team.setName(teamInfo.path("name").asText());
+        team.setLogo(teamInfo.path("logo").asText());
+        return team;
+    }
+
+    /**
+     * Función que convierte los datos de un JsonNode a un objeto "Team" pero solo con
+     * los datos simples.
+     * 
+     * @param teamInfo Es la parte de un JSON que tiene la información sencilla de un equipo.
+     * @return Un objeto "Team" con la información sencilla de un equipo.
+     */
+    public static Team parseTeamSimple(JsonNode teamInfo){
+        Team team=new Team();
+        team.setId(teamInfo.path("id").asInt());
+        team.setName(teamInfo.path("name").asText());
+        team.setLogo(teamInfo.path("logo").asText());
+        team.setFounded(teamInfo.path("founded").asInt());
+
+        Country country=new Country();
+        country.setName(teamInfo.path("country").asText());
+        team.setCountry(country);
+        return team;
+    }
+
+    /**
+     * Función que convierte los datos de un JsonNode a un objeto "Player" pero solo con
+     * los datos básicos.
+     * 
+     * @param playerInfo Es la parte de un JSON que tiene la información básica de un jugador.
+     * @return Un objeto "Player" con la información básica de un jugador.
+     */
+    public static Player parsePlayerBasic(JsonNode playerInfo){
+        Player player=new Player();
+        player.setId(playerInfo.path("id").asInt());
+        player.setName(playerInfo.path("name").asText());
+        player.setPhoto(playerInfo.path("photo").asText());
+        return player;
+    }
+
+    /**
      * Esta función convierte los datos de un JsonNode a un objeto "HomeAwayTotalStats".
      * 
      * @param matchesInfo Es la parte de un JSON que tiene datos de partidos que dentro tienen 
@@ -44,7 +144,7 @@ public class Utils {
         return homeAwayTotalStats;
     }
 
-	 /**
+	/**
      * Esta función convierte los datos de un JsonNode a un objeto "HomeAwayStats".
      * 
      * @param matchesInfo Es la parte de un JSON que tiene datos de partidos que dentro tienen 
@@ -58,7 +158,7 @@ public class Utils {
         return homeAwayStats;
     }
 
-     /**
+    /**
      * Esta función convierte los datos de un JsonNode a un objeto "Match".
      * 
      * @param matchData Es la parte de un JSON que tiene datos de un partido.

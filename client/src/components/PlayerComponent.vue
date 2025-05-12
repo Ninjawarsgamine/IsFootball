@@ -116,10 +116,10 @@
             <div class="tab-pane fade show player-info-container__player-career"
             id="career" role="tabpanel" aria-labelledby="table-tab">
                 <h1>Career</h1>
-                <div class="player-info-container__player-career__row row" v-if="playerTeamsCareer">
-                    <div class="player-info-container__player-career__row__col col" 
+                <div class="player-info-container__player-career__row" v-if="playerTeamsCareer">
+                    <div class="player-info-container__player-career__row__col" 
                     v-for="team in playerTeamsCareer" :key="team">
-                        <div class="player-info-container__player-career__row__col__career-item row card h-100">
+                        <div class="player-info-container__player-career__row__col__career-item card h-100">
                             <router-link :to="`/teams/${team.team.name}/${team.team.id}`" 
                             class="card-body d-flex align-items-center">
                                 <img v-lazy="team.team.logo" class="me-3">

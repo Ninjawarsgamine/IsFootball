@@ -115,7 +115,6 @@ public class TeamService {
 		
 		List<TeamDTO>teamsByName=getTeamsByName(teamName);
 		TeamDTO team=new TeamDTO();
-		//TeamDTO
 
 		try{
 			for(TeamDTO teamInfo: teamsByName){	
@@ -124,11 +123,13 @@ public class TeamService {
 					team.setName(teamInfo.getName());
 					team.setLogo(teamInfo.getLogo());
 					team.setFounded(teamInfo.getFounded());
+
 					String urlCountry="https://"+apiHost+"/countries?name="+teamInfo.getCountry().getName();
 					JsonNode countryData=doRequest(urlCountry).get(0);
 					CountryDTO country=new CountryDTO();
 					country.setFlag(countryData.path("flag").asText());
 					team.setCountry(country);
+
 					Venue venueInfo=teamInfo.getVenue();
 					Venue venue=new Venue();
 					venue.setId(venueInfo.getId());
@@ -138,6 +139,7 @@ public class TeamService {
 					venue.setCity(venueInfo.getCity());
 					venue.setCapacity(venueInfo.getCapacity());
 					team.setVenue(venue);
+
 					return team;
 				}
 			}
@@ -166,16 +168,13 @@ public class TeamService {
 		try{
 			for(JsonNode teamData: responseData){
 				JsonNode teamInfo=teamData.path("team");
-				Team team=new Team();
-				team.setId(teamInfo.path("id").asInt());
-				team.setName(teamInfo.path("name").asText());
-				team.setLogo(teamInfo.path("logo").asText());
+				Team team=Utils.parseTeamSimple(teamInfo);
 				team.setFounded(teamInfo.path("founded").asInt());
 
 				Country country=new Country();
 				country.setName(teamInfo.path("country").asText());
 				team.setCountry(country);
-
+				
 				JsonNode venueData=teamData.path("venue");
 				Venue venue=new Venue();
 				venue.setId(venueData.path("id").asInt());
@@ -261,10 +260,8 @@ public class TeamService {
 	 * @param competitionId Es el ID de la competición.
 	 * @return Las estadísticas de un equipo en una competición con un ID especificado.
 	 */
-	//TeamCompetitionStatisticsDTO
 	@Cacheable("teamCompetitionStatistics")
 	public TeamCompetitionStatisticsDTO getTeamCompetitionStatistics(Integer teamId, Integer competitionId) {
-		//TeamCompetitionStatisticsDTO
 		TeamCompetitionStatistics teamCompetitionStatistics=new TeamCompetitionStatistics();
     	String url="https://"+apiHost+"/teams/statistics?league="+competitionId+"&season="+season+"&team="+
 		teamId;
@@ -317,11 +314,9 @@ public class TeamService {
 
 			teamCompetitionStatistics.setGoalsFor(goalsFor);
 
-
 			JsonNode goalsAgainstInfo=goalsInfo.path("against");
 			Goal goalsAgainst=new Goal();
 			
-
 			HomeAwayTotalStats goalsAgainstStats=Utils.parseHomeAwayTotalStats(goalsAgainstInfo.
 			path("total"));
 			goalsAgainst.setDistribution(goalsAgainstStats);
@@ -442,7 +437,6 @@ public class TeamService {
      */
     @Cacheable ("competitionTeams")
     public List<TeamBasicDTO> getCompetitionTeams(Integer competitionId){
-		//TeamBasicDTO
 		List<Team>competitionTeams=new ArrayList<>();
 		if(competitionId==null) {
 			throw new IllegalArgumentException("The competition id is null.");
@@ -452,11 +446,8 @@ public class TeamService {
 		}
 		String url="https://"+apiHost+"/teams?league="+competitionId+"&season="+season;
         JsonNode responseData=doRequest(url);
-        for(JsonNode teamData:responseData){
-            Team team=new Team();
-            team.setId(teamData.path("team").path("id").asInt());
-            team.setName(teamData.path("team").path("name").asText());
-            team.setLogo(teamData.path("team").path("logo").asText());
+        for(JsonNode teamInfo:responseData){
+            Team team=Utils.parseTeamSimple(teamInfo.path("team"));
             competitionTeams.add(team);
         }
         return teamMapper.toTeamBasicDTOList(competitionTeams);

@@ -88,7 +88,7 @@ select.form-select:focus {
 .header-container__menu-options a {
   text-decoration: none;
   color: whitesmoke;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 .header-container__menu-options a:hover {
   border-bottom: 2px whitesmoke solid;
@@ -871,7 +871,7 @@ select.form-select:focus {
   margin-top: 0.25rem;
   color: #212529;
 }
-.player-info-container__player-basic-info__item img {
+.player-info-container__player-basic-info__item img, .player-info-container__statistics img {
   max-height: 2.5rem;
   max-width: 2.5rem;
   object-fit: contain;
@@ -893,9 +893,6 @@ select.form-select:focus {
 .player-info-container a {
   text-decoration: none;
 }
-.player-info-container__player-career {
-  width: 100%;
-}
 .player-info-container__player-career__row {
   display: flex;
   flex-direction: column;
@@ -903,12 +900,10 @@ select.form-select:focus {
 }
 .player-info-container__player-career__row__col {
   flex: 1 0 100%;
-  width: 100%;
   flex-direction: column;
   align-items: center;
 }
 .player-info-container__player-career__row__col__career-item {
-  margin-left: 0.5rem;
   background: white;
   border: none;
   border-radius: 0.75rem;

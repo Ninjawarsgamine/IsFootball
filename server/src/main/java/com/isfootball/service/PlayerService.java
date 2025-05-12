@@ -134,35 +134,24 @@ public class PlayerService {
                 JsonNode playerTeamInfo=playerAllInfo.path("statistics").get(0).
                 path("team");
 
-                Team playerTeam=new Team();
-                playerTeam.setId(playerTeamInfo.path("id").asInt());
-                playerTeam.setName(playerTeamInfo.path("name").asText());
-                playerTeam.setLogo(playerTeamInfo.path("logo").asText());
+                Team playerTeam=Utils.parseTeamBasic(playerTeamInfo);
                 player.setPlayerTeam(playerTeam);
-                //TeamBasicDTO
+
                 JsonNode playerCompetitionsStatisticsInfo=playerAllInfo.path("statistics");
                 List<PlayerCompetitionStatistics>playerCompetitionsStatistics=new ArrayList<>();
-                //PlayerCompetitionStatisticsDTO 
+
                 for(JsonNode playerCompetitionStatisticsInfo: playerCompetitionsStatisticsInfo ){
 
                     PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
-
-                    Team team=new Team();
                     
                     JsonNode teamInfo=playerCompetitionStatisticsInfo.path("team");
-                    team.setId(teamInfo.path("id").asInt());
-                    team.setName(teamInfo.path("name").asText());
-                    team.setLogo(teamInfo.path("logo").asText());
-                    //TeamBasicDTO
+                    Team team=Utils.parseTeamBasic(teamInfo);
                     playerCompetitionStatistics.setTeam(team);
-                    
-                    Competition competition=new Competition();
+            
                     JsonNode competitionInfo=playerCompetitionStatisticsInfo.path("league");
-                    competition.setId(competitionInfo.path("id").asInt());
-                    competition.setName(competitionInfo.path("name").asText());
-                    competition.setLogo(competitionInfo.path("logo").asText());
+                    Competition competition=Utils.parseCompetitionBasic(competitionInfo);
                     playerCompetitionStatistics.setCompetition(competition);
-                    //CompetitionBasicDTO
+             
 
                     JsonNode gamesInfo=playerCompetitionStatisticsInfo.path("games");
                     playerCompetitionStatistics.setGamesAppearences(gamesInfo.path("appearences").asInt());
@@ -239,7 +228,6 @@ public class PlayerService {
      * @param playerName Es el nombre/apellido que se va a utilizar para la búsqueda.
      * @return Una lista de jugadores cuyo nombre/apellido coincida con el especificado.
      */
-    //PlayerBasicDTO
     @Cacheable("playersByName")
     public List<PlayerSimpleDTO> getPlayersByName(String playerName){
         List<Player>players=new ArrayList<>();
@@ -254,19 +242,12 @@ public class PlayerService {
         if(responseData!=null && responseData.isArray()){
             try {
                 for(JsonNode playerData: responseData) {
-                   Player player=new Player();
                     
                     JsonNode playerInfo=playerData.path("player");
-                    player.setId(playerInfo.get("id").asInt());
-                    player.setName(playerInfo.get("name").asText());
-                    
+                    Player player=Utils.parsePlayerBasic(playerInfo);
                     Country nationality=new Country();
                     nationality.setName(playerInfo.get("nationality").asText());
                     player.setNationality(nationality);
-                    
-                    player.setPosition(playerInfo.path("position").asText());
-                    player.setPhoto(playerInfo.path("photo").asText());
-
                     players.add(player);
                 }
                 return playerMapper.toPlayerSimpleDTOList(players);
@@ -297,11 +278,9 @@ public class PlayerService {
                 for(JsonNode teamPlayerCareerInfo: responseData){
                     TeamPlayerCareer teamPlayerCareer=new TeamPlayerCareer();
 
-                    Team team=new Team();
                     JsonNode teamInfo=teamPlayerCareerInfo.path("team");
-                    team.setId(teamInfo.path("id").asInt());
-                    team.setName(teamInfo.path("name").asText());
-                    team.setLogo(teamInfo.path("logo").asText());
+                    Team team=Utils.parseTeamBasic(teamInfo);
+
                     teamPlayerCareer.setTeam(team);
 
                     List<Integer>seasons=new ArrayList<>();
@@ -313,9 +292,7 @@ public class PlayerService {
                         //Solo añadimos las temporadas que estén por debajo de la variable
                         //de entorno "season".
                     }   
-
                     teamPlayerCareer.setSeasons(seasons);
-
                     teamsPlayerCareer.add(teamPlayerCareer);
                 }
 
