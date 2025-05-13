@@ -1,5 +1,6 @@
 package com.isfootball.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -437,7 +438,7 @@ public class TeamService {
 	 * 
 	 * @param teamId ID del equipo.
 	 * @return Un objeto "TeamSquadDTO" con la información de la plantilla de un
-	 *         equipo con un ID especificado.
+	 * equipo con un ID especificado.
 	 */
 	@Cacheable("teamSquad")
 	public TeamSquadDTO getTeamSquad(Integer teamId) {
@@ -448,36 +449,79 @@ public class TeamService {
 		JsonNode responseData = utils.doRequest(url);
 		try {
 			if (responseData != null && responseData.isArray()) {
-				JsonNode coachData = responseData.get(0);
-				coach.setName(coachData.path("name").asText());
-				coach.setPhoto(coachData.path("photo").asText());
-				teamSquad.setCoach(coach);
+				JsonNode coachsData = responseData;
+				for(JsonNode coachInfo: coachsData){
+					JsonNode coachCareerInfo=coachInfo.path("career");
+					for(JsonNode coachCareerTeamInfo: coachCareerInfo){
+						if(coachCareerTeamInfo.path("team").path("id").asInt()==teamId){
+							if(!coachCareerTeamInfo.path("end").isMissingNode() && LocalDate.parse(coachCareerTeamInfo.
+							path("start").asText()).isBefore(LocalDate.parse("2024-06-02"))){
+								coach.setName(coachInfo.path("name").asText());
+								coach.setPhoto(coachInfo.path("photo").asText());
+								teamSquad.setCoach(coach);
+								break;
+							}
+						}
 
-				List<Player> teamPlayers = new ArrayList<>();
-
-				String urlPlayers ="https://"+appConfig.getApiHost()+"/players?team="+teamId+ "&season="
-				+appConfig.getSeason();
-				System.out.println(urlPlayers);
-				JsonNode responseDataPlayers = utils.doRequest(urlPlayers);
-				if (responseDataPlayers != null && responseDataPlayers.isArray()) {
-					for (JsonNode playerData : responseDataPlayers) {
-						JsonNode playerInfo = playerData.path("player");
-
-						Player player = new Player();
-						player.setId(playerInfo.path("id").asInt());
-						player.setName(playerInfo.path("name").asText());
-						player.setPhoto(playerInfo.path("photo").asText());
-						player.setPosition(playerData.path("statistics").get(0)
-								.path("games").path("position").asText());
-
-						Country country = new Country();
-						country.setName(playerInfo.path("nationality").asText());
-						player.setNationality(country);
-
-						teamPlayers.add(player);
 					}
-					teamSquad.setPlayers(teamPlayers);
 				}
+				List<Player> teamPlayers = new ArrayList<>();
+				String urlPlayers ="https://"+appConfig.getApiHost()+"/players?team="+teamId+ "&season="+appConfig.getSeason();
+				JsonNode responseAllData = utils.getAllRequestResponse(urlPlayers);
+
+				Integer pagesNumber=responseAllData.path("paging").path("total").asInt();
+
+				for (int i=1;i<=pagesNumber;i++) {
+					JsonNode responseDataPlayers=utils.doRequest(urlPlayers+"&page="+i);
+					if (responseDataPlayers != null && responseDataPlayers.isArray()) {
+						for (JsonNode playerData : responseDataPlayers) {
+							JsonNode playerStatisticsInfo=playerData.path("statistics");
+							Boolean hasAppearences=false;
+							Integer totalAppeareneces=0;
+
+							for(JsonNode statistics: playerStatisticsInfo){
+								Integer appearences=0;
+								if(statistics.path("games").path("appearences").asInt()>0 ){
+									appearences=statistics.path("games").path("appearences").asInt();
+									totalAppeareneces=totalAppeareneces+appearences;
+									hasAppearences=true;
+									if(statistics.path("league").path("id").asInt()==667){
+										if(statistics.path("games").path("appearences").asInt()==totalAppeareneces){
+											hasAppearences=false;
+										}
+										//Hacemos que si el número de apariciones del jugador en los
+										//amistosos de clubes es igual a sus apariciones totales, 
+										//entonces no cuenta, pues solo ha jugado amistosos de 
+										//clubes (partidos no oficiales).
+									}
+									break;
+								}
+							}
+							//Comprobamos que el jugador haya disputado al menos un partido de cualquier
+							//competición (sin contar los amistosos de clubes) para que se 
+							//pueda considerar parte de la plantilla del equipo (siempre y cuando 
+							//no esté lesionado.).
+
+							if(hasAppearences==true){
+								JsonNode playerInfo = playerData.path("player");
+	
+								Player player = new Player();
+								player.setId(playerInfo.path("id").asInt());
+								player.setName(playerInfo.path("name").asText());
+								player.setPhoto(playerInfo.path("photo").asText());
+								player.setPosition(playerData.path("statistics").get(0)
+								.path("games").path("position").asText());
+		
+								Country country = new Country();
+								country.setName(playerInfo.path("nationality").asText());
+								player.setNationality(country);
+		
+								teamPlayers.add(player);
+							}
+						}
+					}
+				}
+				teamSquad.setPlayers(teamPlayers);
 			}
 			return teamMapper.toTeamSquadDTO(teamSquad);
 		} catch (Exception e) {

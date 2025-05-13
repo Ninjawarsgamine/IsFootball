@@ -36,8 +36,32 @@ public class Utils {
         this.appConfig = appConfig;
     }
     
-    /**
+ /**
 	 * Función que sirve para realizar una petición a la API externa.
+	 * 
+	 * @param url La URL con la que se va a hacer la petición.
+	 * @return El resultado de la petición en un objeto Java.
+	 */
+	public JsonNode getAllRequestResponse(String url) {
+		HttpHeaders headers=new HttpHeaders();
+		headers.set("x-rapidapi-key", appConfig.getApiKey());
+	    headers.set("x-rapidapi-host", appConfig.getApiHost());
+	    
+	    HttpEntity<String> entity = new HttpEntity<>(headers);
+	    ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+	    String jsonResponse=response.getBody();
+	    try {
+	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
+	    	return responseBody;
+	    	
+	    }catch(Exception e) {
+	    	e.printStackTrace();
+	    	return null;
+	    }
+	}
+
+    /**
+	 * Función que sirve para realizar una petición a la API externa y obtener el objeto "response".
 	 * 
 	 * @param url La URL con la que se va a hacer la petición.
 	 * @return El resultado de la petición en un objeto Java.
