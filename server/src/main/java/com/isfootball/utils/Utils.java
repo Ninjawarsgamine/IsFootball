@@ -52,6 +52,7 @@ public class Utils {
 	    String jsonResponse=response.getBody();
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
+            System.out.println(responseBody);
 	    	return responseBody;
 	    	
 	    }catch(Exception e) {
@@ -67,16 +68,8 @@ public class Utils {
 	 * @return El resultado de la petición en un objeto Java.
 	 */
 	public JsonNode doRequest(String url) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.set("x-rapidapi-key", appConfig.getApiKey());
-	    headers.set("x-rapidapi-host", appConfig.getApiHost());
-	    
-	    HttpEntity<String> entity = new HttpEntity<>(headers);
-	    ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-
-	    String jsonResponse=response.getBody();
 	    try {
-	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
+	    	JsonNode responseBody=getAllRequestResponse(url);
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
 	    	

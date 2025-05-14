@@ -19,6 +19,7 @@ public class PlayerCompetitionStatisticsBasicDTO implements Serializable {
     private TeamBasicDTO team;
     private Integer gamesAppearences;
     private Integer totalGoals;
+    private Integer assists;
     private Integer yellowCards;
     private Integer redCards;
 }

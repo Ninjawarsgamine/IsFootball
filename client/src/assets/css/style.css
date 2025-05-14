@@ -25,6 +25,7 @@
 select.form-select {
   font-size: 1.2rem;
   width: 30%;
+  margin-left: 1rem;
   border: 1px solid #ced4da;
   background-color: #f8f9fa;
   color: #212529;
@@ -409,7 +410,7 @@ select.form-select:focus {
 .competition-info-container__statistic-table td span {
   display: flex;
   align-items: center;
-  margin-top: 0.5rem;
+  margin-top: 0.43rem;
   justify-content: center;
   justify-items: center;
 }

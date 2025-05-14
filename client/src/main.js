@@ -11,6 +11,8 @@ const pinia = createPinia();
 
 createApp(App)
 .use(pinia)
-.use(VueLazyLoad)
+.use(VueLazyLoad,{
+    preload:2
+})
 .use(router)
 .mount('#app');

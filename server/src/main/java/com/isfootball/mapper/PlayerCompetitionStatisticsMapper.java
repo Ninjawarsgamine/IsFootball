@@ -70,6 +70,7 @@ public interface PlayerCompetitionStatisticsMapper {
     @Mapping(target = "team", source = "team")
     @Mapping(target = "gamesAppearences", source = "gamesAppearences")
     @Mapping(target = "totalGoals", source = "totalGoals")
+    @Mapping(target = "assists", source = "assists")
     @Mapping(target = "yellowCards", source = "yellowCards")
     @Mapping(target = "redCards", source = "redCards")
     PlayerCompetitionStatisticsBasicDTO toPlayerCompetitionStatisticsBasicDTO(PlayerCompetitionStatistics stats);

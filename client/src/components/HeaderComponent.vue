@@ -16,7 +16,6 @@
   const options=[
     {label: 'Competitions' , route: '/competitions'},
     {label: 'Teams', route:'/teams'},
-    {label: 'Players' , route: '/players'},
-
+    {label: 'Players' , route: '/players'}
   ]
 </script>
