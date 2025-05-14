@@ -2,6 +2,8 @@ package com.isfootball.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -179,6 +181,7 @@ public class TeamService {
 
 					teamMatches.add(match);
 				}
+				teamMatches.sort(Comparator.comparing(Match::getZonedDateTime));
 				return matchMapper.toMatchDTOList(teamMatches);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -469,6 +472,8 @@ public class TeamService {
 				String urlPlayers ="https://"+appConfig.getApiHost()+"/players?team="+teamId+ "&season="+appConfig.getSeason();
 				JsonNode responseAllData = utils.getAllRequestResponse(urlPlayers);
 
+				List<String>playersPositions=Arrays.asList("Goalkeeper", "Defender", "Midfielder", "Attacker");
+
 				Integer pagesNumber=responseAllData.path("paging").path("total").asInt();
 
 				for (int i=1;i<=pagesNumber;i++) {
@@ -521,6 +526,12 @@ public class TeamService {
 						}
 					}
 				}
+				
+				teamPlayers.sort(Comparator.comparingInt(player->{
+					Integer index=playersPositions.indexOf(player.getPosition());
+					return index==-1?Integer.MAX_VALUE:index;
+				}));
+				//Ordenamos los jugadores según la posición. 
 				teamSquad.setPlayers(teamPlayers);
 			}
 			return teamMapper.toTeamSquadDTO(teamSquad);

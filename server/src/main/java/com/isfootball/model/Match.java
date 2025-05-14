@@ -1,5 +1,7 @@
 package com.isfootball.model;
 
+import java.time.ZonedDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 @Getter
@@ -8,6 +10,7 @@ public class Match {
 
 	private Integer id;
 
+    private ZonedDateTime zonedDateTime;
     private String date;
     
     private Competition competition;

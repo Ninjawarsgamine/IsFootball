@@ -242,6 +242,7 @@ public class Utils {
 
         String matchDate=matchInfo.path("date").asText();
         ZonedDateTime dateTime = ZonedDateTime.parse(matchDate);
+        match.setZonedDateTime(dateTime);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy · HH:mm", Locale.getDefault());
 
         String matchDateWithFormat = dateTime.format(formatter);

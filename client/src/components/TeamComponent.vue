@@ -27,10 +27,7 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="squad-tab" data-bs-toggle="tab" 
                     data-bs-target="#squad" type="button" role="tab"
-                    aria-selected="true" @click="async()=>{
-                        await getTeamSquad(); 
-                        getTeamPlayersOrderedByPosition();
-                    }">
+                    aria-selected="true" @click="async()=>await getTeamSquad()">
                         Squad
                     </button>
                 </li>
@@ -353,24 +350,6 @@
             console.log("No se ha podido obtener la plantilla del equipo con ID: "+teamId)
         }
         teamSquad.value=data.value;
-    }
-
-    const teamPositions=['Goalkeeper', 'Defender', 'Midfielder', 'Attacker'];
-
-    const getTeamPlayersOrderedByPosition=()=>{
-        if(!teamSquad.value.players){
-            console.log("No se han encontrado los jugadores en la plantilla del equipo con ID "+teamId)
-            return;
-        }
-        teamSquad.value.players.sort((a, b) => {
-            const indexA = teamPositions.indexOf(a.position);
-            const indexB = teamPositions.indexOf(b.position);
-            
-            return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
-            //Lo que hacemos es que restamos el "indexA"("goalkeeper") menos el "indexB"("Attacker")
-            //para que se ordene primero por el "goalkeeper". Si hace que si alguno de los "index"
-            //es "-1" (o sea, no está en la lista), se ponga al final de la lista.
-        });
     }
     //Esta función ordena los jugadores de un equipo. por posición (desde "Goalkeeper" 
     //hasta "Attacker").
