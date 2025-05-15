@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO para la información básica de un jugador.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO para la información básico de un equipo.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

@@ -15,6 +15,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO para la limitar los campos de "TeamCompetitionStatistics".
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO para la limitar los campos de "Match".
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

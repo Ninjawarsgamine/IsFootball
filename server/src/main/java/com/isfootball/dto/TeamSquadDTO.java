@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO que contiene los datos de la plantilla de un equipo.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

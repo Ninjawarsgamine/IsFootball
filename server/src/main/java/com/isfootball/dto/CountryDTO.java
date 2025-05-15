@@ -11,6 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+/**
+ * DTO de la clase "Country".
+ */
 public class CountryDTO implements Serializable{
     
     private static final long serialVersionUID = 7035633339151516099L;

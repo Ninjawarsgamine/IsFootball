@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO con los datos básicos de la clase "TeamCompetitionStatistics"
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

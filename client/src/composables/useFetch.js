@@ -25,13 +25,12 @@ export async function useFetch(url, method='GET',body=null){
 
         if(response.ok){
             data.value=await response.json();
-            console.log(data.value);
         }else{
-            loadingStore.setError(`Error: ${response.statusText}`)
+            loadingStore.setError(`Error: ${response.statusText}`);
         }
         loadingStore.setLoading(false);
     }catch(err){
-        loadingStore.setError(`Error: ${err.message}}`)
+        loadingStore.setError(`Error: ${err.message}}`);
         console.log(err.message);
     }finally{
         loadingStore.setLoading(false);

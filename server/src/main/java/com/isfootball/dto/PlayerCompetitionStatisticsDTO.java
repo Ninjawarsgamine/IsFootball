@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+/**
+ * DTO para la limitar los campos de "PlayerCompetitionStatistics".
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
