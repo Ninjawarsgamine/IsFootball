@@ -2,8 +2,9 @@
     <div class="component-header">
         <img v-lazy="componentLogo" alt="Logo del componente">
         <h1>{{ componentName }}</h1>
-        <img class="component-header__component-country img-fluid" v-if="componentCountry?.flag" 
-        v-lazy="componentCountry.flag" alt="Bandera del país del componente">
+        <img class="component-header__component-country img-fluid"  v-lazy="componentCountry.flag"
+        v-if="componentCountry?.flag && componentCountry?.flag!=='null'" 
+        alt="Bandera del país del componente">
     </div>
 </template>
 

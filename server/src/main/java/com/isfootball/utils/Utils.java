@@ -52,7 +52,6 @@ public class Utils {
 	    String jsonResponse=response.getBody();
 	    try {
 	    	JsonNode responseBody=objectMapper.readTree(jsonResponse);
-            System.out.println(responseBody);
 	    	return responseBody;
 	    	
 	    }catch(Exception e) {

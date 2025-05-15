@@ -398,21 +398,25 @@ public class CompetitionService {
 		if(responseData!=null && responseData.isArray()) {
 			try{
 				for(JsonNode playersTotalInfo: responseData){
-					PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
-		
-					JsonNode playerBasicInfo=playersTotalInfo.path("player");
-					Player player=utils.parsePlayerBasic(playerBasicInfo);
-					playerCompetitionStatistics.setPlayer(player);
-					
+
 					JsonNode playerAllStatistics=playersTotalInfo.path("statistics").get(0);
-					
-					JsonNode playerTeamData=playerAllStatistics.path("team");
-					Team playerTeam=utils.parseTeamBasic(playerTeamData);
-					playerCompetitionStatistics.setTeam(playerTeam);
-	
-					playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
-					playerCompetitionStatistics.setRedCards(playerAllStatistics.path("cards").path("red").asInt());
-					competitionPlayersStatistics.add(playerCompetitionStatistics);
+
+					if(playerAllStatistics.path("cards").path("red").asInt()>0){
+						PlayerCompetitionStatistics playerCompetitionStatistics=new PlayerCompetitionStatistics();
+						JsonNode playerBasicInfo=playersTotalInfo.path("player");
+						Player player=utils.parsePlayerBasic(playerBasicInfo);
+						playerCompetitionStatistics.setPlayer(player);
+						
+						
+						
+						JsonNode playerTeamData=playerAllStatistics.path("team");
+						Team playerTeam=utils.parseTeamBasic(playerTeamData);
+						playerCompetitionStatistics.setTeam(playerTeam);
+		
+						playerCompetitionStatistics.setGamesAppearences(playerAllStatistics.path("games").path("appearences").asInt());
+						playerCompetitionStatistics.setRedCards(playerAllStatistics.path("cards").path("red").asInt());
+						competitionPlayersStatistics.add(playerCompetitionStatistics);
+					}
 				}
 				return playerCompetitionStatisticsMapper.toPlayerCompetitionStatisticsBasicDTOList(competitionPlayersStatistics);
 			
