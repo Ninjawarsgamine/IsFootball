@@ -3,7 +3,7 @@
         <ComponentHeader :componentLogo="team.logo" :component-name="team.name"/>
         <div class="team-info-container">
             <ul class="nav nav-underline mb-3" role="tablist">
-                <li class="nav-item" role="presentation" v-if="team.founded">
+                <li class="nav-item" role="presentation" v-if="team?.founded!==0 && team?.venue?.id!==0">
                     <button class="nav-link active" id="basic-data-tab" data-bs-toggle="tab" 
                     data-bs-target="#basicData" type="button" role="tab" aria-selected="true">
                         Basic data
@@ -33,7 +33,7 @@
                 </li>
             </ul>
 
-            <div class="tab-content" id="basicDataContent">
+            <div class="tab-content" id="basicDataContent"  v-if="team?.founded!==0 && team?.venue?.id!==0">
                 <div class="tab-pane fade show active" id="basicData" role="tabpanel" 
                 aria-labelledby="table-tab" >
                     <div class="team-info-container__team-basic-data" v-if="team?.venue">
