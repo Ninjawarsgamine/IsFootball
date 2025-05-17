@@ -98,8 +98,7 @@ public class CompetitionService {
 							competitionTeamStatistics.setPoints(competitionTeamStatisticsData.path("points").asInt());
 							competitionTeamStatistics.setGoalsDiff(competitionTeamStatisticsData.path("goalsDiff").asInt());
 							competitionTeamStatistics.setGroup(competitionTeamStatisticsData.path("group").asText());
-							competitionTeamStatistics.setForm(competitionTeamStatisticsData.path("form").asText());
-							
+							competitionTeamStatistics.setForm(new StringBuilder(competitionTeamStatisticsData.path("form").asText()).reverse().toString());		
 							JsonNode competitionTeamMatchesInfo=competitionTeamStatisticsData.path("all");
 							
 							HomeAwayTotalStats matchesPlayed=new HomeAwayTotalStats();

@@ -103,26 +103,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Played</td>
-                                        <td v-for="type in teamCompetitionStatistics.matchesPlayed" 
-                                        :key="type">{{ type }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Won</td>
-                                        <td v-for="type in teamCompetitionStatistics.matchesWon" 
-                                        :key="type">{{ type }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Drawn</td>
-                                        <td v-for="type in teamCompetitionStatistics.matchesDrawn" 
-                                        :key="type">{{ type }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lost</td>
-                                        <td v-for="type in teamCompetitionStatistics.matchesLost" 
-                                        :key="type">{{ type }}</td>
-                                    </tr>
+                                   <tr v-for="type in matchesFields" :key="type">
+                                        <td>{{ type.label }}</td>
+                                        <td v-for=" statistic in type.statistics" :key="statistic">
+                                            {{ statistic }}
+                                        </td>
+                                   </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -142,25 +128,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="fw-bold bg-white">Biggest Win</td>
-                                    <td v-for="type in teamCompetitionStatistics.biggestWins" 
-                                    :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold bg-white">Biggest Loss</td>
-                                    <td v-for="type in teamCompetitionStatistics.biggestLoses" 
-                                    :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold bg-white">Most Goals Scored</td>
-                                    <td v-for="type in teamCompetitionStatistics.biggestGoalsFor" 
-                                    :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold bg-white">Most Goals Conceded</td>
-                                    <td v-for="type in teamCompetitionStatistics.biggestGoalsAgainst" 
-                                    :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
+                                <tr v-for="type in biggestFields" :key="type">
+                                    <td class="fw-bold bg-white">{{type.label}}</td>
+                                    <td v-for="statistic in type.statistics" 
+                                        :key="statistic">
+                                            {{statistic !==null && statistic !=="null"?statistic:"-" }}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -177,22 +150,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="fw-bold bg-white">Clean Sheets</td>
-                                        <td v-for="type in teamCompetitionStatistics.cleanSheet" 
-                                        :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold bg-white">Failed to Score</td>
-                                        <td v-for="type in teamCompetitionStatistics.failedToScore" 
-                                        :key="type">{{ type!==null && type!=="null"?type:"-" }}</td>
+                                    <tr v-for="type in cleanSheetAnFailedToScoreFields" :key="type">
+                                        <td class="fw-bold bg-white">{{type.label}}</td>
+                                        <td v-for="statistic in type.statistics" 
+                                        :key="statistic">
+                                            {{statistic !==null && statistic !=="null"?statistic:"-" }}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
                         <h4 class="fw-bold mt-4">Penalties</h4>
-                        <div class="table-responsive">
+                        <div class="table-responsive" v-if="penaltiesFields">
                             <table class="table table-bordered text-center align-middle">
                                 <thead class="table-light">
                                     <tr>
@@ -202,15 +172,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="fw-bold bg-white">Scored</td>
-                                        <td v-for="data in teamCompetitionStatistics.penaltiesScored" 
-                                        :key="data">{{ data!==null && data!=="null"?data:"-" }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold bg-white">Missed</td>
-                                        <td v-for="data in teamCompetitionStatistics.penaltiesMissed" 
-                                        :key="data">{{ data!==null && data!=="null"?data:"-" }}</td>
+                                    <tr v-for="type in penaltiesFields" :key="type">
+                                        <td class="fw-bold bg-white">{{ type.label }}</td>
+                                        <td v-for="statistic in type.statistics" 
+                                        :key="statistic">
+                                        {{ statistic && statistic !=="null"?statistic:"-" }}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -274,7 +241,7 @@
 
 <script setup>
     import { useFetch } from '@/composables/useFetch';
-    import { onMounted, ref, watch } from 'vue';
+    import { computed, onMounted, ref, watch } from 'vue';
     import { useRoute } from 'vue-router';
     import ComponentHeader from '@/components/ComponentHeader.vue';
     import MatchCardComponent from '@/components/MatchCardComponent.vue';
@@ -343,6 +310,123 @@
     });
     //Esta función obtiene las estadísticas para la nueva competición seleccionada.
 
+    const matchesFields=computed(()=>{
+        const teamCompetitionAllStatistics=teamCompetitionStatistics.value;
+        if(!teamCompetitionAllStatistics){
+            return;
+        }
+        return [
+            {
+                label:"Played", 
+                statistics:[
+                    teamCompetitionAllStatistics.matchesPlayed.home,
+                    teamCompetitionAllStatistics.matchesPlayed.away,
+                    teamCompetitionAllStatistics.matchesPlayed.total
+                ] 
+            },
+            {
+                label:"Won", 
+                statistics:[
+                    teamCompetitionAllStatistics.matchesWon.home,
+                    teamCompetitionAllStatistics.matchesWon.away,
+                    teamCompetitionAllStatistics.matchesWon.total
+                ]
+            },
+            {
+                label:"Lost", 
+                statistics:[
+                    teamCompetitionAllStatistics.matchesLost.home,
+                    teamCompetitionAllStatistics.matchesLost.away,
+                    teamCompetitionAllStatistics.matchesLost.total
+                ]
+            }
+        ];
+    });
+
+    const biggestFields=computed(()=>{
+        const teamCompetitionAllStatistics=teamCompetitionStatistics.value;
+        if(!teamCompetitionAllStatistics){
+            return;
+        }
+        return [
+            {
+                label:"Biggest wins", 
+                statistics:[
+                    teamCompetitionAllStatistics.biggestWins?.home,
+                    teamCompetitionAllStatistics.biggestWins?.away
+                ] 
+            },
+            {
+                label:"Biggest loses", 
+                statistics:[
+                    teamCompetitionAllStatistics.biggestLoses?.home,
+                    teamCompetitionAllStatistics.biggestLoses?.away
+                ] 
+            },
+            {
+                label:"Goals for", 
+                statistics:[
+                    teamCompetitionAllStatistics.biggestGoalsFor?.home,
+                    teamCompetitionAllStatistics.biggestGoalsFor?.away
+                ] 
+            },
+            {
+                label:"Goals against", 
+                statistics:[
+                    teamCompetitionAllStatistics.biggestGoalsAgainst?.home,
+                    teamCompetitionAllStatistics.biggestGoalsAgainst?.away
+                ] 
+            },
+        ];
+    });
+
+    const cleanSheetAnFailedToScoreFields=computed(()=>{
+        const teamCompetitionAllStatistics=teamCompetitionStatistics.value;
+        if(!teamCompetitionAllStatistics){
+            return;
+        }
+        return [
+            {
+                label:"Clean Sheets", 
+                statistics:[
+                    teamCompetitionAllStatistics.cleanSheet?.home,
+                    teamCompetitionAllStatistics.cleanSheet?.away,
+                    teamCompetitionAllStatistics.cleanSheet?.total
+                ] 
+            },
+            {
+                label:"Failed to score", 
+                statistics:[
+                    teamCompetitionAllStatistics.failedToScore?.home,
+                    teamCompetitionAllStatistics.failedToScore?.away,
+                    teamCompetitionAllStatistics.failedToScore?.total
+                ]
+            },
+        ];
+    });
+
+    const penaltiesFields=computed(()=>{
+        const teamCompetitionAllStatistics=teamCompetitionStatistics.value;
+        if(!teamCompetitionAllStatistics){
+            return;
+        }
+        return [
+            {
+                label:"Scored", 
+                statistics:[
+                    teamCompetitionAllStatistics.penaltiesScored?.total,
+                    teamCompetitionAllStatistics.penaltiesScored?.percentage
+                ] 
+            },
+            {
+                label:"Failed", 
+                statistics:[
+                    teamCompetitionAllStatistics.penaltiesFailed?.total,
+                    teamCompetitionAllStatistics.penaltiesFailed?.percentage
+                ]
+            },
+        ];
+    });
     const teamSquad=ref();
     const getTeamSquad=async()=>{
         const {data,error}=await useFetch(`/api/teamSquad/${teamId}`);
