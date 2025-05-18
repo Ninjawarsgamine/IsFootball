@@ -447,7 +447,6 @@ public class TeamService {
 	public TeamSquadDTO getTeamSquad(Integer teamId) {
 		Team teamSquad = new Team();
 		Coach coach = new Coach();
-
 		String url = "https://" + appConfig.getApiHost() + "/coachs?team=" + teamId;
 		JsonNode responseData = utils.doRequest(url);
 		try {
@@ -457,8 +456,9 @@ public class TeamService {
 					JsonNode coachCareerInfo=coachInfo.path("career");
 					for(JsonNode coachCareerTeamInfo: coachCareerInfo){
 						if(coachCareerTeamInfo.path("team").path("id").asInt()==teamId){
-							if(!coachCareerTeamInfo.path("end").isMissingNode() && LocalDate.parse(coachCareerTeamInfo.
-							path("start").asText()).isBefore(LocalDate.parse("2024-06-02"))){
+							if(coachCareerTeamInfo.path("end").isNull() && LocalDate.parse(coachCareerTeamInfo.
+							path("start").asText()).isBefore(LocalDate.parse("2024-06-02")) 
+							&& coach.getName()==null){
 								coach.setName(coachInfo.path("name").asText());
 								coach.setPhoto(coachInfo.path("photo").asText());
 								teamSquad.setCoach(coach);

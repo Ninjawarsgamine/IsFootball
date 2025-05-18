@@ -71,7 +71,6 @@ public class Utils {
 	    	JsonNode responseBody=getAllRequestResponse(url);
 	    	JsonNode responseData=responseBody.path("response");
 	    	return responseData;
-	    	
 	    }catch(Exception e) {
 	    	e.printStackTrace();
 	    	return null;
