@@ -91,9 +91,10 @@
                     </select>
 
                     <div class="team-info-container__team-statistics" v-if="teamCompetitionStatistics">
-                        <h4>Matches</h4>
+                        <h4 v-if="matchesFields.length>0">Matches</h4>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover mb-0 ">
+                            <table class="table table-bordered table-hover mb-0" 
+                            v-if="matchesFields.length>0">
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col"></th>
@@ -118,8 +119,9 @@
                         <GoalsStatisticsComponent :title="'Goals against'"
                         :goals-data="teamCompetitionStatistics.goalsAgainst"/>
 
-                        <h4 class="fw-bold mt-4">Biggest Results</h4>
-                        <table class="table table-bordered text-center align-middle">
+                        <h4 class="fw-bold mt-4" v-if="biggestFields.length>0">Biggest Results</h4>
+                        <table class="table table-bordered text-center align-middle" 
+                        v-if="biggestFields.length>0">
                             <thead class="table-light">
                                 <tr>
                                     <th></th>
@@ -138,8 +140,8 @@
                             </tbody>
                         </table>
 
-                        <h4 class="fw-bold mt-4">Clean Sheets & Failed to Score</h4>
-                        <div class="table-responsive">
+                        <h4 class="fw-bold mt-4" v-if="cleanSheetAnFailedToScoreFields.length>0">Clean Sheets & Failed to Score</h4>
+                        <div class="table-responsive" v-if="cleanSheetAnFailedToScoreFields.length>0">
                             <table class="table table-bordered text-center align-middle">
                                 <thead class="table-light">
                                     <tr>
@@ -161,7 +163,7 @@
                             </table>
                         </div>
 
-                        <h4 class="fw-bold mt-4">Penalties</h4>
+                        <h4 class="fw-bold mt-4"  v-if="penaltiesFields">Penalties</h4>
                         <div class="table-responsive" v-if="penaltiesFields">
                             <table class="table table-bordered text-center align-middle">
                                 <thead class="table-light">
@@ -183,8 +185,8 @@
                             </table>
                         </div>
 
-                        <h4>Lineups Used</h4>
-                        <div class="table-responsive">
+                        <h4 v-if="teamCompetitionStatistics.lineups.length>0">Lineups Used</h4>
+                        <div class="table-responsive" v-if="teamCompetitionStatistics.lineups.length>0">
                             <table class="table table-bordered text-center align-middle">
                                 <thead class="table-light">
                                     <tr>

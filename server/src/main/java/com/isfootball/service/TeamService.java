@@ -178,8 +178,15 @@ public class TeamService {
 			try {
 				for (JsonNode matchData : responseData) {
 					Match match = utils.parseMatch(matchData);
-
-					teamMatches.add(match);
+					Boolean sameDate=false;
+					for(Match teamMatch: teamMatches){
+						if(teamMatch.getDate().equals(match.getDate())){
+							sameDate=true;
+						}
+					}
+					if(!sameDate){
+						teamMatches.add(match);
+					}
 				}
 				teamMatches.sort(Comparator.comparing(Match::getZonedDateTime));
 				return matchMapper.toMatchDTOList(teamMatches);
