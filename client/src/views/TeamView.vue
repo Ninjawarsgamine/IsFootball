@@ -335,6 +335,14 @@
                 ]
             },
             {
+                label:"Drawn", 
+                statistics:[
+                    teamCompetitionAllStatistics.matchesDrawn.home,
+                    teamCompetitionAllStatistics.matchesDrawn.away,
+                    teamCompetitionAllStatistics.matchesDrawn.total
+                ]
+            },
+            {
                 label:"Lost", 
                 statistics:[
                     teamCompetitionAllStatistics.matchesLost.home,
