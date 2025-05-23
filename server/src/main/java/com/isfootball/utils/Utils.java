@@ -185,6 +185,7 @@ public class Utils {
         Player player=new Player();
         player.setId(playerInfo.path("id").asInt());
         player.setName(playerInfo.path("name").asText());
+        player.setPosition(playerInfo.path("position").asText());
         player.setPhoto(playerInfo.path("photo").asText());
         return player;
     }

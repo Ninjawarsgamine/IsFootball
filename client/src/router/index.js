@@ -1,22 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import WelcomeComponent from '@/components/WelcomeComponent.vue';
-import CompetitionsSearchComponent from '@/components/CompetitionsSearchComponent.vue';  
-import CompetitionComponent from '@/components/CompetitionComponent.vue';
-import RouteErrorComponent from '@/components/RouteErrorComponent.vue';
-import TeamsSearchComponent from '@/components/TeamsSearchComponent.vue';
-import TeamComponent from '@/components/TeamComponent.vue';
-import PlayersSearchComponent from '@/components/PlayersSearchComponent.vue';
-import PlayerComponent from '@/components/PlayerComponent.vue';
+import WelcomeView from '@/views/WelcomeView.vue';
+import CompetitionsSearchView from '@/views/CompetitionsSearchView.vue';  
+import CompetitionView from '@/views/CompetitionView.vue';
+import ErrorView from '@/views/ErrorView.vue';
+import TeamsSearchView from '@/views/TeamsSearchView.vue';
+import TeamView from '@/views/TeamView.vue';
+import PlayersSearchView from '@/views/PlayersSearchView.vue';
+import PlayerView from '@/views/PlayerView.vue';
 
 const routes = [
-  { path: '/', component: WelcomeComponent }, 
-  { path:'/competitions',component: CompetitionsSearchComponent },
-  { path: '/competitions/:id',component: CompetitionComponent },
-  { path:'/teams', component:TeamsSearchComponent },
-  { path: '/teams/:name/:id',component: TeamComponent },
-  { path:'/players',component: PlayersSearchComponent },
-  { path:'/players/:id',component: PlayerComponent },
-  { path:'/:pathMatch(.*)*',component: RouteErrorComponent }
+  { path: '/', component: WelcomeView }, 
+  { path:'/competitions', component: CompetitionsSearchView },
+  { path: '/competitions/:id',component: CompetitionView },
+  { path:'/teams', component:TeamsSearchView },
+  { path: '/teams/:name/:id',component: TeamView },
+  { path:'/players',component: PlayersSearchView },
+  { path:'/players/:id',component: PlayerView },
+  { path:'/:pathMatch(.*)*',component: ErrorView }
 ];
 //Aquí están las rutas de la aplicación. 
 
