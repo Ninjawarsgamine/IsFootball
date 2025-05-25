@@ -8,9 +8,9 @@
 </template>
 
 <script setup>
-  import HeaderComponent from './components/HeaderComponent.vue';
-  import FooterComponent from './components/FooterComponent.vue';
-  import LaodingComponent from './components/LaodingComponent.vue';
+  import HeaderComponent from './components/layout/HeaderComponent.vue';
+  import FooterComponent from './components/layout/FooterComponent.vue';
+  import LaodingComponent from './components/common/LaodingComponent.vue';
   import { useLoadingStore } from '@/stores/useLoadingStore';
 
   const loadingStore = useLoadingStore();
