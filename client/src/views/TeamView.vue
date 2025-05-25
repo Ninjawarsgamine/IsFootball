@@ -300,7 +300,7 @@
 
     
     watch(teamCompetitions, async(newCompetitions)=>{
-        if(newCompetitions.length>0 && !competitionSelected.value){
+        if(newCompetitions && newCompetitions.length>0 && !competitionSelected.value){
             competitionSelected.value=newCompetitions[0].id;
             await getTeamCompetitionStatistics(competitionSelected.value);
         }
