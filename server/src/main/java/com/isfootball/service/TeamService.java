@@ -456,25 +456,36 @@ public class TeamService {
 		Coach coach = new Coach();
 		String url = "https://" + appConfig.getApiHost() + "/coachs?team=" + teamId;
 		JsonNode responseData = utils.doRequest(url);
+
 		try {
 			if (responseData != null && responseData.isArray()) {
 				JsonNode coachsData = responseData;
 				for(JsonNode coachInfo: coachsData){
 					JsonNode coachCareerInfo=coachInfo.path("career");
 					for(JsonNode coachCareerTeamInfo: coachCareerInfo){
+						if(!coachCareerTeamInfo.path("end").isNull() && LocalDate.
+						parse(coachCareerTeamInfo.path("end").asText()).isBefore(LocalDate.
+						of(Integer.valueOf(appConfig.getSeason()), 7, 1))){
+							continue;
+						}
+						//Si el "end" no es nulo pero la fecha no es mayor en la que entrenador se fue es
+						//de antes del 01/07/2023, entonces ese entrenador no se toene en cuenta.
+						//entonces saltamos al siguiente entrenador. Esto lo hacemos para asegurarnos
+						
 						if(coachCareerTeamInfo.path("team").path("id").asInt()==teamId){
-							if(coachCareerTeamInfo.path("end").isNull() && LocalDate.parse(coachCareerTeamInfo.
-							path("start").asText()).isBefore(LocalDate.parse("2024-06-02")) 
-							&& coach.getName()==null){
+							if(LocalDate.parse(coachCareerTeamInfo.path("start").asText())
+							.isBefore(LocalDate.parse(Integer.valueOf(appConfig.getSeason())+1+"-06-01")) && coach.getName()==null){
+								//Si la fecha de inicio es de antes del 01/06/2024, entonces incluimos al entrenador.
 								coach.setName(coachInfo.path("name").asText());
 								coach.setPhoto(coachInfo.path("photo").asText());
+								
 								teamSquad.setCoach(coach);
 								break;
 							}
 						}
-
 					}
 				}
+				
 				List<Player> teamPlayers = new ArrayList<>();
 				String urlPlayers ="https://"+appConfig.getApiHost()+"/players?team="+teamId+ "&season="+appConfig.getSeason();
 				JsonNode responseAllData = utils.getAllRequestResponse(urlPlayers);
@@ -482,7 +493,6 @@ public class TeamService {
 				List<String>playersPositions=Arrays.asList("Goalkeeper", "Defender", "Midfielder", "Attacker");
 
 				Integer pagesNumber=responseAllData.path("paging").path("total").asInt();
-
 				for (int i=1;i<=pagesNumber;i++) {
 					JsonNode responseDataPlayers=utils.doRequest(urlPlayers+"&page="+i);
 					if (responseDataPlayers != null && responseDataPlayers.isArray()) {

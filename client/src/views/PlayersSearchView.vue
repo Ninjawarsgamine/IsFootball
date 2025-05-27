@@ -43,7 +43,7 @@
              </table>
           </div>
           <div class="search-widget__results__empty" v-else-if="hasSearched && !loading.isLoading">
-            <p>No se han encontrado resultados</p>
+            <p>No results found</p>
           </div>
        </div>
     </div>

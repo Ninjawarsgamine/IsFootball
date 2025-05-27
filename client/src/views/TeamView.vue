@@ -211,19 +211,27 @@
                 <div class="tab-pane fade show" id="squad" role="tabpanel" aria-labelledby="table-tab">
                     <h1>Squad</h1>  
                     <div class="team-info-container__team-players list-group" 
-                    v-if="teamSquad && teamSquad.coach && teamSquad.players">
+                    v-if="teamSquad">
                         <h3>Coach</h3>
                         <div class="team-info-container__team-players__player-data list-group-item-action 
-                        d-flex align-items-center p-3">
+                        d-flex align-items-center p-3" v-if="teamSquad.coach">
                             <img class="rounded-circle flex-shrink-0 me-3" v-lazy="teamSquad.coach.photo"
                             />
                             <div class="team-info-container__team-players__player-data__player-info">
                                 <h6>{{ teamSquad.coach.name }}</h6>
                             </div>
                         </div>
+                        <div class="team-info-container__team-players__player-data list-group-item-action 
+                        d-flex align-items-center p-3" v-else>
+                            The information is not available.
+                        </div>
 
                         <h3>Players</h3>
-                        <router-link v-for="player in teamSquad.players" :key="player" 
+                        <div class="team-info-container__team-players__player-data list-group-item-action 
+                        d-flex align-items-center p-3" v-if=" !teamSquad.players || teamSquad.players.length==0">
+                            This information is not available.
+                        </div>
+                        <router-link v-for="player in teamSquad.players" :key="player" v-else
                         class="team-info-container__team-players__player-data list-group-item-action 
                         d-flex align-items-center p-3" :to="`/players/${player.id}`">
                             <img class="rounded-circle flex-shrink-0 me-3" v-lazy="player.photo"/>
@@ -437,6 +445,7 @@
             },
         ];
     });
+    
     const teamSquad=ref();
     const getTeamSquad=async()=>{
         const {data,error}=await useFetch(`/api/teamSquad/${teamId}`);
@@ -445,10 +454,9 @@
         }
         teamSquad.value=data.value;
     }
-    //Esta función ordena los jugadores de un equipo. por posición (desde "Goalkeeper" 
-    //hasta "Attacker").
+    //Esta función obtiene la plantilla de un equipo con un ID especificado.
     
     onMounted(async()=>{
-         await getTeamInfo();
+        await getTeamInfo();
     });
 </script>
