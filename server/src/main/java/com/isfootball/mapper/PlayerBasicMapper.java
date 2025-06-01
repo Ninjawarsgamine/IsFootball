@@ -8,14 +8,14 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 /**
- * Este Mapper convierte Player a PlayerBasicDTO.
+ * Este mapper convierte Player a PlayerBasicDTO.
  * Se hace para evitar que haya referencias circulares en el mapeo.
  */
 @Mapper(componentModel = "spring")
 public interface PlayerBasicMapper {
 
     /**
-     * Mapea Player a PlayerBasicDTO.
+     * Mappea Player a PlayerBasicDTO.
      */
     @Mapping(source = "id",       target = "id")
     @Mapping(source = "name",     target = "name")
@@ -24,7 +24,7 @@ public interface PlayerBasicMapper {
     PlayerBasicDTO toPlayerBasicDTO(Player player);
 
     /**
-     * Mapea una lista de Player a una lista de PlayerBasicDTO.
+     * Mappea una lista de Player a una lista de PlayerBasicDTO.
      */
     List<PlayerBasicDTO> toPlayerBasicDTOList(List<Player> players);
 }

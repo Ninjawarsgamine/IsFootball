@@ -10,7 +10,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
- * Este Mapper convierte PlayerCompetitionStatistics a sus respectivos DTOs.
+ * Este mapper convierte PlayerCompetitionStatistics a sus respectivos DTOs.
  */
 @Mapper(componentModel = "spring", uses = { PlayerMapper.class, TeamMapper.class, CompetitionMapper.class })
 public interface PlayerCompetitionStatisticsMapper {

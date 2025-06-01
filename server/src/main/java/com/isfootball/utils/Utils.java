@@ -36,7 +36,7 @@ public class Utils {
         this.appConfig = appConfig;
     }
     
- /**
+    /**
 	 * Función que sirve para realizar una petición a la API externa.
 	 * 
 	 * @param url La URL con la que se va a hacer la petición.

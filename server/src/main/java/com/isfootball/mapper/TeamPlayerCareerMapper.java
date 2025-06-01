@@ -10,7 +10,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 /**
- * Este Mapper convierte TeamPlayerCareer a su respectivo DTO.
+ * Este mapper convierte TeamPlayerCareer a su respectivo DTO.
  */
 @Mapper(componentModel = "spring", uses = {TeamMapper.class})
 public interface TeamPlayerCareerMapper {

@@ -21,7 +21,7 @@
                 <tr v-for="(player,index) in players" :key="player.player.id">
                     <td><span>{{ index +1 }}</span></td>
                     <td>
-                        <router-link :to="`players/${player.player.id}`">
+                        <router-link :to="`/players/${player.player.id}`">
                             <img 
                             class="competition-info-container__statistic-table__player-photo 
                             img-fluid" v-lazy="player.player.photo">

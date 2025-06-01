@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 /**
- * Este Mapper convierte Player a sus respectivos DTOs.
+ * Este mapper convierte Player a sus respectivos DTOs.
  */
 @Mapper(
     componentModel = "spring",
@@ -22,7 +22,7 @@ import java.util.List;
 public interface PlayerMapper {
 
     /**
-     * Mapea Player a PlayerSimpleDTO.
+     * Mappea Player a PlayerSimpleDTO.
      */
     @Mapping(source = "id",           target = "id")
     @Mapping(source = "name",         target = "name")
@@ -32,7 +32,7 @@ public interface PlayerMapper {
     PlayerSimpleDTO toPlayerSimpleDTO(Player player);
 
     /**
-     * Mapea Player a PlayerDTO.
+     * Mappea Player a PlayerDTO.
      */
     @Mapping(source = "id",                          target = "id")
     @Mapping(source = "name",                        target = "name")
@@ -51,12 +51,12 @@ public interface PlayerMapper {
     PlayerDTO toPlayerDTO(Player player);
 
     /**
-     * Mapea una lista de Player a una lista de PlayerSimpleDTO.
+     * Mappea una lista de Player a una lista de PlayerSimpleDTO.
      */
     List<PlayerSimpleDTO> toPlayerSimpleDTOList(List<Player> players);
 
     /**
-     * Mapea una lista de Player a una lista de PlayerDTO.
+     * Mappea una lista de Player a una lista de PlayerDTO.
      */
     List<PlayerDTO> toPlayerDTOList(List<Player> players);
 }

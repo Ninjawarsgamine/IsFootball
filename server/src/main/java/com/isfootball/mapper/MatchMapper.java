@@ -10,13 +10,13 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 /**
- * Este Mapper convierte Match a su respectivo DTO.
+ * Este mapper convierte Match a su respectivo DTO.
  */
 @Mapper(componentModel = "spring", uses = {CompetitionMapper.class, TeamMapper.class})
 public interface MatchMapper {
 
     /**
-     * Mapea Match a MatchDTO.
+     * Mappea Match a MatchDTO.
      *
      * @param match La entidad Match que contiene la información del partido.
      * @return MatchDTO con los datos del partido.
@@ -38,7 +38,7 @@ public interface MatchMapper {
     MatchDTO toMatchDTO(Match match);
 
     /**
-     * Mapea una lista de Match a una lista de MatchDTO.
+     * Mappea una lista de Match a una lista de MatchDTO.
      *
      * @param matches la lista de entidades Match
      * @return una lista de MatchDTO con los datos de los partidos.

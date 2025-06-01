@@ -15,7 +15,7 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="matches-tab" data-bs-toggle="tab" 
                 data-bs-target="#matches" type="button" role="tab" aria-selected="true"
-                @click="getcompetitionRoundMatches(competitionRounds[0]);">
+                @click="()=>(roundSelected?getcompetitionRoundMatches(roundSelected):getcompetitionRoundMatches(competitionRounds[0]))">
                     Matches
                 </button>
             </li>
@@ -45,7 +45,7 @@
                     :competitionTeams="competition.teamsCompetitionStatistics"/>
                 </div>
                 <div v-if="competition.type=='Cup'">
-                    <h1>Fase de grupos</h1>
+                    <h1>Group stage</h1>
                     <div v-for="(teams,group) in groupedTeams" :key="group">
                         <h2>{{ group }}</h2>
                         <CompetitionTableComponent 

@@ -27,5 +27,4 @@ public class TeamDTO implements Serializable{
 	private CountryDTO country;
 	private Integer founded;
 	private Venue venue;
-
 }

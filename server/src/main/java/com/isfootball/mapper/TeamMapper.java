@@ -11,13 +11,13 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 /**
- * Este Mapper convierte Team a sus respectivos DTOs.
+ * Este mapper convierte Team a sus respectivos DTOs.
  */
 @Mapper(componentModel = "spring", uses = { CountryMapper.class, PlayerBasicMapper.class })
 public interface TeamMapper {
 
     /**
-     * Mapea Team a TeamBasicDTO.
+     * Mappea Team a TeamBasicDTO.
      * 
      * @param team la entidad Team.
      * @return TeamBasicDTO con los datos básicos de un equipo.

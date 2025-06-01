@@ -306,7 +306,6 @@
     
     const competitionSelected=ref("");
 
-    
     watch(teamCompetitions, async(newCompetitions)=>{
         if(newCompetitions && newCompetitions.length>0 && !competitionSelected.value){
             competitionSelected.value=newCompetitions[0].id;

@@ -10,7 +10,7 @@ import org.mapstruct.Mappings;
 import java.util.List;
 
 /**
- * Este Mapper convierte TeamCompetitionStatistics a sus respectivos DTOs.
+ * Este mapper convierte TeamCompetitionStatistics a sus respectivos DTOs.
  */
 @Mapper(componentModel = "spring")
 public interface TeamCompetitionStatisticsMapper {
@@ -48,7 +48,7 @@ public interface TeamCompetitionStatisticsMapper {
     /**
      * Mappea TeamCompetitionStatistics a TeamCompetitionStatisticsDTO.
      *
-     * @param stats La entidad TeamCompetitionStatistics que se desea mapear.
+     * @param stats La entidad TeamCompetitionStatistics que se desea mappear.
      * @return TeamCompetitionStatisticsDTO con todos los campos detallados.
      */
     @Mappings({

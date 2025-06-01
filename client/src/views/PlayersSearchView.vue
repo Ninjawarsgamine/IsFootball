@@ -52,7 +52,7 @@
 <script setup>
     import { useFetch } from "@/composables/useFetch";
     import { useLoadingStore } from "@/stores/useLoadingStore";
-import { removeAccents } from "@/utils/utils";
+    import { removeAccents } from "@/utils/utils";
     import { ref } from "vue";
     
     const playerName = ref("");

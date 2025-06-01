@@ -24,7 +24,7 @@ export async function useFetch(url, method='GET',body=null){
 
         if(response.ok){
             data.value=await response.json();
-            console.log(data.value)
+            console.log(data.value);
         }else{
             loadingStore.setError(`Error: ${response.statusText}`);
         }
