@@ -122,7 +122,7 @@ Compila y ejecuta el backend con Maven:
 1. Navega a la carpeta del servidor y ejecuta el siguiente comando para limpiar dependencias locales, compilar e instalar el proyecto, generando el archivo .jar del backend:
 
 ```bash
- ./mvnw dependency:purge-local-repository compile clean install -DskipTests
+ ./mvnw clean install -DskipTests
 ```
 
 2. Luego, para iniciar la aplicación:
