@@ -82,9 +82,9 @@
                          class="player-info-container__statistics__team-info__team-brand">
                             <img v-lazy="playerCompetitionStatistics.team.logo" 
                             class="player-info-container__statistics__team-info__team-logo" />
-                            <h4 class="player-info-container__statistics__team-info__team-name mb-0">
+                            <h5 class="player-info-container__statistics__team-info__team-name mb-0">
                             {{ playerCompetitionStatistics.team.name }}
-                            </h4>
+                            </h5>
                         </router-link>
                         <router-link :to="`/competitions/${playerCompetitionStatistics.competition.id}`" 
                         class="player-info-container__statistics__team-info__competition-brand">

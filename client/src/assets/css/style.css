@@ -405,7 +405,7 @@ select.form-select:focus {
   align-items: center;
 }
 .competition-info-container__statistic-table td a img {
-  max-width: 2.3rem;
+  max-height: 2.3rem;
 }
 .competition-info-container__statistic-table td span {
   display: flex;
@@ -829,10 +829,21 @@ select.form-select:focus {
   align-items: center;
   margin-bottom: 1rem;
 }
+@media only screen and (max-width: 400px) {
+  .player-info-container__statistics__team-info {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
 .player-info-container__statistics__team-info-brand {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+@media only screen and (max-width: 400px) {
+  .player-info-container__statistics__team-info__competition-brand {
+    flex-direction: row-reverse;
+  }
 }
 .player-info-container__statistics__team-info__team-brand, .player-info-container__statistics__team-info__competition-brand {
   display: flex;
@@ -856,14 +867,21 @@ select.form-select:focus {
 .player-info-container__statistics__stats-section__row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  justify-content: flex-start;
+  gap: 2rem;
 }
 .player-info-container__statistics__stats-section .player-info-container__stat-item {
   background: #e9ecef;
   padding: 1rem;
+  width: 20%;
   border-radius: 0.5rem;
   font-size: 0.95rem;
   font-weight: 500;
+}
+@media only screen and (max-width: 800px) {
+  .player-info-container__statistics__stats-section .player-info-container__stat-item {
+    width: 40%;
+  }
 }
 .player-info-container__statistics__stats-section .player-info-container__stat-item span {
   display: block;
@@ -882,11 +900,6 @@ select.form-select:focus {
   align-items: center;
   justify-content: center;
   color: black;
-}
-@media only screen and (max-width: 800px) {
-  .player-info-container__player-basic-info a, .player-info-container__statistics a, .player-info-container__player-basic-info__item div {
-    flex-direction: column;
-  }
 }
 .player-info-container__player-basic-info a span, .player-info-container__statistics a span, .player-info-container__player-basic-info__item div span {
   margin-left: 0.3rem;
