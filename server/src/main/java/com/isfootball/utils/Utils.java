@@ -56,7 +56,7 @@ public class Utils {
 	    	
 	    }catch(Exception e) {
 	    	e.printStackTrace();
-	    	return null;
+            throw new RuntimeException("Error parseando la respuesta JSON de " + url, e);
 	    }
 	}
 
@@ -67,14 +67,13 @@ public class Utils {
 	 * @return El resultado de la petición en un objeto Java.
 	 */
 	public JsonNode doRequest(String url) {
-	    try {
-	    	JsonNode responseBody=getAllRequestResponse(url);
-	    	JsonNode responseData=responseBody.path("response");
-	    	return responseData;
-	    }catch(Exception e) {
-	    	e.printStackTrace();
-	    	return null;
-	    }
+        JsonNode responseBody=getAllRequestResponse(url);
+	    JsonNode responseData=responseBody.path("response");
+        
+        if(responseData.isMissingNode()) {
+           throw new RuntimeException("El nodo 'response' no existe en la respuesta de " + url);
+        }
+	    return responseData;
 	}
 
 	/**
